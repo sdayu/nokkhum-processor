@@ -5,6 +5,8 @@
 // Copyright   :
 // Description : Hello World in C++
 //============================================================================
+#include <cmath>
+#include <ctime>
 
 #include <iostream>
 using namespace std;
@@ -14,25 +16,16 @@ using namespace std;
 
 using namespace cv;
 
-#include "camera/cv_camera.hpp"
+#include "camera/cv_ip_camera.hpp"
+#include "video/cv_video_writer.hpp"
+#include "video/ffmpg_video_writer.hpp"
+#include "surveillance/video_surveillance.hpp"
 
 int main() {
 	cout << "Hello World, Hello Nuk Khum" << endl; // prints Hello World, Hello Nukkhum
 
-    namedWindow("video",1);
-
-    nokkhum::CvCamera camera(320, 240, 10, 0);
-
-    for(;;)
-    {
-            // get a new frame from camera
-
-
-            // show frame on screen
-            imshow("video", camera.get_image());
-
-            if(waitKey(1) >= 2) break;
-    }
+    nokkhum::VideoSurveillance vs;
+    vs.start();
 
     return 0;
 }

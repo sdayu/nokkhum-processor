@@ -20,11 +20,12 @@ public:
 	Camera(int width, int height, int frame_rate);
 	virtual ~Camera();
 
-	int get_width();
-	int get_height();
-	int get_frame_rate();
+	int getWidth();
+	int getHeight();
+	int getFrameRate();
 
-	virtual cv::Mat get_image() = 0;
+	virtual void getImage(Mat& image) = 0;
+	Camera& operator >>(Mat& image);
 private:
 	int width;
 	int height;

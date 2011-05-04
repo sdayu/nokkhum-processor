@@ -18,13 +18,14 @@ CameraFactory::~CameraFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-Camera* CameraFactory::get_ipcamera(int width, int height, int frame_rate,
+Camera* CameraFactory::getIpCamera(int width, int height, int frame_rate,
 		string url, string type) {
+	return NULL;
 }
 
-Camera* CameraFactory::get_camera(int width, int height, int frame_rate,
+Camera* CameraFactory::getCamera(int width, int height, int frame_rate,
 		int device) {
-	Camera camera = new CvCamera(width, height, frame_rate, device);
+	Camera* camera = new CvCamera(width, height, frame_rate, device);
 	return camera;
 }
 

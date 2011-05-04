@@ -12,9 +12,10 @@ namespace nokkhum {
 CvVideoWriter::CvVideoWriter(string directory, string filename, int width,
 		int height, int frame_rate) :
 	VideoWriter(directory, filename, width, height, frame_rate) {
-	string record_name = directory + filename;
-	record = new cv::VideoWriter(record_name.c_str(), CV_FOURCC('D','I','V','X'),
-			frame_rate, cv::Size(width, height), true);
+
+	record = new cv::VideoWriter(getRecordName().c_str(),
+			CV_FOURCC('D','I','V','X'), frame_rate, cv::Size(width, height),
+			true);
 }
 
 CvVideoWriter::~CvVideoWriter() {
@@ -22,7 +23,13 @@ CvVideoWriter::~CvVideoWriter() {
 	record = NULL;
 }
 
-void CvVideoWriter::write_frame(Mat & frame) {
+void CvVideoWriter::writeFrame(Mat& frame) {
+	(*(record)) << frame;
+}
+
+CvVideoWriter& CvVideoWriter::operator <<(Mat& frame) {
+	this->writeFrame(frame);
+	return *this;
 }
 
 }

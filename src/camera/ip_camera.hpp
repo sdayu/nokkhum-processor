@@ -17,12 +17,14 @@ namespace nokkhum {
 
 class IpCamera: public nokkhum::Camera {
 public:
-	IpCamera(int width, int height, int frame_rate, string url);
+	IpCamera(int width, int height, int frame_rate, string url, string username, string password);
 	virtual ~IpCamera();
-    string get_url() const;
+    string getUrl() const;
 
 private:
 	string url;
+	string username;
+	string password;
 };
 
 }

@@ -21,11 +21,15 @@ public:
 	VideoWriter(string filename, string directory, int width, int height, int frame_rate);
 	virtual ~VideoWriter();
 
-	virtual void write_frame(Mat &frame) = 0;
+	virtual void writeFrame(Mat &frame) = 0;
+	string getRecordName();
+
+	virtual VideoWriter& operator <<(Mat& frame);
 
 private:
 	string filename;
 	string directory;
+	string recordname;
 	int width;
 	int height;
 	int frame_rate;

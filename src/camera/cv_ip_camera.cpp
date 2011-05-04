@@ -17,8 +17,8 @@ using namespace cv;
 /* IP_CAMERA_HPP_ */
 namespace nokkhum
 {
-    CvIpCamera::CvIpCamera(int width, int height, int frame_rate, string url)
-    :IpCamera(width, height, frame_rate, url)
+    CvIpCamera::CvIpCamera(int width, int height, int frame_rate, string url, string username, string password)
+    :IpCamera(width, height, frame_rate, url, username, password)
     {
 		capture = new VideoCapture(url);
         // capture = new VideoCapture(0);
@@ -35,11 +35,20 @@ namespace nokkhum
     	delete capture;
     }
 
-    Mat CvIpCamera::get_image()
+    void CvIpCamera::getImage(Mat& image)
     {
-    	Mat fram;
-    	*(this->capture) >> fram;
-    	return fram;
+    	*(this->capture) >> image;
+    }
+
+
+    VideoCapture* CvIpCamera::getCapture(){
+    	return this->capture;
+    }
+
+    CvIpCamera & CvIpCamera::operator >>(Mat& image)
+    {
+    	this->getImage(image);
+    	return *this;
     }
 
     // open the default camera

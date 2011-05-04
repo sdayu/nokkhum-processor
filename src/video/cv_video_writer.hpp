@@ -23,7 +23,9 @@ public:
 	CvVideoWriter(string directory, string filename, int width, int height, int frame_rate);
 	virtual ~CvVideoWriter();
 
-	void write_frame(Mat &frame);
+	void writeFrame(Mat &frame);
+
+	CvVideoWriter& operator <<(Mat& frame);
 private:
 	cv::VideoWriter *record;
 };

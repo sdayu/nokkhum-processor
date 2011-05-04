@@ -18,10 +18,12 @@ namespace nokkhum {
 
 class CvIpCamera: public nokkhum::IpCamera {
 public:
-	CvIpCamera(int width, int height, int frame_rate, string url);
+	CvIpCamera(int width, int height, int frame_rate, string url, string username = "", string password = "");
 	virtual ~CvIpCamera();
 
-	Mat get_image();
+	void getImage(Mat& image);
+	VideoCapture* getCapture();
+	CvIpCamera& operator >>(Mat& image);
 private:
 	VideoCapture *capture;
 };

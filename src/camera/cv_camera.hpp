@@ -21,7 +21,7 @@ public:
 	CvCamera(int width, int height, int frame_rate, int device);
 	virtual ~CvCamera();
 
-	Mat get_image();
+	void getImage(Mat& image);
 
 private:
 	VideoCapture *capture;

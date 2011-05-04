@@ -28,10 +28,8 @@ CvCamera::~CvCamera() {
 	delete this->capture;
 }
 
-Mat CvCamera::get_image() {
-	Mat fram;
-	*(this->capture) >> fram;
-	return fram;
+void CvCamera::getImage(Mat& image) {
+	*(this->capture) >> image;
 }
 
 }
