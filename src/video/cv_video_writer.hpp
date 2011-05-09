@@ -20,7 +20,7 @@ namespace nokkhum {
 
 class CvVideoWriter: public nokkhum::VideoWriter {
 public:
-	CvVideoWriter(string directory, string filename, int width, int height, int frame_rate);
+	CvVideoWriter(string filename, string directory, int width, int height, int frame_rate);
 	virtual ~CvVideoWriter();
 
 	void writeFrame(Mat &frame);

@@ -10,17 +10,17 @@
 namespace nokkhum {
 
 Camera::Camera() :
-	width(320), height(240), frame_rate(4) {
+	width(320), height(240), fps(4) {
 	// TODO Auto-generated constructor stub
 
 }
 
-Camera::Camera(int width, int height, int frame_rate) :
-		width(width), height(height), frame_rate(frame_rate){
+Camera::Camera(int width, int height, int fps) :
+		width(width), height(height), fps(fps){
 }
 
-int Camera::getFrameRate() {
-	return this->frame_rate;
+int Camera::getFps() {
+	return this->fps;
 }
 
 int Camera::getHeight() {

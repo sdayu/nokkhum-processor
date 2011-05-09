@@ -18,7 +18,7 @@ namespace nokkhum {
 
 class VideoWriter {
 public:
-	VideoWriter(string filename, string directory, int width, int height, int frame_rate);
+	VideoWriter(string filename, string directory, int width, int height, int fps);
 	virtual ~VideoWriter();
 
 	virtual void writeFrame(Mat &frame) = 0;
@@ -32,7 +32,7 @@ private:
 	string recordname;
 	int width;
 	int height;
-	int frame_rate;
+	int fps;
 };
 
 }

@@ -9,8 +9,8 @@
 #include <iostream>
 namespace nokkhum {
 
-VideoWriter::VideoWriter(string filename, string directory, int width, int height, int frame_rate) :
-	filename(filename), directory(directory), width(width), height(height), frame_rate(frame_rate) {
+VideoWriter::VideoWriter(string filename, string directory, int width, int height, int fps) :
+	filename(filename), directory(directory), width(width), height(height), fps(fps) {
 	this->recordname = directory ;
 
 		if (recordname.at(recordname.length()-1) == '/')

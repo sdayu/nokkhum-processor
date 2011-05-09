@@ -18,7 +18,7 @@ namespace nokkhum {
 
 class CvCamera: public nokkhum::Camera {
 public:
-	CvCamera(int width, int height, int frame_rate, int device);
+	CvCamera(int width, int height, int fps, int device);
 	virtual ~CvCamera();
 
 	void getImage(Mat& image);

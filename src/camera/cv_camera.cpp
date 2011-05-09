@@ -12,8 +12,8 @@ using namespace std;
 
 namespace nokkhum {
 
-CvCamera::CvCamera(int width, int height, int frame_rate, int device) :
-	Camera(width, height, frame_rate), device(device) {
+CvCamera::CvCamera(int width, int height, int fps, int device) :
+	Camera(width, height, fps), device(device) {
 
 	capture = new VideoCapture(device);
 	// cerr << "capture: " <<capture->get(CV_CAP_PROP_FPS)<<endl;

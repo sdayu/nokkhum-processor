@@ -17,19 +17,19 @@ namespace nokkhum {
 class Camera {
 public:
 	Camera();
-	Camera(int width, int height, int frame_rate);
+	Camera(int width, int height, int fps);
 	virtual ~Camera();
 
 	int getWidth();
 	int getHeight();
-	int getFrameRate();
+	int getFps();
 
 	virtual void getImage(Mat& image) = 0;
 	Camera& operator >>(Mat& image);
 private:
 	int width;
 	int height;
-	int frame_rate;
+	int fps;
 };
 
 }

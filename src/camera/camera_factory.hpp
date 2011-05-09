@@ -17,8 +17,8 @@ class CameraFactory {
 public:
 	CameraFactory();
 	virtual ~CameraFactory();
-	Camera* getIpCamera(int width, int height, int frame_rate, string url, string type);
-	Camera* getCamera(int width, int height, int frame_rate, int device);
+	Camera* getIpCamera(int width, int height, int fps, string url, string type);
+	Camera* getCamera(int width, int height, int fps, int device);
 };
 
 }

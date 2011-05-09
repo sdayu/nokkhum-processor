@@ -22,10 +22,12 @@ public:
 	virtual ~ImageAcquisition();
 
 	void start();
+	void operator()();
 	bool running;
+	void stop();
 private:
-	std::queue<cv::Mat>* image_queue;
-	nokkhum::Camera* camera;
+	std::queue<cv::Mat> &image_queue;
+	nokkhum::Camera &camera;
 };
 
 }

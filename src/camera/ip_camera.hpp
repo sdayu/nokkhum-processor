@@ -17,7 +17,7 @@ namespace nokkhum {
 
 class IpCamera: public nokkhum::Camera {
 public:
-	IpCamera(int width, int height, int frame_rate, string url, string username, string password);
+	IpCamera(int width, int height, int fps, string url, string username, string password);
 	virtual ~IpCamera();
     string getUrl() const;
 

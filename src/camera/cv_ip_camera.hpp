@@ -18,7 +18,7 @@ namespace nokkhum {
 
 class CvIpCamera: public nokkhum::IpCamera {
 public:
-	CvIpCamera(int width, int height, int frame_rate, string url, string username = "", string password = "");
+	CvIpCamera(int width, int height, int fps, string url, string username = "", string password = "");
 	virtual ~CvIpCamera();
 
 	void getImage(Mat& image);

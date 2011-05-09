@@ -11,7 +11,18 @@
 
 #include <iostream>
 #include <thread>
+#include <queue>
+#include <string>
+#include <sstream>
+#include <iomanip>
 using std::thread;
+using std::queue;
+using std::string;
+
+#include "image_acquisition.hpp"
+#include "video_recorder.hpp"
+
+#include "../video/cv_video_writer.hpp"
 
 namespace nokkhum {
 
@@ -26,24 +37,61 @@ VideoSurveillance::~VideoSurveillance() {
 
 // This member function start video surveillance process
 void VideoSurveillance::start() {
-	bool running = true;
+
+	ImageAcquisition acquisition(*camera, image_queue);
+
 	time_t rawtime;
-	Mat image;
+	time ( &rawtime );
+	tm* time_struct =  localtime(&rawtime);
 
-	namedWindow("video",1);
-    while(running)
-    {
-    	time ( &rawtime );
-    		std::cout << "time: " << ctime (&rawtime) << std::endl;
-    		(*camera) >> image;
+	string record_name;
+	ostringstream oss;
+	oss << time_struct->tm_year+1900
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_mon+1
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_mday
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_hour
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_min
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec
+			<< ".avi";
 
-    		this->image_queue.push(image);
-            imshow("video", image);
+	CvVideoWriter writer(oss.str(), "/tmp",
+			this->camera->getWidth(), this->camera->getHeight(),
+			this->camera->getFps());
 
-            //writer << mat;
+    //VideoRecorder video_recorder(writer, image_queue);
 
-            if(waitKey(30) >= 0) break;
-    }
+    std::cout<< "start initial"<<std::endl;
+    thread acquisiting(std::ref(acquisition));
+    //thread recorder(std::ref(video_recorder));
+
+    acquisition.start();
+    //video_recorder.start();
+
+    std::cout<< "write to:"<< writer.getRecordName() <<std::endl;
+    std::cout<< "main process sleep"<<std::endl;
+    sleep(30);
+    std::cout<< "stop thread"<<std::endl;
+    acquisition.stop();
+    //video_recorder.stop();
+    std::cout<< "begin finalization"<<std::endl;
+    std::cout<< "acq running :"<<acquisition.running<<std::endl;
+    acquisiting.join();
+    //recorder.join();
+
+    std::cout<< "end"<<std::endl;
+//	namedWindow("video",1);
+//    while(true)
+//    {
+//    	time ( &rawtime );
+//    		std::cout << "time: " << ctime (&rawtime) << std::endl;
+//
+//            imshow("video", image_queue.front());
+//
+//            //writer << mat;
+//
+//            if(waitKey(30) >= 0) break;
+//    }
+
 }
 
 }

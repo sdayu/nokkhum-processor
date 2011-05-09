@@ -22,9 +22,11 @@ public:
 	virtual ~VideoRecorder();
 
 	void start();
+	void stop();
+	void operator()();
 private:
-	nokkhum::VideoWriter *writer;
-	std::queue<cv::Mat> *image_queue;
+	nokkhum::VideoWriter &writer;
+	std::queue<cv::Mat> &image_queue;
 
 	bool running;
 };
