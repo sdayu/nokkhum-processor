@@ -10,8 +10,8 @@
 namespace nokkhum {
 
 ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
-		std::queue<cv::Mat>& image_queue):
-		camera(camera), image_queue(image_queue)
+		MultipleMatQueue& multiple_queue):
+		camera(camera), multiple_queue(multiple_queue)
 		{
 
 	this->running = false;
@@ -24,10 +24,13 @@ ImageAcquisition::~ImageAcquisition() {
 void ImageAcquisition::start() {
 	cv::Mat image;
 	running = true;
+	int i = 0;
 
 	while (running) {
 		camera >> image;
-		image_queue.push(image);
+		for(i = 0; i < multiple_queue.getSize(); ++i){
+			multiple_queue.get(i).push(image.clone());
+		}
 	}
 }
 

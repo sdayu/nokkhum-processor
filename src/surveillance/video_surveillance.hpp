@@ -23,8 +23,7 @@ public:
 
 	void start();
 private:
-	std::queue<cv::Mat> image_queue;
-	CvIpCamera* camera;
+
 };
 
 }

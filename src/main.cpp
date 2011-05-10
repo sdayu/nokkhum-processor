@@ -18,7 +18,6 @@ using namespace cv;
 
 #include "camera/cv_ip_camera.hpp"
 #include "video/cv_video_writer.hpp"
-#include "video/ffmpg_video_writer.hpp"
 #include "surveillance/video_surveillance.hpp"
 
 int main() {

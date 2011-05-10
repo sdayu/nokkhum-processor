@@ -9,7 +9,6 @@
 
 #include <iostream>
 #include <opencv/highgui.h>
-#include <sstream>
 
 namespace nokkhum {
 
@@ -26,30 +25,21 @@ VideoRecorder::~VideoRecorder() {
 
 void VideoRecorder::start() {
 	cv::Mat frame;
-	cv::namedWindow("video",1);
+//	cv::namedWindow("video",1);
 
-	int counter =0;
-
-	std::cout<<"start writer: "<<running<<std::endl;
+	this->running = true;
 
 	while (this->running) {
-		std::cout<<"stop "<<this->running<<std::endl;
 		if(image_queue.empty()){
 			usleep(100);
 			continue;
 		}
 		frame = image_queue.front();
 		image_queue.pop();
-		cv::imshow("video", frame);
-		// writer << frame;
-		string f= "/tmp/frame/test_";
-		std::ostringstream oss;
-		oss << counter++;
-		f.append(oss.str());
-		f.append(".jpg");
-		//cv::imwrite(f.c_str(), frame);
-		if(cv::waitKey(30) >= 0) break;
+//		cv::imshow("video", frame);
+		writer << frame;
 
+//		if(cv::waitKey(30) >= 0) break;
 	}
 
 }
