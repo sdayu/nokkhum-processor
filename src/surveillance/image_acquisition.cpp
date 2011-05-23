@@ -22,14 +22,15 @@ ImageAcquisition::~ImageAcquisition() {
 }
 
 void ImageAcquisition::start() {
-	cv::Mat image;
+	cv::Mat image, copy_image;
 	running = true;
 	int i = 0;
 
 	while (running) {
 		camera >> image;
+		copy_image = image.clone();
 		for(i = 0; i < multiple_queue.getSize(); ++i){
-			multiple_queue.get(i).push(image.clone());
+			multiple_queue.get(i).push(copy_image);
 		}
 	}
 }

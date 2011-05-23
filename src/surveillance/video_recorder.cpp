@@ -20,10 +20,13 @@ VideoRecorder::VideoRecorder(nokkhum::VideoWriter& writer,
 }
 
 VideoRecorder::~VideoRecorder() {
-	// TODO Auto-generated destructor stub
+	std::cerr << "Terminate record tread" << std::endl;
 }
 
 void VideoRecorder::start() {
+
+	std::cerr << "Start record tread" << std::endl;
+
 	cv::Mat frame;
 //	cv::namedWindow("video",1);
 
@@ -38,6 +41,7 @@ void VideoRecorder::start() {
 		image_queue.pop();
 //		cv::imshow("video", frame);
 		writer << frame;
+
 
 //		if(cv::waitKey(30) >= 0) break;
 	}

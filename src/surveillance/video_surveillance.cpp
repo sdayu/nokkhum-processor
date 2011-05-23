@@ -24,6 +24,7 @@ using std::string;
 
 #include "../video/cv_video_writer.hpp"
 #include "../util/multiple_mat_queue.hpp"
+#include "process/motion_detection.hpp"
 
 namespace nokkhum {
 
@@ -69,38 +70,31 @@ void VideoSurveillance::start() {
 //			camera.getFps());
 //
 //	VideoRecorder video_recorder1(writer1, multiple_queue.get(1));
-
+	MotionDetection montion_detection(multiple_queue.get(1));
 
     std::cout<< "start initial"<<std::endl;
     thread acquisiting(std::ref(acquisition));
     thread recorder(std::ref(video_recorder));
-//    thread recorder1(std::ref(video_recorder1));
+    thread motion_thread(std::ref(montion_detection));
+
 
     std::cout<< "write to:"<< writer.getRecordName() <<std::endl;
     std::cout<< "main process sleep"<<std::endl;
+
     sleep(20);
+
     std::cout<< "stop thread"<<std::endl;
     acquisition.stop();
     video_recorder.stop();
-//    video_recorder1.stop();
+    montion_detection.stop();
+
     std::cout<< "begin finalization"<<std::endl;
     std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << endl;
     std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << endl;
     acquisiting.join();
     recorder.join();
-//    recorder1.join();
-    namedWindow("video",1);
+    motion_thread.join();
 
-    while(!multiple_queue.get(1).empty())
-    {
-    	time ( &rawtime );
-
-    	std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << endl;
-
-    	cv::imshow("video", multiple_queue.get(1).front());
-    	multiple_queue.get(1).pop();
-        if(waitKey(30) >= 0) break;
-    }
 
     std::cout<< "end"<<std::endl;
 }

@@ -22,6 +22,7 @@ public:
 	virtual ~VideoSurveillance();
 
 	void start();
+
 private:
 
 };

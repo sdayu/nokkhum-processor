@@ -5,10 +5,11 @@
  *      Author: boatkrap
  */
 
-#ifndef IMAGE_ACQUISITION_HPP_
-#define IMAGE_ACQUISITION_HPP_
+#ifndef NOKKHUM_IMAGE_ACQUISITION_HPP_
+#define NOKKHUM_IMAGE_ACQUISITION_HPP_
 
 #include <queue>
+#include <string>
 
 #include <opencv/cv.h>
 
@@ -29,8 +30,9 @@ public:
 private:
 	nokkhum::MultipleMatQueue& multiple_queue;
 	nokkhum::Camera &camera;
+
 };
 
 }
 
-#endif /* IMAGE_ACQUISITION_HPP_ */
+#endif /* NOKKHUM_IMAGE_ACQUISITION_HPP_ */
