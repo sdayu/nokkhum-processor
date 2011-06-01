@@ -8,8 +8,8 @@
 #ifndef MULTIPLE_QUEUE_HPP_
 #define MULTIPLE_QUEUE_HPP_
 
-#include <queue>
 #include <opencv/cv.h>
+#include "cv_mat_queue.hpp"
 
 namespace nokkhum {
 
@@ -18,12 +18,12 @@ public:
 	MultipleMatQueue(int size);
 	virtual ~MultipleMatQueue();
 
-	std::queue<cv::Mat>& get(int index);
+	CvMatQueue& get(int index);
 	int getSize();
 
 	private:
 		int size;
-		std::queue<cv::Mat> *queue_container;
+		CvMatQueue *queue_container;
 };
 
 }

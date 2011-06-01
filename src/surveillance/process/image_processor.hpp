@@ -11,18 +11,19 @@
 #include "../job.hpp"
 
 #include <string>
-#include <queue>
 #include <opencv/cv.h>
+
+#include "../../util/cv_mat_queue.hpp"
 
 namespace nokkhum {
 
 class ImageProcessor: public nokkhum::Job {
 public:
-	ImageProcessor(std::string name, std::queue<cv::Mat> &image_queue);
+	ImageProcessor(std::string name, CvMatQueue &image_queue);
 	virtual ~ImageProcessor();
 
 protected:
-	std::queue<cv::Mat> &image_queue;
+	CvMatQueue &image_queue;
 };
 
 }

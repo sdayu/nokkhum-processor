@@ -39,9 +39,10 @@ VideoSurveillance::~VideoSurveillance() {
 // This member function start video surveillance process
 void VideoSurveillance::start() {
 
-	CvIpCamera camera(320, 240, 10, "rtsp://172.30.140.204/play2.sdp");
+	//CvIpCamera camera(320, 240, 10, "rtsp://172.30.140.204/play2.sdp");
+	CvIpCamera camera(320, 240, 10, "rtsp://172.30.143.249/play2.sdp");
 
-	MultipleMatQueue multiple_queue(2);
+	MultipleMatQueue multiple_queue(3);
 
 	ImageAcquisition acquisition(camera, multiple_queue);
 
@@ -81,7 +82,7 @@ void VideoSurveillance::start() {
     std::cout<< "write to:"<< writer.getRecordName() <<std::endl;
     std::cout<< "main process sleep"<<std::endl;
 
-    sleep(20);
+    sleep(40);
 
     std::cout<< "stop thread"<<std::endl;
     acquisition.stop();
@@ -91,9 +92,18 @@ void VideoSurveillance::start() {
     std::cout<< "begin finalization"<<std::endl;
     std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << endl;
     std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << endl;
+    std::cout<< "queue 2 size: " << multiple_queue.get(2).size() << endl;
+
     acquisiting.join();
     recorder.join();
     motion_thread.join();
+
+    cv::namedWindow("show", 1);
+    while(!multiple_queue.get(2).empty()){
+    	cv::imshow("show",multiple_queue.get(2).pop());
+    	if (cv::waitKey(30) > 0)
+    		break;
+    }
 
 
     std::cout<< "end"<<std::endl;

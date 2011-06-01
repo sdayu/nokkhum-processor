@@ -9,7 +9,7 @@
 
 namespace nokkhum {
 
-ImageProcessor::ImageProcessor(std::string name, std::queue<cv::Mat> &image_queue):
+ImageProcessor::ImageProcessor(std::string name, CvMatQueue &image_queue):
 		Job(name), image_queue(image_queue)
 	{
 	// TODO Auto-generated constructor stub

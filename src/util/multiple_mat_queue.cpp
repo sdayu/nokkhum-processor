@@ -11,7 +11,7 @@ namespace nokkhum {
 
 MultipleMatQueue::MultipleMatQueue(int size) :
 	size(size) {
-	queue_container = new std::queue<cv::Mat>[size];
+	queue_container = new CvMatQueue[size];
 }
 
 MultipleMatQueue::~MultipleMatQueue() {
@@ -19,7 +19,7 @@ MultipleMatQueue::~MultipleMatQueue() {
 	queue_container = NULL;
 }
 
-std::queue<cv::Mat> & MultipleMatQueue::get(int index) {
+CvMatQueue & MultipleMatQueue::get(int index) {
 	return queue_container[index];
 }
 

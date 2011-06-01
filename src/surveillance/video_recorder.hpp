@@ -8,17 +8,16 @@
 #ifndef NOKKHUM_VIDEO_RECORDER_HPP_
 #define NOKKHUM_VIDEO_RECORDER_HPP_
 
-#include <queue>
-
 #include <opencv/cv.h>
 
 #include "../video/video_writer.hpp"
+#include "../util/cv_mat_queue.hpp"
 
 namespace nokkhum {
 
 class VideoRecorder {
 public:
-	VideoRecorder(nokkhum::VideoWriter& writer, std::queue<cv::Mat>& image_queue);
+	VideoRecorder(nokkhum::VideoWriter& writer, CvMatQueue& image_queue);
 	virtual ~VideoRecorder();
 
 	void start();
@@ -27,7 +26,7 @@ public:
 
 private:
 	nokkhum::VideoWriter &writer;
-	std::queue<cv::Mat> &image_queue;
+	CvMatQueue &image_queue;
 
 	bool running;
 };

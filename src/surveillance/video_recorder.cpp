@@ -13,7 +13,7 @@
 namespace nokkhum {
 
 VideoRecorder::VideoRecorder(nokkhum::VideoWriter& writer,
-		std::queue<cv::Mat>& image_queue) :
+		CvMatQueue& image_queue) :
 		writer(writer), image_queue(image_queue){
 
 	this->running = false;
@@ -34,15 +34,15 @@ void VideoRecorder::start() {
 
 	while (this->running) {
 		if(image_queue.empty()){
+			// std::cout<<"sleep .zZ"<<std::endl;
 			usleep(100);
 			continue;
 		}
-		frame = image_queue.front();
-		image_queue.pop();
+		frame = image_queue.pop();
 //		cv::imshow("video", frame);
 		writer << frame;
-
-
+//
+//
 //		if(cv::waitKey(30) >= 0) break;
 	}
 

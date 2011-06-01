@@ -13,7 +13,7 @@
 
 namespace nokkhum {
 
-MotionDetection::MotionDetection(std::queue<cv::Mat> &image_queue) :
+MotionDetection::MotionDetection(CvMatQueue &image_queue) :
 	ImageProcessor("Motion Detection", image_queue) {
 	// TODO Auto-generated constructor stub
 
@@ -24,87 +24,81 @@ MotionDetection::~MotionDetection() {
 }
 
 void MotionDetection::start() {
-	cv::namedWindow("video", 1);
+	cv::namedWindow("Motion Detection", 1);
 
 	cv::Mat prevgray, gray, flow, cflow, frame;
-	cv::Mat diff;
 
-	int count = 0;
-	bool isCompute = false;
+	int motion_count = 0;
+	int step = 15;
+	bool is_compute = false;
 
-	std::cout << "motion running: " << running << std::endl;
 	while (running) {
-		//time ( &rawtime );
-
-		//cv::imshow("video", multiple_queue.get(1).front());
-		//multiple_queue.get(1).pop();
-		//if(waitKey(30) >= 0) break;
 
 		while(image_queue.empty()){
 			usleep(100);
 		}
 
-		frame = image_queue.front();
-		image_queue.pop();
-		if (isCompute){
-			isCompute = false;
+		frame = image_queue.pop();
+		if (is_compute){
+			is_compute = false;
 		}
 		else{
-			isCompute = true;
+			is_compute = true;
 			continue;
 		}
+
+		motion_count = 0;
 
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
-//			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 3, 15, 3,
-//					5, 1.2, 0);
-			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, 30, 1,
+			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
 				1, 1.2, 0);
 			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
-//			drawOptFlowMap(flow, cflow, 16, 1.5, CV_RGB(0, 255, 0));
-			drawOptFlowMap(flow, cflow, 31, 1.5, CV_RGB(0, 255, 0));
-			cv::imshow("video", cflow);
+			drawOptFlowMap(flow, cflow, step+1, 1.5, CV_RGB(0, 255, 0));
 
-			cv::absdiff(gray, prevgray, diff);
+			for (int y = 0; y < cflow.rows; y += step+1){
+				for (int x = 0; x < cflow.cols; x += step+1) {
+					const cv::Point2f& fxy = flow.at<cv::Point2f> (y, x);
 
-//			cv::compare(gray, prevgray, diff, cv::CMP_NE);
-			count = cv::countNonZero(diff);
-			std::cout<<"count zero : "<<count<<std::endl;
+					if(cvRound(fxy.x) != 0 && cvRound(fxy.y)!= 0){
+						motion_count++;
+					}
+				}
+			}
 
-//			if (count>100000)
-//				cv::waitKey(0);
+			if(motion_count > 4){
+				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+			}
 
-
+			cv::imshow("Motion Detection", cflow);
 		}
 
 		if (cv::waitKey(30) >= 0)
 			break;
+
 		std::swap(prevgray, gray);
 	}
 }
 
 void MotionDetection::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 		int step, double scale, const cv::Scalar& color) {
-	int motionCount = 0;
+//	int motionCount = 0;
 	for (int y = 0; y < cflowmap.rows; y += step){
 		for (int x = 0; x < cflowmap.cols; x += step) {
 			const cv::Point2f& fxy = flow.at<cv::Point2f> (y, x);
 			cv::line(cflowmap, cv::Point(x, y),
 					cv::Point(cvRound(x + fxy.x), cvRound(y + fxy.y)), color);
 			cv::circle(cflowmap, cv::Point(x, y), 2, color, -1);
-
-			if(cvRound(fxy.x) != 0 || cvRound(fxy.y)!= 0){
-				motionCount++;
-			}
 		}
 	}
 
-	std::cout << "motion count : "<< motionCount<<std::endl;
-	if(motionCount > 10){
-		std::cout<<"It has motion"<<std::endl;
-		cv::circle(cflowmap, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-	}
+//	std::cout << "motion count : "<< motionCount<<std::endl;
+//	if(motionCount > 2){
+//		std::cout<<"It has motion"<<std::endl;
+//		cv::circle(cflowmap, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+//	}
 }
 
 }
