@@ -8,8 +8,11 @@
 #include "face_detection.hpp"
 
 #include <iostream>
+<<<<<<< HEAD
 #include <string>
 #include <vector>
+=======
+>>>>>>> 037dcfea1b0653a8c2e7c44ee94854df2a8d2a9a
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
@@ -28,6 +31,7 @@ FaceDetection::~FaceDetection() {
 void FaceDetection::start() {
 	cv::namedWindow("Face Detection", 1);
 
+<<<<<<< HEAD
 	const int compute_step = 10;
 	int image_count = 0;
 
@@ -53,10 +57,18 @@ void FaceDetection::start() {
 	while (running) {
 
 		while (image_queue.empty()) {
+=======
+	cv::Mat frame;
+	bool is_compute = false;
+	while (running) {
+
+		while(image_queue.empty()){
+>>>>>>> 037dcfea1b0653a8c2e7c44ee94854df2a8d2a9a
 			usleep(100);
 		}
 
 		frame = image_queue.pop();
+<<<<<<< HEAD
 		if(image_count++ < compute_step){
 			continue;
 		}
@@ -138,4 +150,17 @@ void FaceDetection::detectAndDraw( cv::Mat& img,
     }
 }
 
+=======
+		if (is_compute){
+			is_compute = false;
+		}
+		else{
+			is_compute = true;
+			continue;
+		}
+		// TODO face detection here
+	}
+}
+
+>>>>>>> 037dcfea1b0653a8c2e7c44ee94854df2a8d2a9a
 }
