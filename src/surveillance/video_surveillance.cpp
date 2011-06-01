@@ -25,6 +25,7 @@ using std::string;
 #include "../video/cv_video_writer.hpp"
 #include "../util/multiple_mat_queue.hpp"
 #include "process/motion_detection.hpp"
+#include "process/face_detection.hpp"
 
 namespace nokkhum {
 
@@ -72,22 +73,25 @@ void VideoSurveillance::start() {
 //
 //	VideoRecorder video_recorder1(writer1, multiple_queue.get(1));
 	MotionDetection montion_detection(multiple_queue.get(1));
+	FaceDetection face_detection(multiple_queue.get(2));
 
     std::cout<< "start initial"<<std::endl;
     thread acquisiting(std::ref(acquisition));
     thread recorder(std::ref(video_recorder));
     thread motion_thread(std::ref(montion_detection));
+    thread face_thread(std::ref(face_detection));
 
 
     std::cout<< "write to:"<< writer.getRecordName() <<std::endl;
     std::cout<< "main process sleep"<<std::endl;
 
-    sleep(40);
+    sleep(60);
 
     std::cout<< "stop thread"<<std::endl;
     acquisition.stop();
     video_recorder.stop();
     montion_detection.stop();
+    face_detection.stop();
 
     std::cout<< "begin finalization"<<std::endl;
     std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << endl;
@@ -98,12 +102,12 @@ void VideoSurveillance::start() {
     recorder.join();
     motion_thread.join();
 
-    cv::namedWindow("show", 1);
-    while(!multiple_queue.get(2).empty()){
-    	cv::imshow("show",multiple_queue.get(2).pop());
-    	if (cv::waitKey(30) > 0)
-    		break;
-    }
+//    cv::namedWindow("show", 1);
+//    while(!multiple_queue.get(2).empty()){
+//    	cv::imshow("show",multiple_queue.get(2).pop());
+//    	if (cv::waitKey(30) > 0)
+//    		break;
+//    }
 
 
     std::cout<< "end"<<std::endl;

@@ -24,13 +24,15 @@ MotionDetection::~MotionDetection() {
 }
 
 void MotionDetection::start() {
-	cv::namedWindow("Motion Detection", 1);
+//	cv::namedWindow("Motion Detection", 1);
 
 	cv::Mat prevgray, gray, flow, cflow, frame;
 
 	int motion_count = 0;
 	int step = 15;
-	bool is_compute = false;
+
+	const int compute_step = 3;
+	int image_count = 0;
 
 	while (running) {
 
@@ -39,12 +41,11 @@ void MotionDetection::start() {
 		}
 
 		frame = image_queue.pop();
-		if (is_compute){
-			is_compute = false;
+		if(image_count++ < compute_step){
+			continue;
 		}
 		else{
-			is_compute = true;
-			continue;
+			image_count=0; //reset image count
 		}
 
 		motion_count = 0;
@@ -72,11 +73,11 @@ void MotionDetection::start() {
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 			}
 
-			cv::imshow("Motion Detection", cflow);
+			//cv::imshow("Motion Detection", cflow);
 		}
 
-		if (cv::waitKey(30) >= 0)
-			break;
+//		if (cv::waitKey(30) >= 0)
+//			break;
 
 		std::swap(prevgray, gray);
 	}

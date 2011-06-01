@@ -10,6 +10,8 @@
 
 #include "image_processor.hpp"
 
+#include <opencv/cv.h>
+
 namespace nokkhum {
 
 class FaceDetection: public nokkhum::ImageProcessor {
@@ -18,6 +20,11 @@ public:
 	virtual ~FaceDetection();
 
 	void start();
+
+private:
+	void detectAndDraw( cv::Mat& img,
+	                   cv::CascadeClassifier& cascade, cv::CascadeClassifier& nestedCascade,
+	                   double scale);
 };
 
 }
