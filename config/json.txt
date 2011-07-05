@@ -1,0 +1,40 @@
+{
+"camera":	{
+		"name":"Camera 1",
+		"model":"Logitech",
+		"fps":10,
+		"width":320,
+		"hight":240,
+		"url":"http://url.com"
+		},
+
+"processors":[
+		{
+		"name":"Motion Detection",
+		"step":2,
+		"processors":	[
+			{
+			"name":"VDO Recorder",
+			"fps":20,
+			"directory":"./",
+			"width":320,
+			"hight":240
+			},
+			{
+			"name":"Face Detector",
+			"step":20
+			}
+			
+			]
+		},		
+				
+		{
+		"name":"VDO Recorder",
+		"fps":20,
+		"directory":"./",
+		"width":320,
+		"hight":240,
+		}
+		]
+
+}
