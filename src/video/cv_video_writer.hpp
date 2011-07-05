@@ -13,7 +13,8 @@
 #include <string>
 using std::string;
 
-#include <opencv/highgui.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 using cv::Mat;
 
 namespace nokkhum {

@@ -16,8 +16,8 @@
 
 namespace nokkhum {
 
-FaceDetection::FaceDetection(CvMatQueue &image_queue) :
-	ImageProcessor("Face Detection", image_queue) {
+FaceDetection::FaceDetection(CvMatQueue &input_image_queue) :
+	ImageProcessor("Face Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -34,7 +34,7 @@ void FaceDetection::start() {
 
 	std::string cascadeName = "/usr/share/doc/opencv-doc/examples/haarcascades/haarcascade_frontalface_alt.xml";
 	std::string nestedCascadeName = "/usr/share/doc/opencv-doc/examples/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
-	double scale = 1.0;
+	double scale = 1.3;
 
 	cv::Mat frame, image;
 	cv::CascadeClassifier cascade, nestedCascade;
@@ -49,15 +49,13 @@ void FaceDetection::start() {
 				<< std::endl;
 	}
 
-
-
 	while (running) {
 
-		while (image_queue.empty()) {
+		while (input_image_queue.empty()) {
 			usleep(100);
 		}
 
-		frame = image_queue.pop();
+		frame = input_image_queue.pop();
 
 		if(image_count++ < compute_step){
 			continue;
@@ -82,7 +80,7 @@ void FaceDetection::detectAndDraw( cv::Mat& img,
                    double scale)
 {
     int i = 0;
-    double t = 0;
+    // double t = 0;
     std::vector<cv::Rect> faces;
     const static cv::Scalar colors[] =  { CV_RGB(0,0,255),
         CV_RGB(0,128,255),
@@ -98,7 +96,7 @@ void FaceDetection::detectAndDraw( cv::Mat& img,
     cv::resize( gray, smallImg, smallImg.size(), 0, 0, cv::INTER_LINEAR );
     cv::equalizeHist( smallImg, smallImg );
 
-    t = (double)cvGetTickCount();
+    // t = (double)cvGetTickCount();
     cascade.detectMultiScale( smallImg, faces,
         1.1, 2, 0
         //|CV_HAAR_FIND_BIGGEST_OBJECT
@@ -106,8 +104,8 @@ void FaceDetection::detectAndDraw( cv::Mat& img,
         |CV_HAAR_SCALE_IMAGE
         ,
         cv::Size(30, 30) );
-    t = (double)cvGetTickCount() - t;
-    std::cout<< "detection time = " << t/((double)cvGetTickFrequency()*1000.) << " ms " <<std::endl;
+    // t = (double)cvGetTickCount() - t;
+    // std::cout<< "detection time = " << t/((double)cvGetTickFrequency()*1000.) << " ms " <<std::endl;
     for( std::vector<cv::Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ )
     {
         cv::Mat smallImgROI;
@@ -138,5 +136,6 @@ void FaceDetection::detectAndDraw( cv::Mat& img,
             circle( img, center, radius, color, 3, 8, 0 );
         }
     }
-}
-}
+} // end detectAndDraw
+
+}//end namespce nokkhum

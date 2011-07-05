@@ -8,7 +8,7 @@
 #ifndef NOKKHUM_VIDEO_RECORDER_HPP_
 #define NOKKHUM_VIDEO_RECORDER_HPP_
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 
 #include "../video/video_writer.hpp"
 #include "../util/cv_mat_queue.hpp"

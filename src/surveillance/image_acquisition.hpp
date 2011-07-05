@@ -11,7 +11,7 @@
 #include <queue>
 #include <string>
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 
 #include "../camera/cv_ip_camera.hpp"
 #include "../util/multiple_mat_queue.hpp"

@@ -10,8 +10,8 @@
 
 #include "../job.hpp"
 
-#include <string>
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 #include "../../util/cv_mat_queue.hpp"
 
@@ -19,11 +19,15 @@ namespace nokkhum {
 
 class ImageProcessor: public nokkhum::Job {
 public:
-	ImageProcessor(std::string name, CvMatQueue &image_queue);
+	ImageProcessor(std::string name, CvMatQueue &input_image_queue);
+	ImageProcessor(std::string name, CvMatQueue &input_image_queue, CvMatQueue &out_image_queue);
 	virtual ~ImageProcessor();
 
 protected:
-	CvMatQueue &image_queue;
+	CvMatQueue &input_image_queue;
+	CvMatQueue *output_image_queue;
+
+	bool write_to_output_queue;
 };
 
 }

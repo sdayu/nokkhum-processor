@@ -9,7 +9,7 @@
 #define NOKKHUM_CV_MAT_QUEUE_HPP_
 
 #include <queue>
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 
 namespace nokkhum {
 

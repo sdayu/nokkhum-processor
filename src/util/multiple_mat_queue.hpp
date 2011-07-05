@@ -8,7 +8,7 @@
 #ifndef MULTIPLE_QUEUE_HPP_
 #define MULTIPLE_QUEUE_HPP_
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 #include "cv_mat_queue.hpp"
 
 namespace nokkhum {

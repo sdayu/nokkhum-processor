@@ -10,13 +10,14 @@
 
 #include "image_processor.hpp"
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
 
 namespace nokkhum {
 
 class FaceDetection: public nokkhum::ImageProcessor {
 public:
-	FaceDetection(CvMatQueue &image_queue);
+	FaceDetection(CvMatQueue &input_image_queue);
 	virtual ~FaceDetection();
 
 	void start();

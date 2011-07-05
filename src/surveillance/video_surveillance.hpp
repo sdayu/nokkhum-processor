@@ -10,7 +10,7 @@
 
 #include <queue>
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 
 #include "../camera/cv_ip_camera.hpp"
 

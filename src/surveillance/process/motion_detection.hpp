@@ -10,7 +10,7 @@
 
 #include "image_processor.hpp"
 
-#include <opencv/cv.h>
+#include <opencv2/core/core.hpp>
 
 #include "../../util/cv_mat_queue.hpp"
 
@@ -18,7 +18,7 @@ namespace nokkhum {
 
 class MotionDetection: public nokkhum::ImageProcessor {
 public:
-	MotionDetection(CvMatQueue &image_queue);
+	MotionDetection(CvMatQueue &input_image_queue);
 	virtual ~MotionDetection();
 
 	void start();

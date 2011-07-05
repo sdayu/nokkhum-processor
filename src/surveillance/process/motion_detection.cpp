@@ -13,8 +13,8 @@
 
 namespace nokkhum {
 
-MotionDetection::MotionDetection(CvMatQueue &image_queue) :
-	ImageProcessor("Motion Detection", image_queue) {
+MotionDetection::MotionDetection(CvMatQueue &input_image_queue) :
+	ImageProcessor("Motion Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -36,11 +36,11 @@ void MotionDetection::start() {
 
 	while (running) {
 
-		while(image_queue.empty()){
+		while(input_image_queue.empty()){
 			usleep(100);
 		}
 
-		frame = image_queue.pop();
+		frame = input_image_queue.pop();
 		if(image_count++ < compute_step){
 			continue;
 		}
