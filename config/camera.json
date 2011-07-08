@@ -4,8 +4,10 @@
 		"model":"Logitech",
 		"fps":10,
 		"width":320,
-		"hight":240,
-		"url":"http://url.com"
+		"height":240,
+		"url":"http://url.com",
+		"username":"",
+		"password":""
 		},
 
 "processors":[
@@ -18,7 +20,7 @@
 			"fps":20,
 			"directory":"./",
 			"width":320,
-			"hight":240
+			"height":240
 			},
 			{
 			"name":"Face Detector",
@@ -33,7 +35,7 @@
 		"fps":20,
 		"directory":"./",
 		"width":320,
-		"hight":240,
+		"height":240,
 		}
 		]
 

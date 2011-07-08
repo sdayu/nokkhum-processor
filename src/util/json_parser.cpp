@@ -56,86 +56,40 @@ void JsonParser::parse(std::string file_name) {
 
 	json_spirit::mObject obj = value.get_obj();
 
-	json_spirit::mObject camera = obj["camera"].get_obj();
+	this->parseCamera(obj["camera"].get_obj());
+	this->parseImageProcessor(obj["processors"].get_obj());
 
-	//json_spirit::mObject camera = obj["camera"];
-
-	//std::cout << "Value: " << obj["camera"]["name"]<< std::endl;
-
-	for (unsigned int i = 0; i < obj.size(); i++) {
-
-		//json_spirit::Pair pair = obj[i];
-//		json_spirit::Value val = pair.value_;
-//		std::cout << "Key: " << pair.name_ << std::endl;
-//		if (pair.name_ == "camera") {
-//			this->parse_camera(pair.value_);
-//		}
-	}
 }
 
-void JsonParser::parse_camera(json_spirit::Value value) {
-
-	//const json_spirit::mObject cameraObj = value.get_obj();
-	const json_spirit::mObject cameraObj;
-
-	std::cout << "yes is camera size: "<< cameraObj.size() << std::endl;
-
-	std::map<std::string, std::string> camera_property;
+void JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 
 	int width = 0;
-	int higth = 0;
+	int height = 0;
+	int fps = 0;
 	std::string url;
 	std::string name;
-	int fps = 0;
+	std::string model;
 
+	width = this->findValue(camera_obj, "width").get_int();
+	height = this->findValue(camera_obj, "height").get_int();
+	fps = this->findValue(camera_obj, "fps").get_int();
+	url = this->findValue(camera_obj, "url").get_str();
+	name = this->findValue(camera_obj, "name").get_str();
+	model = this->findValue(camera_obj, "model").get_str();
 
-
-	std::ostringstream oss;
-	name = this->find_value(cameraObj, "name").get_str();
-
-//	for (unsigned int i = 0; i < cameraObj.size(); i++) {
-
-//		name = this->find_value(cameraObj[i].get_obj(), "name").get_str();
-//		json_spirit::Pair pairCamera = cameraObj[i];
-//		std::cout << " -> Key: " << pairCamera.name_;
-//
-//
-//
-////		if ("width" == pairCamera.name_){
-////			width = pairCamera.value_.get_int();
-////		} else if ("hight" == pairCamera.name_){
-////			higth = pairCamera.value_.get_int();
-////		} else if ("fps" == pairCamera.name_){
-////			fps = pairCamera.value_.get_int();
-////		}
-//
-////		std::string type = camera_schema[pairCamera.name_];
-////		if (type == "int") {
-////			oss << pairCamera.value_.get_int();
-////		} else if (type == "string") {
-////			oss << pairCamera.value_.get_str();
-////		} else if (type == "double") {
-////			oss << pairCamera.value_.get_real();
-////		} else if (type == "bool") {
-////			oss << pairCamera.value_.get_bool();
-////		}
-////		camera_property[pairCamera.name_] = oss.str();
-////		oss.str("");
-////		std::cout << " Value: " << camera_property[pairCamera.name_];
-//
-//		std::cout << std::endl;
-//	}
-
-	CvIpCamera camera(320, 240, 10, "rtsp://172.30.143.249/play2.sdp");
+//	CvIpCamera camera(width, height, fps, url);
+//	camera.setName(name);
+//	camera.setModel(model);
 
 }
 
-const json_spirit::mValue& JsonParser::find_value( const json_spirit::mObject& obj, const std::string& name  )
-{
-	json_spirit::mObject::const_iterator i = obj.find( name );
+void JsonParser::parseImageProcessor(const json_spirit::mObject image_processor_obj) {
 
-assert( i != obj.end() );
-	assert( i->first == name);
+}
+
+const json_spirit::mValue& JsonParser::findValue(
+		const json_spirit::mObject& obj, const std::string& name) {
+	json_spirit::mObject::const_iterator i = obj.find(name);
 
 	return i->second;
 }

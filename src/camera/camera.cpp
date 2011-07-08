@@ -10,13 +10,13 @@
 namespace nokkhum {
 
 Camera::Camera() :
-	width(320), height(240), fps(4) {
+		width(320), height(240), fps(4) {
 	// TODO Auto-generated constructor stub
 
 }
 
 Camera::Camera(int width, int height, int fps) :
-		width(width), height(height), fps(fps){
+		width(width), height(height), fps(fps) {
 }
 
 int Camera::getFps() {
@@ -38,6 +38,22 @@ Camera & Camera::operator >>(Mat& image) {
 
 Camera::~Camera() {
 	// TODO Auto-generated destructor stub
+}
+
+std::string Camera::getModel() const {
+	return model;
+}
+
+std::string Camera::getName() const {
+	return name;
+}
+
+void Camera::setModel(std::string model) {
+	this->model = model;
+}
+
+void Camera::setName(std::string name) {
+	this->name = name;
 }
 
 }

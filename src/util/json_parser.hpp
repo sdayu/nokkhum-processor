@@ -18,10 +18,11 @@ public:
 	JsonParser();
 	virtual ~JsonParser();
 	void parse(std::string file_name);
-	void parse_camera(json_spirit::Value value);
+	void parseCamera(const json_spirit::mObject camera_obj);
+	void parseImageProcessor(const json_spirit::mObject image_processor_obj);
 
 private:
-	const json_spirit::mValue& find_value( const json_spirit::mObject& obj, const std::string& name  );
+	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );
 
 	std::map<std::string, std::string> camera_schema;
 };
