@@ -57,8 +57,10 @@ void JsonParser::parse(std::string file_name) {
 	json_spirit::mObject obj = value.get_obj();
 
 	this->parseCamera(obj["camera"].get_obj());
-	this->parseImageProcessor(obj["processors"].get_obj());
 
+	this->parseImageProcessor(obj["processors"].get_array());
+
+	std::cout << std::endl << "---------- end ----------" << std::endl;
 }
 
 void JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
@@ -77,14 +79,31 @@ void JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	name = this->findValue(camera_obj, "name").get_str();
 	model = this->findValue(camera_obj, "model").get_str();
 
+	std::cout << "Camera Name: " << name << std::endl;
 //	CvIpCamera camera(width, height, fps, url);
 //	camera.setName(name);
 //	camera.setModel(model);
 
 }
 
-void JsonParser::parseImageProcessor(const json_spirit::mObject image_processor_obj) {
+void JsonParser::parseImageProcessor(
+		const json_spirit::mArray image_processor_array) {
+//	std::cout << std::endl
+//			<< "obj: "
+//			<< std::endl
+//			<< json_spirit::write(image_processor_array,
+//					json_spirit::pretty_print | json_spirit::raw_utf8)
+//			<< std::endl;
+	for (json_spirit::mArray::size_type i = 0; i < image_processor_array.size();
+			i++) {
+		json_spirit::mObject obj = image_processor_array[i].get_obj();
+		std::cout << "Processor " << i << " name : "
+				<< this->findValue(obj, "name").get_str() << std::endl;
 
+		std::cout << "Processor " << i << " test : "
+						<< this->findKey(obj, "test") << std::endl;
+
+	}
 }
 
 const json_spirit::mValue& JsonParser::findValue(
@@ -92,6 +111,19 @@ const json_spirit::mValue& JsonParser::findValue(
 	json_spirit::mObject::const_iterator i = obj.find(name);
 
 	return i->second;
+}
+
+const bool JsonParser::findKey(
+		const json_spirit::mObject& obj, const std::string& name) {
+	bool is_key = false;
+
+	json_spirit::mObject::const_iterator ci = obj.find(name);
+	if (ci == obj.end())
+		is_key = false;
+	else
+		is_key = true;
+
+	return is_key;
 }
 
 } /* namespace nokkhum */
