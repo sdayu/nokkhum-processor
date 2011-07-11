@@ -47,12 +47,5 @@ void VideoRecorder::start() {
 	}
 
 }
-void VideoRecorder::stop() {
-	this->running = false;
-}
-
-void VideoRecorder::operator()() {
-	this->start();
-}
 
 }
