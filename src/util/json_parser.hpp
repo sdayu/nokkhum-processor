@@ -5,11 +5,14 @@
  *      Author: boatkrap
  */
 
-#ifndef JSON_PARSER_HPP_
-#define JSON_PARSER_HPP_
+#ifndef NOKKHUM_JSON_PARSER_HPP_
+#define NOKKHUM_JSON_PARSER_HPP_
 
 #include <string>
 #include <json_spirit.h>
+
+#include "../surveillance/process/image_processor.hpp"
+#include "../camera/camera.hpp"
 
 namespace nokkhum {
 
@@ -18,12 +21,18 @@ public:
 	JsonParser();
 	virtual ~JsonParser();
 	void parse(std::string file_name);
-	void parseCamera(const json_spirit::mObject camera_obj);
-	void parseImageProcessor(const json_spirit::mArray image_processor_array);
+	Camera* parseCamera(const json_spirit::mObject camera_obj);
+	ImageProcessor* parseImageProcessor(const json_spirit::mArray image_processor_array);
 
 private:
 	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );
 	const bool findKey( const json_spirit::mObject& obj, const std::string& name  );
+
+	ImageProcessor* parseVideoRecorder(const json_spirit::mObject image_processor_obj);
+	ImageProcessor* parseImageRecorder(const json_spirit::mObject image_processor_obj);
+	ImageProcessor* parseMotionDetector(const json_spirit::mObject image_processor_obj);
+	ImageProcessor* parseFaceDetector(const json_spirit::mObject image_processor_obj);
+
 
 	std::map<std::string, std::string> camera_schema;
 };

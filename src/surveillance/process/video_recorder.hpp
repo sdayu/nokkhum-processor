@@ -10,23 +10,22 @@
 
 #include <opencv2/core/core.hpp>
 
-#include "../video/video_writer.hpp"
-#include "../util/cv_mat_queue.hpp"
+#include "image_processor.hpp"
+#include "../../video/video_writer.hpp"
+#include "../../util/cv_mat_queue.hpp"
+
 
 namespace nokkhum {
 
-class VideoRecorder {
+class VideoRecorder : public nokkhum::ImageProcessor {
 public:
-	VideoRecorder(nokkhum::VideoWriter& writer, CvMatQueue& image_queue);
+	VideoRecorder(nokkhum::VideoWriter& writer, CvMatQueue& input_image_queue);
 	virtual ~VideoRecorder();
 
 	void start();
-	void stop();
-	void operator()();
 
 private:
 	nokkhum::VideoWriter &writer;
-	CvMatQueue &image_queue;
 
 	bool running;
 };

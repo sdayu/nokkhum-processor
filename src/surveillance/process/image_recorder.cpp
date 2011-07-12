@@ -5,7 +5,7 @@
  *      Author: boatkrap
  */
 
-#include "image-recorder.hpp"
+#include "image_recorder.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>

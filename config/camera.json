@@ -12,11 +12,11 @@
 
 "processors":[
 		{
-		"name":"Motion Detection",
+		"name":"Motion Detector",
 		"step":2,
 		"processors":	[
 			{
-			"name":"VDO Recorder",
+			"name":"Video Recorder",
 			"fps":20,
 			"directory":"./",
 			"width":320,
@@ -31,7 +31,7 @@
 		},		
 				
 		{
-		"name":"VDO Recorder",
+		"name":"Video Recorder",
 		"fps":20,
 		"directory":"./",
 		"width":320,

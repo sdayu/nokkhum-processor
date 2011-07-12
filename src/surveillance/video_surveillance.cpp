@@ -20,7 +20,7 @@ using std::queue;
 using std::string;
 
 #include "image_acquisition.hpp"
-#include "video_recorder.hpp"
+#include "process/video_recorder.hpp"
 
 #include "../video/cv_video_writer.hpp"
 #include "../util/multiple_mat_queue.hpp"

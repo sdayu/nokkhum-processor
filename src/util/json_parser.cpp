@@ -16,6 +16,11 @@
 #include <sstream>
 #include "../camera/cv_ip_camera.hpp"
 
+#include "../surveillance/process/face_detection.hpp"
+#include "../surveillance/process/motion_detection.hpp"
+#include "../surveillance/process/image_recorder.hpp"
+#include "../surveillance/process/video_recorder.hpp"
+
 namespace nokkhum {
 
 JsonParser::JsonParser() {
@@ -63,7 +68,7 @@ void JsonParser::parse(std::string file_name) {
 	std::cout << std::endl << "---------- end ----------" << std::endl;
 }
 
-void JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
+Camera* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 
 	int width = 0;
 	int height = 0;
@@ -84,9 +89,10 @@ void JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 //	camera.setName(name);
 //	camera.setModel(model);
 
+	return nullptr;
 }
 
-void JsonParser::parseImageProcessor(
+ImageProcessor* JsonParser::parseImageProcessor(
 		const json_spirit::mArray image_processor_array) {
 //	std::cout << std::endl
 //			<< "obj: "
@@ -97,13 +103,88 @@ void JsonParser::parseImageProcessor(
 	for (json_spirit::mArray::size_type i = 0; i < image_processor_array.size();
 			i++) {
 		json_spirit::mObject obj = image_processor_array[i].get_obj();
+
+		std::string processor_name = this->findValue(obj, "name").get_str();
 		std::cout << "Processor " << i << " name : "
 				<< this->findValue(obj, "name").get_str() << std::endl;
 
-		std::cout << "Processor " << i << " test : "
-						<< this->findKey(obj, "test") << std::endl;
+		if (processor_name == "Motion Detector") {
+			parseMotionDetector(obj);
+		} else if (processor_name == "Face Detector") {
+			parseFaceDetector(obj);
+		} else if (processor_name == "Video Recorder") {
+			parseVideoRecorder(obj);
+		} else if (processor_name == "Image Recorder") {
+			parseImageRecorder(obj);
+		}
 
 	}
+	return nullptr;
+}
+
+ImageProcessor* JsonParser::parseVideoRecorder(
+		const json_spirit::mObject image_processor_obj) {
+
+	std::cout << "Processor name : "
+					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+
+	if (this->findKey(image_processor_obj, "processors")){
+		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
+		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
+		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+	}
+
+	return nullptr;
+
+}
+
+ImageProcessor* JsonParser::parseImageRecorder(
+		const json_spirit::mObject image_processor_obj) {
+
+	std::cout << "Processor name : "
+					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+
+	if (this->findKey(image_processor_obj, "processors")){
+		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
+		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
+		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+	}
+
+	return nullptr;
+}
+
+ImageProcessor* JsonParser::parseMotionDetector(
+		const json_spirit::mObject image_processor_obj) {
+
+	std::cout << "Processor name : "
+					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+
+	if (this->findKey(image_processor_obj, "processors")){
+		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
+		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
+		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+	}
+
+	return nullptr;
+}
+
+ImageProcessor* JsonParser::parseFaceDetector(
+		const json_spirit::mObject image_processor_obj) {
+
+	std::cout << "Processor name : "
+					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+
+	if (this->findKey(image_processor_obj, "processors")){
+		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
+		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
+		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
+	}
+
+	return nullptr;
 }
 
 const json_spirit::mValue& JsonParser::findValue(
@@ -113,8 +194,8 @@ const json_spirit::mValue& JsonParser::findValue(
 	return i->second;
 }
 
-const bool JsonParser::findKey(
-		const json_spirit::mObject& obj, const std::string& name) {
+const bool JsonParser::findKey(const json_spirit::mObject& obj,
+		const std::string& name) {
 	bool is_key = false;
 
 	json_spirit::mObject::const_iterator ci = obj.find(name);
