@@ -24,7 +24,7 @@
 			},
 			{
 			"name":"Face Detector",
-			"step":20
+			"interval":20
 			}
 			
 			]
