@@ -125,14 +125,22 @@ ImageProcessor* JsonParser::parseImageProcessor(
 ImageProcessor* JsonParser::parseVideoRecorder(
 		const json_spirit::mObject image_processor_obj) {
 
-	std::cout << "Processor name : "
-					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+	std::string name;
+	std::string directory;
+	int fps;
+	int width;
+	int height;
+
+	name = this->findValue(image_processor_obj, "name").get_str();
+	directory = this->findValue(image_processor_obj, "directory").get_str();
+	fps = this->findValue(image_processor_obj, "fps").get_int();
+	width = this->findValue(image_processor_obj, "width").get_int();
+	height = this->findValue(image_processor_obj, "height").get_int();
+
+	std::cout << "Processor name : " << name << std::endl;
 
 	if (this->findKey(image_processor_obj, "processors")){
-		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
-		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
-		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 	}
 
 	return nullptr;
@@ -142,14 +150,20 @@ ImageProcessor* JsonParser::parseVideoRecorder(
 ImageProcessor* JsonParser::parseImageRecorder(
 		const json_spirit::mObject image_processor_obj) {
 
-	std::cout << "Processor name : "
-					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+	std::string name;
+	std::string directory;
+	int width;
+	int height;
+
+	name = this->findValue(image_processor_obj, "name").get_str();
+	directory = this->findValue(image_processor_obj, "directory").get_str();
+	width = this->findValue(image_processor_obj, "width").get_int();
+	height = this->findValue(image_processor_obj, "height").get_int();
+
+	std::cout << "Processor name : " << name << std::endl;
 
 	if (this->findKey(image_processor_obj, "processors")){
-		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
-		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
-		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 	}
 
 	return nullptr;
@@ -158,14 +172,18 @@ ImageProcessor* JsonParser::parseImageRecorder(
 ImageProcessor* JsonParser::parseMotionDetector(
 		const json_spirit::mObject image_processor_obj) {
 
-	std::cout << "Processor name : "
-					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+	std::string name;
+	int interval = 0;
+	int resolution = 100;
+
+	name = this->findValue(image_processor_obj, "name").get_str();
+	interval = this->findValue(image_processor_obj, "interval").get_int();
+	resolution = this->findValue(image_processor_obj, "resolution").get_int();
+
+	std::cout << "Processor name : " << name << std::endl;
 
 	if (this->findKey(image_processor_obj, "processors")){
-		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
-		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
-		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 	}
 
 	return nullptr;
@@ -174,14 +192,16 @@ ImageProcessor* JsonParser::parseMotionDetector(
 ImageProcessor* JsonParser::parseFaceDetector(
 		const json_spirit::mObject image_processor_obj) {
 
-	std::cout << "Processor name : "
-					<< this->findValue(image_processor_obj, "name").get_str() << std::endl;
+	std::string name;
+	int interval = 0;
+
+	name = this->findValue(image_processor_obj, "name").get_str();
+	interval = this->findValue(image_processor_obj, "interval").get_int();
+
+	std::cout << "Processor name : " << name << std::endl;
 
 	if (this->findKey(image_processor_obj, "processors")){
-		std::cout<<"This is child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
-		//std::cout<<"yes has processor: "<<this->findValue(image_processor_obj, "processors").get_array().size()<<std::endl;
-		std::cout<<"End of child of processor: "<< this->findValue(image_processor_obj, "name").get_str() <<std::endl;
 	}
 
 	return nullptr;
