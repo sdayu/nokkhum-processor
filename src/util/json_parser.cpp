@@ -14,6 +14,8 @@
 #include <typeinfo>
 #include <json_spirit.h>
 #include <sstream>
+#include <vector>
+
 #include "../camera/cv_ip_camera.hpp"
 
 #include "../surveillance/process/face_detection.hpp"
@@ -85,11 +87,12 @@ Camera* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	model = this->findValue(camera_obj, "model").get_str();
 
 	std::cout << "Camera Name: " << name << std::endl;
-//	CvIpCamera camera(width, height, fps, url);
-//	camera.setName(name);
-//	camera.setModel(model);
 
 	return nullptr;
+//	CvIpCamera camera = new CvIpCamera(width, height, fps, url);
+//	camera->setName(name);
+//	camera->setModel(model);
+//	return camera;
 }
 
 ImageProcessor* JsonParser::parseImageProcessor(
@@ -100,6 +103,10 @@ ImageProcessor* JsonParser::parseImageProcessor(
 //			<< json_spirit::write(image_processor_array,
 //					json_spirit::pretty_print | json_spirit::raw_utf8)
 //			<< std::endl;
+
+	std::vector<ImageProcessor*> image_processors;
+	ImageProcessor* tmp = nullptr;
+
 	for (json_spirit::mArray::size_type i = 0; i < image_processor_array.size();
 			i++) {
 		json_spirit::mObject obj = image_processor_array[i].get_obj();
@@ -109,16 +116,19 @@ ImageProcessor* JsonParser::parseImageProcessor(
 				<< this->findValue(obj, "name").get_str() << std::endl;
 
 		if (processor_name == "Motion Detector") {
-			parseMotionDetector(obj);
+			tmp = parseMotionDetector(obj);
 		} else if (processor_name == "Face Detector") {
-			parseFaceDetector(obj);
+			tmp = parseFaceDetector(obj);
 		} else if (processor_name == "Video Recorder") {
-			parseVideoRecorder(obj);
+			tmp = parseVideoRecorder(obj);
 		} else if (processor_name == "Image Recorder") {
-			parseImageRecorder(obj);
+			tmp = parseImageRecorder(obj);
 		}
 
+		image_processors.push_back(tmp);
+
 	}
+
 	return nullptr;
 }
 
@@ -143,8 +153,10 @@ ImageProcessor* JsonParser::parseVideoRecorder(
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
 	}
 
-	return nullptr;
+	//VideoRecorder* video_recorder = new VideoRecorder();
+	//return video_recorder;
 
+	return nullptr;
 }
 
 ImageProcessor* JsonParser::parseImageRecorder(
@@ -166,6 +178,9 @@ ImageProcessor* JsonParser::parseImageRecorder(
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
 	}
 
+//	ImageRecorder* image_recorder = new ImageRecorder();
+//	return image_recorder;
+
 	return nullptr;
 }
 
@@ -186,6 +201,9 @@ ImageProcessor* JsonParser::parseMotionDetector(
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
 	}
 
+//	MotionDetection* motion_detection = new MotionDetection();
+//	return motion_detection;
+
 	return nullptr;
 }
 
@@ -203,6 +221,9 @@ ImageProcessor* JsonParser::parseFaceDetector(
 	if (this->findKey(image_processor_obj, "processors")){
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array() );
 	}
+
+	//FaceDetection* face_detection = new FaceDetection();
+	//return face_detection;
 
 	return nullptr;
 }
