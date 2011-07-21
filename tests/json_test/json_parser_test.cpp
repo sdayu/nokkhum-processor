@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include "../../src/util/json_parser.hpp"
+#include "../../src/config/json_parser.hpp"
 
 namespace nokkhum {
 
