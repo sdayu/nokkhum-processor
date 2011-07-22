@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include "../../src/util/json_parser.hpp"
+#include "../../src/config/json_parser.hpp"
 
 namespace nokkhum {
 
@@ -23,9 +23,9 @@ JsonParserTest::~JsonParserTest() {
 }
 
 void JsonParserTest::testJsonParser() {
-	std::cout << "Hello from json test" << std::endl;
-	nokkhum::JsonParser jp;
-	jp.parse("config/camera.json");
+//	std::cout << "Hello from json test" << std::endl;
+//	nokkhum::JsonParser jp;
+//	jp.parse("config/camera.json");
 }
 
 } /* namespace nokkhum */
