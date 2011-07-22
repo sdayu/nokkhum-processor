@@ -5,15 +5,17 @@
  *      Author: boatkrap
  */
 
-#ifndef NOKKHUM_IMAGE_PROCESSOR_PROPERTY_H_
-#define NOKKHUM_IMAGE_PROCESSOR_PROPERTY_H_
+#ifndef NOKKHUM_IMAGE_PROCESSOR_PROPERTY_HPP_
+#define NOKKHUM_IMAGE_PROCESSOR_PROPERTY_HPP_
 
 #include <string>
 #include <vector>
 
+#include "property.hpp"
+
 namespace nokkhum {
 
-class ImageProcessorProperty {
+class ImageProcessorProperty : public Property {
 public:
 	ImageProcessorProperty(std::string name);
 	virtual ~ImageProcessorProperty();

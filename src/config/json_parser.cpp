@@ -26,32 +26,45 @@
 namespace nokkhum {
 
 JsonParser::JsonParser() {
-	// TODO Auto-generated constructor stub
-
-	camera_schema["name"] = "string";
-	camera_schema["model"] = "string";
-	camera_schema["url"] = "string";
-	camera_schema["fps"] = "int";
-	camera_schema["width"] = "int";
-	camera_schema["hight"] = "int";
-
 }
 
 JsonParser::~JsonParser() {
 	// TODO Auto-generated destructor stub
 }
 
-void JsonParser::parse(std::string file_name) {
+//PropertyMap& JsonParser::parse(std::string file_name) {
+//
+//	std::ifstream ifs(file_name.c_str(), std::ios::in);
+//
+//	if (!ifs) {
+//		std::cerr << "file error: " << file_name << std::endl;
+//		return;
+//	}
+//
+//	json_spirit::mValue value;
+//	std::cout << "Read JSON string: " << json_spirit::read(ifs, value)
+//			<< std::endl;
+//
+//	std::cout
+//			<< "JSON string: "
+//			<< std::endl
+//			<< json_spirit::write(value,
+//					json_spirit::pretty_print | json_spirit::raw_utf8)
+//			<< std::endl;
+//
+//	json_spirit::mObject obj = value.get_obj();
+//
+//	this->parseCamera(obj["camera"].get_obj());
+//
+//	this->parseImageProcessor(obj["processors"].get_array());
+//
+//	std::cout << std::endl << "---------- end ----------" << std::endl;
+//}
 
-	std::ifstream ifs(file_name.c_str(), std::ios::in);
-
-	if (!ifs) {
-		std::cerr << "file error: " << file_name << std::endl;
-		return;
-	}
+PropertyMap& JsonParser::parse(std::string json) {
 
 	json_spirit::mValue value;
-	std::cout << "Read JSON string: " << json_spirit::read(ifs, value)
+	std::cout << "Read JSON string: " << json_spirit::read(json, value)
 			<< std::endl;
 
 	std::cout
@@ -91,7 +104,7 @@ Camera* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	return nullptr;
 //	CvIpCamera camera = new CvIpCamera(width, height, fps, url);
 //	camera->setName(name);
-//	camera->setModel(model);
+//	camera->setModel(model);    void setCameraProperty(CameraProperty *camera_property);
 //	return camera;
 }
 

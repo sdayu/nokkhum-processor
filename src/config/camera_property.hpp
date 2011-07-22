@@ -10,9 +10,11 @@
 
 #include <string>
 
+#include "property.hpp"
+
 namespace nokkhum {
 
-class CameraProperty {
+class CameraProperty : public Property {
 public:
 	CameraProperty(std::string name, std::string model, std::string url, int width, int hight, int fps);
 	virtual ~CameraProperty();

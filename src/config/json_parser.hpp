@@ -9,18 +9,23 @@
 #define NOKKHUM_JSON_PARSER_HPP_
 
 #include <string>
+#include <map>
 #include <json_spirit.h>
 
 #include "../surveillance/process/image_processor.hpp"
 #include "../camera/camera.hpp"
 
+#include "property.hpp"
+
 namespace nokkhum {
+
+typedef std::map<std::string, Property> PropertyMap;
 
 class JsonParser {
 public:
 	JsonParser();
 	virtual ~JsonParser();
-	void parse(std::string file_name);
+	PropertyMap& parse(std::string file_name);
 	Camera* parseCamera(const json_spirit::mObject camera_obj);
 	ImageProcessor* parseImageProcessor(const json_spirit::mArray image_processor_array);
 
@@ -33,9 +38,7 @@ private:
 	ImageProcessor* parseMotionDetector(const json_spirit::mObject image_processor_obj);
 	ImageProcessor* parseFaceDetector(const json_spirit::mObject image_processor_obj);
 
-
-	std::map<std::string, std::string> camera_schema;
 };
 
 } /* namespace nokkhum */
-#endif /* JSON_PARSER_HPP_ */
+#endif /* NOKKHUM_JSON_PARSER_HPP_ */
