@@ -8,6 +8,8 @@
 #ifndef NOKKHUM_CONFIGURATION_HPP_
 #define NOKKHUM_CONFIGURATION_HPP_
 
+#include <string>
+
 #include "camera_property.hpp"
 #include "image_processor_property.hpp"
 
@@ -16,6 +18,7 @@ namespace nokkhum {
 class Configuration {
 public:
 	Configuration();
+	Configuration(std::string json);
 	virtual ~Configuration();
 	CameraProperty *getCameraProperty() const;
 	ImageProcessorProperty *getImageProcessorProperty() const;
