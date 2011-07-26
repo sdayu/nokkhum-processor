@@ -16,16 +16,23 @@
 namespace nokkhum {
 
 class ImageProcessorProperty : public Property {
+
+typedef std::vector<ImageProcessorProperty*> ImageProcessorPropertyVector;
+
 public:
 	ImageProcessorProperty(std::string name);
 	virtual ~ImageProcessorProperty();
     std::string getName() const;
     void setName(std::string name);
+    ImageProcessorPropertyVector *getImageProcessorPropertyVector() const;
+    void setImageProcessorPropertyVector(ImageProcessorPropertyVector *image_processor_property_vector);
 
 private:
 	std::string name;
-	std::vector <ImageProcessorProperty> image_processor_property;
+	ImageProcessorPropertyVector *image_processor_property_vector;
 };
+
+typedef std::vector<ImageProcessorProperty*> ImageProcessorPropertyVector;
 
 } /* namespace nokkhum */
 #endif /* NOKKHUM_IMAGE_PROCESSOR_PROPERTY_H_ */

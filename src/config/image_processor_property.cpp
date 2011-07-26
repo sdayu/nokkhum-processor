@@ -26,4 +26,13 @@ void ImageProcessorProperty::setName(std::string name) {
 	this->name = name;
 }
 
+ImageProcessorPropertyVector *ImageProcessorProperty::getImageProcessorPropertyVector() const {
+	return image_processor_property_vector;
+}
+
+void ImageProcessorProperty::setImageProcessorPropertyVector(
+		ImageProcessorPropertyVector *image_processor_property_vector) {
+	this->image_processor_property_vector = image_processor_property_vector;
+}
+
 } /* namespace nokkhum */

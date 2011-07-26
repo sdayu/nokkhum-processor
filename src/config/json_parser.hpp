@@ -14,6 +14,8 @@
 
 #include "../surveillance/process/image_processor.hpp"
 #include "../camera/camera.hpp"
+#include "image_processor_property.hpp"
+#include "camera_property.hpp"
 
 #include "property.hpp"
 
@@ -25,18 +27,19 @@ class JsonParser {
 public:
 	JsonParser();
 	virtual ~JsonParser();
-	PropertyMap& parse(std::string file_name);
-	Camera* parseCamera(const json_spirit::mObject camera_obj);
-	ImageProcessor* parseImageProcessor(const json_spirit::mArray image_processor_array);
+	PropertyMap* parse(std::string file_name);
+
+	CameraProperty* parseCamera(const json_spirit::mObject camera_obj);
+	ImageProcessorPropertyVector* parseImageProcessor(const json_spirit::mArray image_processor_array);
 
 private:
 	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );
 	const bool findKey( const json_spirit::mObject& obj, const std::string& name  );
 
-	ImageProcessor* parseVideoRecorder(const json_spirit::mObject image_processor_obj);
-	ImageProcessor* parseImageRecorder(const json_spirit::mObject image_processor_obj);
-	ImageProcessor* parseMotionDetector(const json_spirit::mObject image_processor_obj);
-	ImageProcessor* parseFaceDetector(const json_spirit::mObject image_processor_obj);
+	ImageProcessorProperty* parseVideoRecorder(const json_spirit::mObject image_processor_obj);
+	ImageProcessorProperty* parseImageRecorder(const json_spirit::mObject image_processor_obj);
+	ImageProcessorProperty* parseMotionDetector(const json_spirit::mObject image_processor_obj);
+	ImageProcessorProperty* parseFaceDetector(const json_spirit::mObject image_processor_obj);
 
 };
 
