@@ -27,6 +27,7 @@ class JsonParser {
 public:
 	JsonParser();
 	virtual ~JsonParser();
+
 	PropertyMap* parse(std::string file_name);
 
 	CameraProperty* parseCamera(const json_spirit::mObject camera_obj);

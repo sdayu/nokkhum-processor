@@ -60,10 +60,10 @@ PropertyMap* JsonParser::parse(std::string json) {
 	Property *property = nullptr;
 
 	property = this->parseCamera(obj["camera"].get_obj());
-	property_map["camera"] = property;
+	//property_map["camera"] = property;
 
 	this->parseImageProcessor(obj["processors"].get_array());
-	property_map["processors"] = property;
+	//property_map["processors"] = property;
 
 	std::cout << std::endl << "---------- end ----------" << std::endl;
 
@@ -92,7 +92,9 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	return cp;
 }
 
+
 ImageProcessorPropertyVector* JsonParser::parseImageProcessor(
+
 		const json_spirit::mArray image_processor_array) {
 //	std::cout << std::endl
 //			<< "obj: "
@@ -100,6 +102,7 @@ ImageProcessorPropertyVector* JsonParser::parseImageProcessor(
 //			<< json_spirit::write(image_processor_array,
 //					json_spirit::pretty_print | json_spirit::raw_utf8)
 //			<< std::endl;
+
 
 	ImageProcessorPropertyVector *image_processors = new ImageProcessorPropertyVector();
 	ImageProcessorProperty* tmp = nullptr;
@@ -179,6 +182,7 @@ ImageProcessorProperty* JsonParser::parseImageRecorder(
 	}
 
 	ImageRecorderProperty *irp = new ImageRecorderProperty(name, directory, width, height);
+
 
 	irp->setImageProcessorPropertyVector(ippv);
 
