@@ -6,12 +6,18 @@
  */
 
 #include "configuration.hpp"
+#include "json_parser.hpp"
 
 namespace nokkhum {
 
 Configuration::Configuration() {
 	this->camera_property = nullptr;
 	this->image_processor_property = nullptr;
+}
+
+Configuration::Configuration(std::string json) {
+	JsonParser jp;
+	jp.parse(json);
 }
 
 Configuration::~Configuration() {

@@ -26,25 +26,27 @@ JsonParserTest::~JsonParserTest() {
 }
 
 void JsonParserTest::testJsonParser() {
+	
 	std::cout << "Hello from json test" << std::endl;
-	nokkhum::JsonParser jp;
 
 	std::string file_name = "config/camera.json";
-
 	std::ifstream ifs(file_name.c_str(), std::ios::in);
 
 	if (!ifs) {
 		std::cerr << "file error: " << file_name << std::endl;
 		return;
 	}
-
 	std::ostringstream oss;
+//	while (ifs) {
+//		oss << ifs.readline();
+//		std::cout << "The json :" << oss.str() << std::endl;
+//	}
+	oss << ifs.rdbuf();
 
-	while(ifs){
-		oss<<ifs;
+	//std::cout << "The json :" << oss.str() << std::endl;
+	nokkhum::Configuration(oss.str());
 
-	}
-	jp.parse(oss.str());
+	ifs.close();
 }
 
 } /* namespace nokkhum */
