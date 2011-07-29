@@ -8,6 +8,9 @@
 #include "json_parser_test.hpp"
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 #include "../../src/config/json_parser.hpp"
 
@@ -23,9 +26,25 @@ JsonParserTest::~JsonParserTest() {
 }
 
 void JsonParserTest::testJsonParser() {
-//	std::cout << "Hello from json test" << std::endl;
-//	nokkhum::JsonParser jp;
-//	jp.parse("config/camera.json");
+	std::cout << "Hello from json test" << std::endl;
+	nokkhum::JsonParser jp;
+
+	std::string file_name = "config/camera.json";
+
+	std::ifstream ifs(file_name.c_str(), std::ios::in);
+
+	if (!ifs) {
+		std::cerr << "file error: " << file_name << std::endl;
+		return;
+	}
+
+	std::ostringstream oss;
+
+	while(ifs){
+		oss<<ifs;
+
+	}
+	jp.parse(oss.str());
 }
 
 } /* namespace nokkhum */

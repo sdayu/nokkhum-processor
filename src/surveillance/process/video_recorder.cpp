@@ -8,7 +8,7 @@
 #include "video_recorder.hpp"
 
 #include <iostream>
-#include <opencv/highgui.h>
+#include <opencv2/highgui/highgui.hpp>
 
 namespace nokkhum {
 
