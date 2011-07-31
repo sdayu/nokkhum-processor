@@ -24,12 +24,12 @@ public:
 	virtual ~ImageProcessorProperty();
     std::string getName() const;
     void setName(std::string name);
-    ImageProcessorPropertyVector *getImageProcessorPropertyVector() const;
-    void setImageProcessorPropertyVector(ImageProcessorPropertyVector *image_processor_property_vector);
+    ImageProcessorPropertyVector getImageProcessorPropertyVector() const;
+
 
 private:
 	std::string name;
-	ImageProcessorPropertyVector *image_processor_property_vector;
+	ImageProcessorPropertyVector image_processor_property_vector;
 };
 
 typedef std::vector<ImageProcessorProperty*> ImageProcessorPropertyVector;

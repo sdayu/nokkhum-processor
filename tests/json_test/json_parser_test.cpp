@@ -12,7 +12,7 @@
 #include <string>
 #include <sstream>
 
-#include "../../src/config/json_parser.hpp"
+#include "../../src/config/configuration.hpp"
 
 namespace nokkhum {
 

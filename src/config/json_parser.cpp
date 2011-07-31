@@ -230,7 +230,7 @@ ImageProcessorProperty* JsonParser::parseFaceDetector(
 	}
 
 	FaceDetectorProperty* fdp = new FaceDetectorProperty(name, interval);
-	fdp->setImageProcessorPropertyVector(ippv);
+	fdp->getImageProcessorPropertyVector().push_back(fdp);
 
 	return fdp;
 }
