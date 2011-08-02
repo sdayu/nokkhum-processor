@@ -21,7 +21,7 @@
 
 namespace nokkhum {
 
-typedef std::map<std::string, Property> PropertyMap;
+typedef std::map<std::string, Property*> PropertyMap;
 
 class JsonParser {
 public:

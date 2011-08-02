@@ -60,10 +60,15 @@ PropertyMap* JsonParser::parse(std::string json) {
 	Property *property = nullptr;
 
 	property = this->parseCamera(obj["camera"].get_obj());
-	//property_map["camera"] = property;
 
-	this->parseImageProcessor(obj["processors"].get_array());
-	//property_map["processors"] = property;
+	PropertyMap::iterator it;
+
+	  // first insert function version (single parameter):
+	(*property_map)["camera"] = property;
+
+	ImageProcessorProperty* ipp = new ImageProcessorProperty();
+	ipp->setImageProcessorPropertyVector( this->parseImageProcessor( obj["processors"].get_array() ) );
+	(*property_map)["processors"] = ipp;
 
 	std::cout << std::endl << "---------- end ----------" << std::endl;
 
