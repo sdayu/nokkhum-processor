@@ -24,6 +24,7 @@ Configuration::Configuration(std::string json) {
 	delete property_map;
 	property_map = nullptr;
 
+
 	std::cout<<"============== configuration =============="<<std::endl;
 	std::cout<<"camera name:"<< this->camera_property->getName() <<std::endl;
 	std::cout<<"Image Processor name:"<<this->image_processor_property->getName()<<std::endl;
