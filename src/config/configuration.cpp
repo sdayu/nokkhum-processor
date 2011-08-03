@@ -17,7 +17,18 @@ Configuration::Configuration() {
 
 Configuration::Configuration(std::string json) {
 	JsonParser jp;
-	jp.parse(json);
+	PropertyMap* property_map = jp.parse(json);
+	this->camera_property = (CameraProperty*)(*property_map)["camera"];
+	this->image_processor_property = (ImageProcessorProperty*)(*property_map)["processors"];
+
+	delete property_map;
+	property_map = nullptr;
+
+
+	std::cout<<"============== configuration =============="<<std::endl;
+	std::cout<<"camera name:"<< this->camera_property->getName() <<std::endl;
+	std::cout<<"Image Processor name:"<<this->image_processor_property->getName()<<std::endl;
+	std::cout<<"Image Processor name:"<<this->image_processor_property->getImageProcessorPropertyVector().size()<<std::endl;
 }
 
 Configuration::~Configuration() {

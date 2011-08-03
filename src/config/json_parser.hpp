@@ -21,7 +21,7 @@
 
 namespace nokkhum {
 
-typedef std::map<std::string, Property> PropertyMap;
+typedef std::map<std::string, Property*> PropertyMap;
 
 class JsonParser {
 public:
@@ -31,7 +31,7 @@ public:
 	PropertyMap* parse(std::string file_name);
 
 	CameraProperty* parseCamera(const json_spirit::mObject camera_obj);
-	ImageProcessorPropertyVector* parseImageProcessor(const json_spirit::mArray image_processor_array);
+	void parseImageProcessor(const json_spirit::mArray image_processor_array, std::vector<ImageProcessorProperty*> &ippv);
 
 private:
 	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );

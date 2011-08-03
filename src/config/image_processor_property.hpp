@@ -21,15 +21,16 @@ typedef std::vector<ImageProcessorProperty*> ImageProcessorPropertyVector;
 
 public:
 	ImageProcessorProperty(std::string name);
+	ImageProcessorProperty();
 	virtual ~ImageProcessorProperty();
     std::string getName() const;
     void setName(std::string name);
-    ImageProcessorPropertyVector getImageProcessorPropertyVector() const;
 
+    std::vector<ImageProcessorProperty*> getImageProcessorPropertyVector() const;
 
 private:
-	std::string name;
-	ImageProcessorPropertyVector image_processor_property_vector;
+    std::string name;
+    std::vector<ImageProcessorProperty*> image_processor_property_vector;
 };
 
 typedef std::vector<ImageProcessorProperty*> ImageProcessorPropertyVector;
