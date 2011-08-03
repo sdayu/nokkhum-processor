@@ -37,6 +37,7 @@ Configuration::~Configuration() {
 
 	this->camera_property = nullptr;
 	this->image_processor_property = nullptr;
+
 }
 
 CameraProperty *Configuration::getCameraProperty() const {
