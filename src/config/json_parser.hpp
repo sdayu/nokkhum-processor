@@ -31,7 +31,7 @@ public:
 	PropertyMap* parse(std::string file_name);
 
 	CameraProperty* parseCamera(const json_spirit::mObject camera_obj);
-	void parseImageProcessor(const json_spirit::mArray image_processor_array, std::vector<ImageProcessorProperty*> &ippv);
+	void parseImageProcessor(const json_spirit::mArray image_processor_array, ImageProcessorProperty* ipp);
 
 private:
 	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );

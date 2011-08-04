@@ -44,15 +44,14 @@ JsonParser::~JsonParser() {
 PropertyMap* JsonParser::parse(std::string json) {
 
 	json_spirit::mValue value;
-	std::cout << "Read JSON string: " << json_spirit::read(json, value)
-			<< std::endl;
+	json_spirit::read(json, value);
 
-	std::cout
-			<< "JSON string: "
-			<< std::endl
-			<< json_spirit::write(value,
-					json_spirit::pretty_print | json_spirit::raw_utf8)
-			<< std::endl;
+//	std::cout
+//			<< "JSON string: "
+//			<< std::endl
+//			<< json_spirit::write(value,
+//					json_spirit::pretty_print | json_spirit::raw_utf8)
+//			<< std::endl;
 
 	json_spirit::mObject obj = value.get_obj();
 
@@ -65,12 +64,11 @@ PropertyMap* JsonParser::parse(std::string json) {
 	(*property_map)["camera"] = property;
 
 	ImageProcessorProperty* ipp = new ImageProcessorProperty();
-	//ipp->setImageProcessorPropertyVector( this->parseImageProcessor( obj["processors"].get_array() ) );
 
-	this->parseImageProcessor( obj["processors"].get_array(), ipp->getImageProcessorPropertyVector());
+	this->parseImageProcessor( obj["processors"].get_array(), ipp);
 	(*property_map)["processors"] = ipp;
 
-	std::cout << std::endl << "---------- end ----------" << std::endl;
+//	std::cout << std::endl << "---------- end ----------" << std::endl;
 
 	return property_map;
 }
@@ -91,7 +89,7 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	name = this->findValue(camera_obj, "name").get_str();
 	model = this->findValue(camera_obj, "model").get_str();
 
-	std::cout << "Camera Name: " << name << std::endl;
+//	std::cout << "Camera Name: " << name << std::endl;
 
 	CameraProperty *cp = new CameraProperty(name, model, url, width, height, fps);
 	return cp;
@@ -100,13 +98,7 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 
 void JsonParser::parseImageProcessor(
 		const json_spirit::mArray image_processor_array,
-		std::vector<ImageProcessorProperty*> &ippv) {
-//	std::cout << std::endl
-//			<< "obj: "
-//			<< std::endl
-//			<< json_spirit::write(image_processor_array,
-//					json_spirit::pretty_print | json_spirit::raw_utf8)
-//			<< std::endl;
+		ImageProcessorProperty* ipp) {
 
 	ImageProcessorProperty* tmp = nullptr;
 
@@ -115,8 +107,8 @@ void JsonParser::parseImageProcessor(
 		json_spirit::mObject obj = image_processor_array[i].get_obj();
 
 		std::string processor_name = this->findValue(obj, "name").get_str();
-		std::cout << "Processor " << i << " name : "
-				<< this->findValue(obj, "name").get_str() << std::endl;
+//		std::cout << "Processor " << i << " name : "
+//				<< this->findValue(obj, "name").get_str() << std::endl;
 
 		if (processor_name == "Motion Detector") {
 			tmp = parseMotionDetector(obj);
@@ -128,7 +120,7 @@ void JsonParser::parseImageProcessor(
 			tmp = parseImageRecorder(obj);
 		}
 
-		ippv.push_back(tmp);
+		ipp->addImageProcessorProperty(tmp);
 
 	}
 
@@ -150,18 +142,13 @@ ImageProcessorProperty* JsonParser::parseVideoRecorder(
 	width = this->findValue(image_processor_obj, "width").get_int();
 	height = this->findValue(image_processor_obj, "height").get_int();
 
-	std::cout << "Processor name : " << name << std::endl;
+	// std::cout << "Processor name : " << name << std::endl;
 
 	VideoRecorderProperty* vrp = new VideoRecorderProperty(name, directory, width, height, fps);
 
 	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), vrp->getImageProcessorPropertyVector() );
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), vrp );
 	}
-
-	//VideoRecorder* video_recorder = new VideoRecorder();
-	//return video_recorder;
-
-//	VideoRecorderProperty* vrp = new VideoRecorderProperty(name, directory, width, height, fps);
 
 	return vrp;
 }
@@ -179,14 +166,12 @@ ImageProcessorProperty* JsonParser::parseImageRecorder(
 	width = this->findValue(image_processor_obj, "width").get_int();
 	height = this->findValue(image_processor_obj, "height").get_int();
 
-	std::cout << "Processor name : " << name << std::endl;
+	// std::cout << "Processor name : " << name << std::endl;
 
 	ImageRecorderProperty *irp = new ImageRecorderProperty(name, directory, width, height);
 	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), irp->getImageProcessorPropertyVector() );
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), irp );
 	}
-
-//	irp->setImageProcessorPropertyVector(ippv);
 
 	return irp;
 }
@@ -202,15 +187,12 @@ ImageProcessorProperty* JsonParser::parseMotionDetector(
 	interval = this->findValue(image_processor_obj, "interval").get_int();
 	resolution = this->findValue(image_processor_obj, "resolution").get_int();
 
-	std::cout << "Processor name : " << name << std::endl;
+	// std::cout << "Processor name : " << name << std::endl;
 
 	MotionDetectorProperty* mdp = new MotionDetectorProperty(name, resolution, interval);
 	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), mdp->getImageProcessorPropertyVector());
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), mdp );
 	}
-
-
-//	mdp->setImageProcessorPropertyVector(ippv);
 
 	return mdp;
 }
@@ -224,15 +206,12 @@ ImageProcessorProperty* JsonParser::parseFaceDetector(
 	name = this->findValue(image_processor_obj, "name").get_str();
 	interval = this->findValue(image_processor_obj, "interval").get_int();
 
-	std::cout << "Processor name : " << name << std::endl;
+	// std::cout << "Processor name : " << name << std::endl;
 
 	FaceDetectorProperty* fdp = new FaceDetectorProperty(name, interval);
 	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), fdp->getImageProcessorPropertyVector());
+		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), fdp );
 	}
-
-//	FaceDetectorProperty* fdp = new FaceDetectorProperty(name, interval);
-//	fdp->setImageProcessorPropertyVector(ippv);
 
 	return fdp;
 }

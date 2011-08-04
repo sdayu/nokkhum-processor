@@ -12,15 +12,22 @@ namespace nokkhum {
 
 ImageProcessorProperty::ImageProcessorProperty(std::string name) :
 		name(name) {
-
+//	std::cout<<"create: "<<name<<std::endl;
 }
 
-ImageProcessorProperty::ImageProcessorProperty(){
+ImageProcessorProperty::ImageProcessorProperty() {
 	name = "default";
 }
 
 ImageProcessorProperty::~ImageProcessorProperty() {
-	// TODO Auto-generated destructor stub
+	for(std::vector<ImageProcessorProperty*>::size_type i = 0;
+			i < image_processor_property_vector.size();
+			++i){
+		delete image_processor_property_vector[i];
+		image_processor_property_vector[i] = nullptr;
+	}
+
+//	std::cout<<"destroy: "<<name<<std::endl;
 }
 
 std::string ImageProcessorProperty::getName() const {
@@ -33,6 +40,11 @@ std::vector<ImageProcessorProperty*> ImageProcessorProperty::getImageProcessorPr
 
 void ImageProcessorProperty::setName(std::string name) {
 	this->name = name;
+}
+
+void ImageProcessorProperty::addImageProcessorProperty(
+		ImageProcessorProperty *imageProcessorProperty) {
+	this->image_processor_property_vector.push_back(imageProcessorProperty);
 }
 
 } /* namespace nokkhum */

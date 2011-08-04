@@ -37,13 +37,9 @@ void JsonParserTest::testJsonParser() {
 		return;
 	}
 	std::ostringstream oss;
-//	while (ifs) {
-//		oss << ifs.readline();
-//		std::cout << "The json :" << oss.str() << std::endl;
-//	}
+
 	oss << ifs.rdbuf();
 
-	//std::cout << "The json :" << oss.str() << std::endl;
 	nokkhum::Configuration(oss.str());
 
 	ifs.close();
