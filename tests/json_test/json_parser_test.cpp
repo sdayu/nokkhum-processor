@@ -40,9 +40,14 @@ void JsonParserTest::testJsonParser() {
 
 	oss << ifs.rdbuf();
 
-	nokkhum::Configuration(oss.str());
-
+	nokkhum::Configuration conf(oss.str());
 	ifs.close();
+
+	auto cameraProperty = conf.getCameraProperty();
+
+	std::cout<<cameraProperty->getName()<<std::endl;
+
+
 }
 
 } /* namespace nokkhum */
