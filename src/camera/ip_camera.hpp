@@ -9,7 +9,6 @@
 #define NOKKHUM_IP_CAMERA_HPP_
 
 #include <string>
-using namespace std;
 
 #include "camera.hpp"
 
@@ -19,12 +18,14 @@ class IpCamera: public nokkhum::Camera {
 public:
 	IpCamera(int width, int height, int fps, string url, string username, string password);
 	virtual ~IpCamera();
-    string getUrl() const;
+    std::string getUrl() const;
+    std::string getUsername() const;
+    std::string getPassword() const;
 
 private:
-	string url;
-	string username;
-	string password;
+    std::string url;
+    std::string username;
+    std::string password;
 };
 
 }

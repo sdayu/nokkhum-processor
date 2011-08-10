@@ -52,7 +52,7 @@ void VideoSurveillance::start() {
 	tm* time_struct =  localtime(&rawtime);
 
 	string record_name;
-	ostringstream oss;
+	std::ostringstream oss;
 	oss << time_struct->tm_year+1900
 			<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_mon+1
 			<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_mday
@@ -94,9 +94,9 @@ void VideoSurveillance::start() {
     face_detection.stop();
 
     std::cout<< "begin finalization"<<std::endl;
-    std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << endl;
-    std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << endl;
-    std::cout<< "queue 2 size: " << multiple_queue.get(2).size() << endl;
+    std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << std::endl;
+    std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << std::endl;
+    std::cout<< "queue 2 size: " << multiple_queue.get(2).size() << std::endl;
 
     acquisiting.join();
     recorder.join();

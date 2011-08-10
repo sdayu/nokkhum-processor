@@ -9,20 +9,26 @@
 
 namespace nokkhum {
 
-IpCamera::IpCamera(int width, int height, int fps, string url,
-		string username, string password) :
-	Camera(width, height, fps), url(url), username(username),
-			password(password) {
+IpCamera::IpCamera(int width, int height, int fps, string url, string username,
+		string password) :
+		Camera(width, height, fps), url(url), username(username), password(
+				password) {
 }
 
 IpCamera::~IpCamera() {
 	// TODO Auto-generated destructor stub
 }
 
-string IpCamera::getUrl() const {
+std::string IpCamera::getUrl() const {
 	return url;
 }
 
+std::string IpCamera::getUsername() const {
+	return username;
+}
 
+std::string IpCamera::getPassword() const {
+	return password;
+}
 
 }

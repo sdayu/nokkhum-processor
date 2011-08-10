@@ -25,16 +25,16 @@ Configuration::Configuration(std::string json) {
 	property_map = nullptr;
 
 
-	std::cout<<"============== configuration =============="<<std::endl;
-	std::cout<<"camera name:"<< this->camera_property->getName() <<std::endl;
-	std::cout<<"Image Processor name:"<<this->image_processor_property->getName()<<std::endl;
-	std::cout<<"Image Processor size:"<<this->image_processor_property->getImageProcessorPropertyVector().size()<<std::endl;
+//	std::cout<<"============== configuration =============="<<std::endl;
+//	std::cout<<"camera name:"<< this->camera_property->getName() <<std::endl;
+//	std::cout<<"Image Processor name:"<<this->image_processor_property->getName()<<std::endl;
+//	std::cout<<"Image Processor size:"<<this->image_processor_property->getImageProcessorPropertyVector().size()<<std::endl;
 
 	std::vector<ImageProcessorProperty*> ipp = this->image_processor_property->getImageProcessorPropertyVector();
 
-	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ipp.size();++i){
-		std::cout<<"processor name: "<<ipp[i]->getName()<<std::endl;
-	}
+//	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ipp.size();++i){
+//		std::cout<<"processor name: "<<ipp[i]->getName()<<std::endl;
+//	}
 }
 
 Configuration::~Configuration() {

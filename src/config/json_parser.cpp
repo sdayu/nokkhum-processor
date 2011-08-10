@@ -81,6 +81,8 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	std::string url;
 	std::string name;
 	std::string model;
+	std::string username;
+	std::string password;
 
 	width = this->findValue(camera_obj, "width").get_int();
 	height = this->findValue(camera_obj, "height").get_int();
@@ -88,10 +90,12 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	url = this->findValue(camera_obj, "url").get_str();
 	name = this->findValue(camera_obj, "name").get_str();
 	model = this->findValue(camera_obj, "model").get_str();
+	username = this->findValue(camera_obj, "username").get_str();
+	password = this->findValue(camera_obj, "password").get_str();
 
 //	std::cout << "Camera Name: " << name << std::endl;
 
-	CameraProperty *cp = new CameraProperty(name, model, url, width, height, fps);
+	CameraProperty *cp = new CameraProperty(name, model, url, width, height, fps, username, password);
 	return cp;
 }
 

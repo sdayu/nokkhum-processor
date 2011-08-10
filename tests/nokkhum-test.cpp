@@ -15,16 +15,18 @@ using namespace std;
 #include <cppunit/TestResult.h>
 
 #include "json_test/json_parser_test.hpp"
+#include "processor_builder/processor_builder.hpp"
 
 int main() {
 	cout << "Hello World, Hello Nukkhum" << endl; // prints Hello World, Hello Nukkhum
 
-//	CppUnit::TestCaller<ComplexNumberTest> test( "testEquality",
-//	                                             &ComplexNumberTest::testEquality );
 
+//	CppUnit::TestCaller<nokkhum::JsonParserTest> test( "testJsonParser",
+//	                                             &nokkhum::JsonParserTest::testJsonParser );
 
-	CppUnit::TestCaller<nokkhum::JsonParserTest> test( "testJsonParser",
-	                                             &nokkhum::JsonParserTest::testJsonParser );
+	CppUnit::TestCaller<nokkhum::ProcessorBuilderTest> test( "testProcessorBuilder",
+		                                             &nokkhum::ProcessorBuilderTest::testProcessorBuilder );
+
 	CppUnit::TestResult result;
 	test.run( &result );
 	return 0;

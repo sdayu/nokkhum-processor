@@ -21,6 +21,7 @@ public:
 	ImageProcessorProperty(std::string name);
 	ImageProcessorProperty();
 	virtual ~ImageProcessorProperty();
+
     std::string getName() const;
     void setName(std::string name);
 

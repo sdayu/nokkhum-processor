@@ -10,9 +10,10 @@
 namespace nokkhum {
 
 CameraProperty::CameraProperty(std::string name, std::string model,
-		std::string url, int width, int height, int fps) :
-		name(name), model(model), url(url), width(width), height(height),
-		fps(fps) {
+		std::string url, int width, int height, int fps, std::string username,
+		std::string password) :
+		name(name), model(model), url(url), width(width), height(height), fps(
+				fps), username(username), password(password) {
 
 }
 
@@ -65,6 +66,14 @@ void CameraProperty::setUrl(std::string url) {
 
 void CameraProperty::setWidth(int width) {
 	this->width = width;
+}
+
+std::string CameraProperty::getPassword() const {
+	return password;
+}
+
+std::string CameraProperty::getUsername() const {
+	return username;
 }
 
 } /* namespace nokkhum */

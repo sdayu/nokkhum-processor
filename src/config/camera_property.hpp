@@ -16,15 +16,17 @@ namespace nokkhum {
 
 class CameraProperty : public Property {
 public:
-	CameraProperty(std::string name, std::string model, std::string url, int width, int hight, int fps);
+	CameraProperty(std::string name, std::string model, std::string url, int width, int hight, int fps, std::string username, std::string password);
 	virtual ~CameraProperty();
 
     int getFps() const;
     int getHeight() const;
+    int getWidth() const;
     std::string getModel() const;
     std::string getName() const;
     std::string getUrl() const;
-    int getWidth() const;
+    std::string getPassword() const;
+    std::string getUsername() const;
 
     void setFps(int fps);
     void setHeight(int height);
@@ -33,6 +35,8 @@ public:
     void setUrl(std::string url);
     void setWidth(int width);
 
+
+
 private:
 	int width;
 	int height;
@@ -40,6 +44,8 @@ private:
 	std::string url;
 	std::string name;
 	std::string model;
+	std::string username;
+	std::string password;
 };
 
 } /* namespace nokkhum */
