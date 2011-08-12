@@ -16,10 +16,10 @@
 
 namespace nokkhum {
 
-class MotionDetection : public nokkhum::ImageProcessor {
+class MotionDetector : public nokkhum::ImageProcessor {
 public:
-	MotionDetection(CvMatQueue &input_image_queue);
-	virtual ~MotionDetection();
+	MotionDetector(CvMatQueue &input_image_queue);
+	virtual ~MotionDetector();
 
 	void start();
 private:

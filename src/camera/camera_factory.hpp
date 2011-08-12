@@ -9,7 +9,8 @@
 #define NOKKHUM_CAMERA_FACTORY_HPP_
 
 #include "camera.hpp"
-using nokkhum::Camera;
+#include "cv_ip_camera.hpp"
+#include "../config/camera_property.hpp"
 
 namespace nokkhum {
 
@@ -17,8 +18,7 @@ class CameraFactory {
 public:
 	CameraFactory();
 	virtual ~CameraFactory();
-	Camera* getIpCamera(int width, int height, int fps, string url, string type);
-	Camera* getCamera(int width, int height, int fps, int device);
+	nokkhum::Camera* getCamera(nokkhum::CameraProperty*);
 };
 
 }

@@ -24,8 +24,8 @@ using std::string;
 
 #include "../video/cv_video_writer.hpp"
 #include "../util/multiple_mat_queue.hpp"
-#include "process/motion_detection.hpp"
-#include "process/face_detection.hpp"
+#include "process/motion_detector.hpp"
+#include "process/face_detector.hpp"
 
 namespace nokkhum {
 
@@ -72,8 +72,8 @@ void VideoSurveillance::start() {
 //			camera.getFps());
 //
 //	VideoRecorder video_recorder1(writer1, multiple_queue.get(1));
-	MotionDetection montion_detection(multiple_queue.get(1));
-	FaceDetection face_detection(multiple_queue.get(2));
+	MotionDetector montion_detection(multiple_queue.get(1));
+	FaceDetector face_detection(multiple_queue.get(2));
 
     std::cout<< "start initial"<<std::endl;
     thread acquisiting(std::ref(acquisition));

@@ -5,7 +5,7 @@
  *      Author: boatkrap
  */
 
-#include "motion_detection.hpp"
+#include "motion_detector.hpp"
 
 #include <iostream>
 #include <opencv2/core/core.hpp>
@@ -15,17 +15,17 @@
 
 namespace nokkhum {
 
-MotionDetection::MotionDetection(CvMatQueue &input_image_queue) :
+MotionDetector::MotionDetector(CvMatQueue &input_image_queue) :
 	ImageProcessor("Motion Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
 
-MotionDetection::~MotionDetection() {
+MotionDetector::~MotionDetector() {
 	// TODO Auto-generated destructor stub
 }
 
-void MotionDetection::start() {
+void MotionDetector::start() {
 //	cv::namedWindow("Motion Detection", 1);
 
 	cv::Mat prevgray, gray, flow, cflow, frame;
@@ -85,7 +85,7 @@ void MotionDetection::start() {
 	}
 }
 
-void MotionDetection::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
+void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 		int step, double scale, const cv::Scalar& color) {
 //	int motionCount = 0;
 	for (int y = 0; y < cflowmap.rows; y += step){

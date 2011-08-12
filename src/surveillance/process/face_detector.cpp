@@ -5,7 +5,7 @@
  *      Author: boatkrap
  */
 
-#include "face_detection.hpp"
+#include "face_detector.hpp"
 
 #include <iostream>
 #include <string>
@@ -17,17 +17,17 @@
 
 namespace nokkhum {
 
-FaceDetection::FaceDetection(CvMatQueue &input_image_queue) :
+FaceDetector::FaceDetector(CvMatQueue &input_image_queue) :
 	ImageProcessor("Face Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
 
-FaceDetection::~FaceDetection() {
+FaceDetector::~FaceDetector() {
 	// TODO Auto-generated destructor stub
 }
 
-void FaceDetection::start() {
+void FaceDetector::start() {
 	cv::namedWindow("Face Detection", 1);
 
 	const int compute_step = 10;
@@ -76,7 +76,7 @@ void FaceDetection::start() {
 	}
 }
 
-void FaceDetection::detectAndDraw( cv::Mat& img,
+void FaceDetector::detectAndDraw( cv::Mat& img,
         cv::CascadeClassifier& cascade, cv::CascadeClassifier& nestedCascade,
                    double scale)
 {

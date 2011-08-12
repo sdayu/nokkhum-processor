@@ -6,7 +6,7 @@
  */
 
 #include "camera_factory.hpp"
-#include "cv_camera.hpp"
+
 namespace nokkhum {
 
 CameraFactory::CameraFactory() {
@@ -18,15 +18,10 @@ CameraFactory::~CameraFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-Camera* CameraFactory::getIpCamera(int width, int height, int fps,
-		string url, string type) {
-	return NULL;
-}
-
-Camera* CameraFactory::getCamera(int width, int height, int frame_rate,
-		int device) {
-	Camera* camera = new CvCamera(width, height, frame_rate, device);
-	return camera;
+nokkhum::Camera *CameraFactory::getCamera(nokkhum::CameraProperty *cameraProperty) {
+	return new nokkhum::CvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(),
+			cameraProperty->getFps(), cameraProperty->getUrl(), cameraProperty->getUsername(),
+			cameraProperty->getPassword());
 }
 
 }

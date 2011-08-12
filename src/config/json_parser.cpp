@@ -18,8 +18,8 @@
 
 #include "../camera/cv_ip_camera.hpp"
 
-#include "../surveillance/process/face_detection.hpp"
-#include "../surveillance/process/motion_detection.hpp"
+#include "../surveillance/process/face_detector.hpp"
+#include "../surveillance/process/motion_detector.hpp"
 #include "../surveillance/process/image_recorder.hpp"
 #include "../surveillance/process/video_recorder.hpp"
 

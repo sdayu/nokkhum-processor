@@ -15,10 +15,10 @@
 
 namespace nokkhum {
 
-class FaceDetection: public nokkhum::ImageProcessor {
+class FaceDetector: public nokkhum::ImageProcessor {
 public:
-	FaceDetection(CvMatQueue &input_image_queue);
-	virtual ~FaceDetection();
+	FaceDetector(CvMatQueue &input_image_queue);
+	virtual ~FaceDetector();
 
 	void start();
 
