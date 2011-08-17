@@ -17,7 +17,7 @@ Job::Job() {
 }
 
 Job::Job(std::string name, bool running) :
-	name(name), running(running) {
+		name(name), running(running) {
 
 }
 
@@ -32,6 +32,14 @@ void Job::stop() {
 void Job::operator ()() {
 	running = true;
 	start();
+}
+
+std::string Job::getName() const {
+	return name;
+}
+
+bool Job::isRunning() const {
+	return running;
 }
 
 }

@@ -10,6 +10,7 @@
 
 #include "image_processor.hpp"
 #include "../../config/image_processor_property.hpp"
+#include "../../util/cv_mat_queue.hpp"
 
 namespace nokkhum {
 
@@ -18,7 +19,8 @@ public:
 	ImageProcessorFactory();
 	virtual ~ImageProcessorFactory();
 
-	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp);
+	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
+	void getImageProcessorPool(ImageProcessorProperty* ipp);
 
 };
 

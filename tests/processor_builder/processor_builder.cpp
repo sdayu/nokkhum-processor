@@ -17,6 +17,8 @@
 
 #include "../../src/camera/cv_ip_camera.hpp"
 
+#include "../../src/surveillance/process/image_processor_factory.hpp"
+
 namespace nokkhum {
 
 ProcessorBuilderTest::ProcessorBuilderTest() {
@@ -56,9 +58,11 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 		std::cout<<"Processor name: "<<imageProcessorPropertyVector[i]->getName()<<std::endl;
 	}
 
-	CvIpCamera cvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(), cameraProperty->getFps(),
-			cameraProperty->getUsername(), cameraProperty->getPassword());
+//	CvIpCamera cvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(), cameraProperty->getFps(),
+//			cameraProperty->getUsername(), cameraProperty->getPassword());
 
+	ImageProcessorFactory ipf;
+	ipf.getImageProcessorPool(processorProperty);
 
 }
 

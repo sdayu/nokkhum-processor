@@ -16,7 +16,10 @@
 #include "motion_detector.hpp"
 #include "image_processor.hpp"
 #include "video_recorder.hpp"
+#include "image_recorder.hpp"
 
+#include <iostream>
+#include <vector>
 
 namespace nokkhum {
 
@@ -30,22 +33,63 @@ ImageProcessorFactory::~ImageProcessorFactory() {
 }
 
 ImageProcessor *ImageProcessorFactory::getImageProcessor(
-		ImageProcessorProperty *ipp) {
+		ImageProcessorProperty *ipp, CvMatQueue* cv_mat_queue) {
 	if (ipp->getName() == "Motion Detector") {
-		MotionDetectorProperty *mdp = dynamic_cast<MotionDetectorProperty*> (ipp);
+		MotionDetectorProperty *mdp = dynamic_cast<MotionDetectorProperty*>(ipp);
+		MotionDetector *md = new MotionDetector(*cv_mat_queue);
+		return md;
 
 	} else if (ipp->getName() == "Face Detector") {
-		FaceDetectorProperty *fdp = dynamic_cast<FaceDetectorProperty*> (ipp);
-
+		FaceDetectorProperty *fdp = dynamic_cast<FaceDetectorProperty*>(ipp);
+		FaceDetector *fd = new FaceDetector(*cv_mat_queue);
+		return fd;
 	} else if (ipp->getName() == "Video Recorder") {
-		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*> (ipp);
-
+		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
+		//VideoRecorder *vr = new VideoRecorder()
 	} else if (ipp->getName() == "Image Recorder") {
-		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*> (ipp);
-
+		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*>(ipp);
+		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue);
+		return ir;
 	}
 
 	return nullptr;
+}
+
+void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp) {
+	ImageProcessorProperty *tmp = nullptr;
+
+	std::cout
+			<< "-------------------------- Start Image Processor Property ------------------------------------"
+			<< std::endl;
+
+	std::cout << "name: " << ipp->getName() << std::endl;
+	std::vector<ImageProcessor*> image_processor_pool;
+	CvMatQueue cv_mat_queue;
+	if (ipp->getName() == "default") {
+		auto imageProcessorPropertyVector =
+				ipp->getImageProcessorPropertyVector();
+		for (auto i = 0; i < imageProcessorPropertyVector.size(); i++) {
+			std::cout << "Build processor name: "
+					<< imageProcessorPropertyVector[i]->getName() << std::endl;
+			image_processor_pool.push_back(
+					this->getImageProcessor(imageProcessorPropertyVector[i],
+							&cv_mat_queue));
+		}
+	}
+	std::cout
+			<< "-------------------------- End Image Processor Property --------------------------------------"
+			<< std::endl;
+	for (auto i = 0; i < image_processor_pool.size(); i++) {
+		if (image_processor_pool[i])
+			std::cout << "Vector, processor name: "
+					<< image_processor_pool[i]->getName() << std::endl;
+		else
+			std::cout << "Vector, processor name: nullptr" << std::endl;
+	}
+	std::cout
+			<< "-------------------------- --> Image Processor Property --------------------------------------"
+			<< std::endl;
+
 }
 
 } /* namespace nokkhum */

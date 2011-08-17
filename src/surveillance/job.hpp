@@ -22,6 +22,8 @@ public:
 	virtual void stop();
 
 	virtual void operator()();
+    std::string getName() const;
+    bool isRunning() const;
 
 protected:
 	bool running;
