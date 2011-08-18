@@ -65,17 +65,26 @@ void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp) {
 	std::cout << "name: " << ipp->getName() << std::endl;
 	std::vector<ImageProcessor*> image_processor_pool;
 	CvMatQueue cv_mat_queue;
+	std::vector<ImageProcessorProperty*> imageProcessorPropertyVector;
+
 	if (ipp->getName() == "default") {
-		auto imageProcessorPropertyVector =
-				ipp->getImageProcessorPropertyVector();
-		for (auto i = 0; i < imageProcessorPropertyVector.size(); i++) {
-			std::cout << "Build processor name: "
-					<< imageProcessorPropertyVector[i]->getName() << std::endl;
-			image_processor_pool.push_back(
-					this->getImageProcessor(imageProcessorPropertyVector[i],
-							&cv_mat_queue));
-		}
+		imageProcessorPropertyVector =
+					ipp->getImageProcessorPropertyVector();
+
 	}
+
+
+
+	for (auto i = 0; i < imageProcessorPropertyVector.size(); i++) {
+		std::cout << "Build processor name: "
+				<< imageProcessorPropertyVector[i]->getName() << std::endl;
+		image_processor_pool.push_back(
+				this->getImageProcessor(imageProcessorPropertyVector[i],
+						&cv_mat_queue));
+	}
+
+
+
 	std::cout
 			<< "-------------------------- End Image Processor Property --------------------------------------"
 			<< std::endl;
