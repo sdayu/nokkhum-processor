@@ -61,8 +61,10 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 //	CvIpCamera cvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(), cameraProperty->getFps(),
 //			cameraProperty->getUsername(), cameraProperty->getPassword());
 
+
+	MultipleMatQueue mmq;
 	ImageProcessorFactory ipf;
-	ipf.getImageProcessorPool(processorProperty);
+	ipf.getImageProcessorPool(processorProperty, mmq);
 
 }
 

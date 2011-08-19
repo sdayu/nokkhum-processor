@@ -20,7 +20,7 @@ public:
 	virtual ~ImageProcessorFactory();
 
 	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
-	void getImageProcessorPool(ImageProcessorProperty* ipp);
+	void getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
 
 };
 

@@ -9,22 +9,42 @@
 
 namespace nokkhum {
 
-MultipleMatQueue::MultipleMatQueue(int size) :
-	size(size) {
-	queue_container = new CvMatQueue[size];
+MultipleMatQueue::MultipleMatQueue() {
+
+}
+
+MultipleMatQueue::MultipleMatQueue(int size) {
+	for (auto i = 0; i < size; ++i) {
+		cvmat_queue_container.push_back(new CvMatQueue());
+	}
 }
 
 MultipleMatQueue::~MultipleMatQueue() {
-	delete[] queue_container;
-	queue_container = NULL;
+	CvMatQueue *tmp = nullptr;
+	while (!cvmat_queue_container.empty()) {
+			tmp = cvmat_queue_container.back();
+			cvmat_queue_container.pop_back();
+			delete tmp;
+			tmp = nullptr;
+		}
 }
 
 CvMatQueue & MultipleMatQueue::get(int index) {
-	return queue_container[index];
+	return *cvmat_queue_container[index];
 }
 
 int MultipleMatQueue::getSize() {
-	return this->size;
+	return cvmat_queue_container.size();
+}
+
+CvMatQueue & MultipleMatQueue::getNew() {
+	CvMatQueue *newCvMatQueue = new CvMatQueue();
+	cvmat_queue_container.push_back(newCvMatQueue);
+
+	return *newCvMatQueue;
+}
+
+void MultipleMatQueue::deleteQueue(int index) {
 }
 
 }

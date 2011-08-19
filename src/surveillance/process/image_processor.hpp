@@ -14,18 +14,21 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include "../../util/cv_mat_queue.hpp"
+#include "../../util/multiple_mat_queue.hpp"
 
 namespace nokkhum {
 
 class ImageProcessor: public nokkhum::Job {
 public:
 	ImageProcessor(std::string name, CvMatQueue &input_image_queue);
-	ImageProcessor(std::string name, CvMatQueue &input_image_queue, CvMatQueue &out_image_queue);
 	virtual ~ImageProcessor();
 
 protected:
 	CvMatQueue &input_image_queue;
-	CvMatQueue *output_image_queue;
+	//CvMatQueue *output_image_queue;
+
+	MultipleMatQueue output_image_queue;
+
 
 	bool write_to_output_queue;
 };
