@@ -18,6 +18,7 @@ namespace nokkhum {
 
 class VideoWriter {
 public:
+	VideoWriter();
 	VideoWriter(string filename, string directory, int width, int height, int fps);
 	virtual ~VideoWriter();
 

@@ -8,6 +8,8 @@
 #ifndef NOKKHUM_IMAGE_PROCESSOR_FACTORY_HPP_
 #define NOKKHUM_IMAGE_PROCESSOR_FACTORY_HPP_
 
+#include <vector>
+
 #include "image_processor.hpp"
 #include "../../config/image_processor_property.hpp"
 #include "../../util/cv_mat_queue.hpp"
@@ -22,6 +24,7 @@ public:
 	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
 	void getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
 
+	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorProperty*> &ippv);
 };
 
 } /* namespace nokkhum */
