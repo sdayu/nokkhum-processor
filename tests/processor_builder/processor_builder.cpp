@@ -62,7 +62,7 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 //			cameraProperty->getUsername(), cameraProperty->getPassword());
 
 
-	MultipleMatQueue mmq;
+	MultipleMatQueue mmq(2);
 	ImageProcessorFactory ipf;
 	ipf.getImageProcessorPool(processorProperty, mmq);
 

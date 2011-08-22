@@ -45,7 +45,7 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 		return fd;
 	} else if (ipp->getName() == "Video Recorder") {
 		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
-		VideoRecorder *vr = new VideoRecorder()
+		//VideoRecorder *vr = new VideoRecorder()
 	} else if (ipp->getName() == "Image Recorder") {
 		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*>(ipp);
 		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue);
@@ -57,7 +57,7 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 
 void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 		MultipleMatQueue &mmq) {
-	ImageProcessorProperty *tmp = nullptr;
+	ImageProcessor *tmp = nullptr;
 
 	std::cout
 			<< "-------------------------- Start Image Processor Property ------------------------------------"
@@ -68,14 +68,30 @@ void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 
 	CvMatQueue cv_mat_queue;
 	if (ipp->getName() != "default") {
-		image_processor_pool.push_back(
-				this->getImageProcessor(ipp, &cv_mat_queue));
+
 	}
 
-	auto imageProcessorPropertyVector = ipp->getImageProcessorPropertyVector();
+	auto ippv = ipp->getImageProcessorPropertyVector();
 
-	this->getImageProcessorFromVector(image_processor_pool,
-			imageProcessorPropertyVector);
+	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ippv.size();
+			i++) {
+		std::cout << "Build processor name V1: " << ippv[i]->getName()
+				<< std::endl;
+
+		auto cv_mat_queue = mmq.get(i);
+
+		tmp = this->getImageProcessor(ippv[i], &cv_mat_queue);
+		image_processor_pool.push_back(tmp);
+
+		int size = ippv[i]->getImageProcessorPropertyVector().size();
+
+		std::cout << "size: " << size << std::endl;
+		if (size > 0){
+			auto imageProcessorPropertyVector = ippv[i]->getImageProcessorPropertyVector();
+			this->getImageProcessorFromVector(image_processor_pool, imageProcessorPropertyVector, tmp);
+		}
+
+	}
 
 	std::cout
 			<< "-------------------------- End Image Processor Property --------------------------------------"
@@ -95,22 +111,26 @@ void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 
 void ImageProcessorFactory::getImageProcessorFromVector(
 		std::vector<ImageProcessor*> & image_processor_pool,
-		std::vector<ImageProcessorProperty*> & ippv) {
+		std::vector<ImageProcessorProperty*> & ippv,
+		ImageProcessor *parent_image_processor) {
 
-	CvMatQueue cv_mat_queue;
+
+	ImageProcessor *tmp = nullptr;
 	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ippv.size();
 			i++) {
-		std::cout << "Build processor name: " << ippv[i]->getName()
+		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 				<< std::endl;
-		image_processor_pool.push_back(
-				this->getImageProcessor(ippv[i], &cv_mat_queue));
+
+		auto cv_mat_queue = parent_image_processor->getNewOutputImageQueue();
+		tmp = this->getImageProcessor(ippv[i], &cv_mat_queue);
+		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorPropertyVector().size();
 
 		std::cout << "size: " << size << std::endl;
 		if (size > 0){
 			auto imageProcessorPropertyVector = ippv[i]->getImageProcessorPropertyVector();
-			this->getImageProcessorFromVector(image_processor_pool, imageProcessorPropertyVector);
+			this->getImageProcessorFromVector(image_processor_pool, imageProcessorPropertyVector, tmp);
 		}
 
 	}

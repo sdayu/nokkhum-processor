@@ -24,7 +24,7 @@ public:
 	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
 	void getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
 
-	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorProperty*> &ippv);
+	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorProperty*> &ippv, ImageProcessor *parent_image_processor);
 };
 
 } /* namespace nokkhum */

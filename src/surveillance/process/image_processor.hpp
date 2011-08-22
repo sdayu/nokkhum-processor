@@ -23,6 +23,8 @@ public:
 	ImageProcessor(std::string name, CvMatQueue &input_image_queue);
 	virtual ~ImageProcessor();
 
+	CvMatQueue &getNewOutputImageQueue();
+
 protected:
 	CvMatQueue &input_image_queue;
 	//CvMatQueue *output_image_queue;
