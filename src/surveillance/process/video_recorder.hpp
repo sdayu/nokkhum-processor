@@ -19,13 +19,13 @@ namespace nokkhum {
 
 class VideoRecorder : public nokkhum::ImageProcessor {
 public:
-	VideoRecorder(nokkhum::VideoWriter& writer, CvMatQueue& input_image_queue);
+	VideoRecorder(CvMatQueue& input_image_queue);
 	virtual ~VideoRecorder();
 
 	void start();
 
 private:
-	nokkhum::VideoWriter &writer;
+	nokkhum::VideoWriter *writer;
 
 	bool running;
 };

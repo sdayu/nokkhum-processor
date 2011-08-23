@@ -65,7 +65,7 @@ void VideoSurveillance::start() {
 			camera.getWidth(), camera.getHeight(),
 			camera.getFps());
 
-	VideoRecorder video_recorder(writer, multiple_queue.get(0));
+	VideoRecorder video_recorder(multiple_queue.get(0));
 
 //	CvVideoWriter writer1(oss.str(), "/tmp/frame",
 //			camera.getWidth(), camera.getHeight(),

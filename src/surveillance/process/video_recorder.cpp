@@ -9,13 +9,14 @@
 
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
+#include "../../video/cv_video_writer.hpp"
 
 namespace nokkhum {
 
-VideoRecorder::VideoRecorder(nokkhum::VideoWriter& writer,
-		CvMatQueue& input_image_queue) : ImageProcessor("VDO Recorder", input_image_queue), writer(writer) {
+VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) : ImageProcessor("VDO Recorder", input_image_queue), writer(writer) {
 
 	this->running = false;
+	this->writer = new CvVideoWriter();
 }
 
 VideoRecorder::~VideoRecorder() {
@@ -37,7 +38,7 @@ void VideoRecorder::start() {
 		}
 		frame = input_image_queue.pop();
 //		cv::imshow("video", frame);
-		writer << frame;
+		*writer << frame;
 //
 //
 //		if(cv::waitKey(30) >= 0) break;
