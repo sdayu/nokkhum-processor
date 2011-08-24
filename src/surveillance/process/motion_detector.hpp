@@ -13,18 +13,23 @@
 #include <opencv2/core/core.hpp>
 
 #include "../../util/cv_mat_queue.hpp"
+#include "../../config/motion_detector_property.hpp"
 
 namespace nokkhum {
 
 class MotionDetector : public nokkhum::ImageProcessor {
 public:
 	MotionDetector(CvMatQueue &input_image_queue);
+	MotionDetector(CvMatQueue &input_image_queue, MotionDetectorProperty *mdp);
 	virtual ~MotionDetector();
 
 	void start();
 private:
 	void drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap, int step,
 			                    double scale, const cv::Scalar& color);
+
+    int interval;
+    int resolution;
 };
 
 }

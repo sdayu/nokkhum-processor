@@ -21,6 +21,13 @@ MotionDetector::MotionDetector(CvMatQueue &input_image_queue) :
 
 }
 
+MotionDetector::MotionDetector(CvMatQueue &input_image_queue, MotionDetectorProperty *mdp) :
+	ImageProcessor("Motion Detection", input_image_queue) {
+	this->interval = mdp->getInterval();
+	this->resolution = mdp->getResolution();
+
+}
+
 MotionDetector::~MotionDetector() {
 	// TODO Auto-generated destructor stub
 }

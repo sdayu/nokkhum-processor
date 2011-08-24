@@ -36,7 +36,7 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 		ImageProcessorProperty *ipp, CvMatQueue* cv_mat_queue) {
 	if (ipp->getName() == "Motion Detector") {
 		MotionDetectorProperty *mdp = dynamic_cast<MotionDetectorProperty*>(ipp);
-		MotionDetector *md = new MotionDetector(*cv_mat_queue);
+		MotionDetector *md = new MotionDetector(*cv_mat_queue, mdp);
 		return md;
 
 	} else if (ipp->getName() == "Face Detector") {
@@ -45,7 +45,8 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 		return fd;
 	} else if (ipp->getName() == "Video Recorder") {
 		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
-		//VideoRecorder *vr = new VideoRecorder()
+		VideoRecorder *vr = new VideoRecorder(*cv_mat_queue, vrp);
+		return vr;
 	} else if (ipp->getName() == "Image Recorder") {
 		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*>(ipp);
 		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue);
@@ -96,7 +97,7 @@ void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 	std::cout
 			<< "-------------------------- End Image Processor Property --------------------------------------"
 			<< std::endl;
-	for (auto i = 0; i < image_processor_pool.size(); i++) {
+	for (unsigned long i = 0; i < image_processor_pool.size(); i++) {
 		if (image_processor_pool[i])
 			std::cout << "Vector, processor name: "
 					<< image_processor_pool[i]->getName() << std::endl;
