@@ -19,7 +19,7 @@
 			{
 			"name":"Video Recorder",
 			"fps":20,
-			"directory":"./",
+			"directory":"/tmp",
 			"width":320,
 			"height":240
 			},
@@ -34,7 +34,7 @@
 		{
 		"name":"Video Recorder",
 		"fps":20,
-		"directory":"./",
+		"directory":"/tmp",
 		"width":320,
 		"height":240,
 		}

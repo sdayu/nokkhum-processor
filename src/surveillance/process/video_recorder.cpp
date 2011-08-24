@@ -15,6 +15,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "../../video/cv_video_writer.hpp"
 
+#include <sys/time.h>
+
 namespace nokkhum {
 
 VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
@@ -31,13 +33,18 @@ VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 	std::ostringstream oss;
 	time_t rawtime;
 	time(&rawtime);
+
+	timeval tv;
+	gettimeofday(&tv, NULL);
+
 	tm* time_struct = localtime(&rawtime);
 	oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
 			<< std::setfill('0') << time_struct->tm_mon + 1 << "-"
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_mday << "-"
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_hour << "-"
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_min << "-"
-			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec << "-"
+			<< std::setw(5) << std::setfill('0') << tv.tv_usec
 			<< ".avi";
 	this->writer = new CvVideoWriter(oss.str(), vrp->getDirectory(),
 			vrp->getWidth(), vrp->getHeight(), vrp->getFps());

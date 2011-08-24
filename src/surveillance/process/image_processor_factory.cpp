@@ -41,7 +41,7 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 
 	} else if (ipp->getName() == "Face Detector") {
 		FaceDetectorProperty *fdp = dynamic_cast<FaceDetectorProperty*>(ipp);
-		FaceDetector *fd = new FaceDetector(*cv_mat_queue);
+		FaceDetector *fd = new FaceDetector(*cv_mat_queue, fdp);
 		return fd;
 	} else if (ipp->getName() == "Video Recorder") {
 		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);

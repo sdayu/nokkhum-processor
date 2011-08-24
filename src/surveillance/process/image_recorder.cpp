@@ -23,6 +23,11 @@ ImageRecorder::ImageRecorder(CvMatQueue &input_image_queue) :
 
 }
 
+ImageRecorder::ImageRecorder(CvMatQueue & input_image_queue,
+		ImageRecorderProperty *irp)  :
+		ImageProcessor("Image Recorder", input_image_queue){
+}
+
 ImageRecorder::~ImageRecorder() {
 	// TODO Auto-generated destructor stub
 }
@@ -38,17 +43,18 @@ void ImageRecorder::start() {
 		frame = input_image_queue.pop();
 
 		time_t rawtime;
-		time ( &rawtime );
-		tm* time_struct =  localtime(&rawtime);
+		time(&rawtime);
+		tm* time_struct = localtime(&rawtime);
 
 		std::string record_name;
 		std::ostringstream oss;
-		oss << time_struct->tm_year+1900
-				<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_mon+1
-				<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_mday
-				<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_hour
-				<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_min
-				<< "-" << std::setw(2) << std::setfill('0') << time_struct->tm_sec
+		oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
+				<< std::setfill('0') << time_struct->tm_mon + 1 << "-"
+				<< std::setw(2) << std::setfill('0') << time_struct->tm_mday
+				<< "-" << std::setw(2) << std::setfill('0')
+				<< time_struct->tm_hour << "-" << std::setw(2)
+				<< std::setfill('0') << time_struct->tm_min << "-"
+				<< std::setw(2) << std::setfill('0') << time_struct->tm_sec
 				<< ".png";
 
 		cv::imwrite(oss.str(), frame);

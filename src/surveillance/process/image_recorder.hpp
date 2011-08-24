@@ -9,12 +9,14 @@
 #define NOKKHUM_IMAGE_RECORDER_HPP_
 
 #include "image_processor.hpp"
+#include "../../config/image_recorder_property.hpp"
 
 namespace nokkhum {
 
 class ImageRecorder: public nokkhum::ImageProcessor {
 public:
 	ImageRecorder(CvMatQueue &input_image_queue);
+	ImageRecorder(CvMatQueue &input_image_queue, ImageRecorderProperty *irp);
 	virtual ~ImageRecorder();
 
 	void start();

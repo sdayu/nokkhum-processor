@@ -66,6 +66,8 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 	ImageProcessorFactory ipf;
 	ipf.getImageProcessorPool(processorProperty, mmq);
 
+	sleep(1);
+
 }
 
 } /* namespace nokkhum */

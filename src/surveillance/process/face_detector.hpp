@@ -13,11 +13,14 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 
+#include "../../config/face_detector_property.hpp"
+
 namespace nokkhum {
 
 class FaceDetector: public nokkhum::ImageProcessor {
 public:
 	FaceDetector(CvMatQueue &input_image_queue);
+	FaceDetector(CvMatQueue &input_image_queue, FaceDetectorProperty *fdp);
 	virtual ~FaceDetector();
 
 	void start();
@@ -26,6 +29,7 @@ private:
 	void detectAndDraw( cv::Mat& img,
 	                   cv::CascadeClassifier& cascade, cv::CascadeClassifier& nestedCascade,
 	                   double scale);
+	int interval;
 };
 
 }
