@@ -17,7 +17,10 @@
 
 #include "../../src/camera/cv_ip_camera.hpp"
 
-#include "../../src/surveillance/process/image_processor_factory.hpp"
+#include "../../src/camera/camera_factory.hpp"
+
+#include "../../src/surveillance/processor/image_processor_factory.hpp"
+#include "../../src/surveillance/acquisition/image_acquisition.hpp"
 
 namespace nokkhum {
 
@@ -60,6 +63,12 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 
 //	CvIpCamera cvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(), cameraProperty->getFps(),
 //			cameraProperty->getUsername(), cameraProperty->getPassword());
+
+	// camera property
+	CameraFactory cf;
+	nokkhum::Camera *camera = cf.getCamera(cameraProperty);
+
+	ImageAcquisition ia(*camera, imageProcessorPropertyVector.size());
 
 
 	MultipleMatQueue mmq(2);

@@ -13,22 +13,27 @@
 
 #include <opencv2/core/core.hpp>
 
-#include "../camera/cv_ip_camera.hpp"
-#include "../util/multiple_mat_queue.hpp"
+#include "../../camera/cv_ip_camera.hpp"
+#include "../../util/multiple_mat_queue.hpp"
+
+#include "../job.hpp"
 
 namespace nokkhum {
 
-class ImageAcquisition {
+class ImageAcquisition : public Job {
 public:
-	ImageAcquisition(nokkhum::Camera& camera, MultipleMatQueue& multiple_queue);
+	ImageAcquisition(nokkhum::Camera& camera, unsigned int queue_size);
 	virtual ~ImageAcquisition();
 
 	void start();
 	void operator()();
 	bool running;
 	void stop();
+
+	CvMatQueue& getNewOutputImageQueue();
+
 private:
-	nokkhum::MultipleMatQueue& multiple_queue;
+	nokkhum::MultipleMatQueue multiple_queue;
 	nokkhum::Camera &camera;
 
 };

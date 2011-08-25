@@ -12,7 +12,7 @@
 #include <map>
 #include <json_spirit.h>
 
-#include "../surveillance/process/image_processor.hpp"
+#include "../surveillance/processor/image_processor.hpp"
 #include "../camera/camera.hpp"
 #include "image_processor_property.hpp"
 #include "camera_property.hpp"

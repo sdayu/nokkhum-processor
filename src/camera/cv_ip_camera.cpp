@@ -23,7 +23,7 @@ namespace nokkhum
 		capture = new VideoCapture(url);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
-        cout<< "test: "<<this->capture->get(CV_CAP_PROP_FPS)<<endl;
+        cout<< "url: "<<url<<endl;
 
         if(!capture->isOpened()){
             cerr << "Camera failed to open!\n";

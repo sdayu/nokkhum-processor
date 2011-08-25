@@ -5,7 +5,7 @@
 		"fps":10,
 		"width":320,
 		"height":240,
-		"url":"http://url.com",
+		"url":"rtsp://172.30.143.249/play1.sdp",
 		"username":"",
 		"password":""
 		},

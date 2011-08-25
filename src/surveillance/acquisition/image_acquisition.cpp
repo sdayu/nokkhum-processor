@@ -10,11 +10,12 @@
 namespace nokkhum {
 
 ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
-		MultipleMatQueue& multiple_queue):
-		camera(camera), multiple_queue(multiple_queue)
-		{
+		unsigned int queue_size) :
+		Job("ImageAcquisition"), camera(camera) {
 
 	this->running = false;
+
+
 }
 
 ImageAcquisition::~ImageAcquisition() {
@@ -29,7 +30,7 @@ void ImageAcquisition::start() {
 	while (running) {
 		camera >> image;
 		copy_image = image.clone();
-		for(i = 0; i < multiple_queue.getSize(); ++i){
+		for (i = 0; i < multiple_queue.getSize(); ++i) {
 			multiple_queue.get(i).push(copy_image);
 		}
 	}
@@ -41,6 +42,10 @@ void ImageAcquisition::operator()() {
 
 void ImageAcquisition::stop() {
 	this->running = false;
+}
+
+CvMatQueue & ImageAcquisition::getNewOutputImageQueue() {
+	return this->multiple_queue.getNew();
 }
 
 }
