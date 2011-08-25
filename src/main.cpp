@@ -23,7 +23,21 @@ using namespace cv;
 int main() {
 	cout << "Hello World, Hello Nuk Khum" << endl; // prints Hello World, Hello Nukkhum
 
-    nokkhum::VideoSurveillance vs;
+	std::string file_name = "config/camera.json";
+	std::ifstream ifs(file_name.c_str(), std::ios::in);
+
+	if (!ifs) {
+		std::cerr << "file error: " << file_name << std::endl;
+		return;
+	}
+	std::ostringstream oss;
+
+	oss << ifs.rdbuf();
+
+	nokkhum::Configuration conf(oss.str());
+	ifs.close();
+
+    nokkhum::VideoSurveillance vs(conf);
     vs.start();
 
     return 0;

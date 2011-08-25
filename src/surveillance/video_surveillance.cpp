@@ -22,67 +22,57 @@ using std::string;
 #include "acquisition/image_acquisition.hpp"
 #include "processor/video_recorder.hpp"
 
+#include "../camera/camera_factory.hpp"
+#include "processor/image_processor_factory.hpp"
+
 #include "../video/cv_video_writer.hpp"
 #include "../util/multiple_mat_queue.hpp"
+
 #include "processor/motion_detector.hpp"
 #include "processor/face_detector.hpp"
 
 namespace nokkhum {
 
-VideoSurveillance::VideoSurveillance() {
+VideoSurveillance::VideoSurveillance(Configuration &conf) {
+	camera_property = conf.getCameraProperty();
+	image_processor_property = conf.getImageProcessorProperty();
 
+	CameraFactory cf;
+	this->camera = cf.getCamera(camera_property);
+	this->image_acquisition = new ImageAcquisition(*camera, image_processor_property->getImageProcessorPropertyVector().size());
+
+	ImageProcessorFactory ipf;
+	this->image_processor_pool = ipf.getImageProcessorPool(image_processor_property, *this->image_acquisition->getOutputImageQueue());
 }
 
 VideoSurveillance::~VideoSurveillance() {
-	// TODO Auto-generated destructor stub
+	delete camera_property;
+	delete image_processor_property;
+
+	camera_property = nullptr;
+	image_processor_property = nullptr;
 }
 
 // This member function start video surveillance process
 void VideoSurveillance::start() {
 
-	//CvIpCamera camera(320, 240, 10, "rtsp://172.30.140.204/play2.sdp");
-	CvIpCamera camera(320, 240, 10, "rtsp://172.30.143.249/play2.sdp");
+	vector<thread*> thread_pool;
 
-	MultipleMatQueue multiple_queue(3);
+    thread acquisiting(std::ref(*this->image_acquisition));
 
-	ImageAcquisition acquisition(camera, 3);
-	MotionDetector montion_detection(multiple_queue.get(1));
-	FaceDetector face_detection(multiple_queue.get(2));
-
-    std::cout<< "start initial"<<std::endl;
-    thread acquisiting(std::ref(acquisition));
-//    thread recorder(std::ref(video_recorder));
-    thread motion_thread(std::ref(montion_detection));
-    thread face_thread(std::ref(face_detection));
-
-
-    //std::cout<< "write to:"<< writer.getRecordName() <<std::endl;
-    std::cout<< "main process sleep"<<std::endl;
+    for(unsigned long i = 0; i < image_processor_pool.size(); ++i){
+    	thread *working = new thread(std::ref(*image_processor_pool[i]));
+    	thread_pool.push_back(working);
+    }
 
     sleep(60);
 
-    std::cout<< "stop thread"<<std::endl;
-    acquisition.stop();
-    //video_recorder.stop();
-    montion_detection.stop();
-    face_detection.stop();
-
-    std::cout<< "begin finalization"<<std::endl;
-    std::cout<< "queue 0 size: " << multiple_queue.get(0).size() << std::endl;
-    std::cout<< "queue 1 size: " << multiple_queue.get(1).size() << std::endl;
-    std::cout<< "queue 2 size: " << multiple_queue.get(2).size() << std::endl;
-
-    acquisiting.join();
-//    recorder.join();
-    motion_thread.join();
-
-//    cv::namedWindow("show", 1);
-//    while(!multiple_queue.get(2).empty()){
-//    	cv::imshow("show",multiple_queue.get(2).pop());
-//    	if (cv::waitKey(30) > 0)
-//    		break;
-//    }
-
+    for(unsigned long i = 0; i < image_processor_pool.size(); ++i){
+    	image_processor_pool[i]->start();
+    	thread_pool[i]->join();
+    	delete thread_pool[i];
+    	thread_pool[i] = nullptr;
+    }
 
     std::cout<< "end"<<std::endl;
 }

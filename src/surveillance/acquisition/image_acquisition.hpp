@@ -31,6 +31,7 @@ public:
 	void stop();
 
 	CvMatQueue& getNewOutputImageQueue();
+	nokkhum::MultipleMatQueue *getOutputImageQueue();
 
 private:
 	nokkhum::MultipleMatQueue multiple_queue;

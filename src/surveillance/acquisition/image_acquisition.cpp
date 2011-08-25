@@ -15,7 +15,6 @@ ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
 
 	this->running = false;
 
-
 }
 
 ImageAcquisition::~ImageAcquisition() {
@@ -46,6 +45,10 @@ void ImageAcquisition::stop() {
 
 CvMatQueue & ImageAcquisition::getNewOutputImageQueue() {
 	return this->multiple_queue.getNew();
+}
+
+nokkhum::MultipleMatQueue *ImageAcquisition::getOutputImageQueue() {
+	return &this->multiple_queue;
 }
 
 }

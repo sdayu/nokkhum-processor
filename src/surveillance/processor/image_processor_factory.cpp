@@ -56,7 +56,7 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 	return nullptr;
 }
 
-void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
+std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 		MultipleMatQueue &mmq) {
 	ImageProcessor *tmp = nullptr;
 
@@ -107,6 +107,8 @@ void ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
 	std::cout
 			<< "-------------------------- --> Image Processor Property --------------------------------------"
 			<< std::endl;
+
+	return image_processor_pool;
 
 }
 

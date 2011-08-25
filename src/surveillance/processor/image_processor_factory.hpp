@@ -22,7 +22,7 @@ public:
 	virtual ~ImageProcessorFactory();
 
 	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
-	void getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
+	std::vector<ImageProcessor*> getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
 
 	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorProperty*> &ippv, ImageProcessor *parent_image_processor);
 };
