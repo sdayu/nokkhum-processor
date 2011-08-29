@@ -33,7 +33,7 @@ using std::string;
 
 namespace nokkhum {
 
-VideoSurveillance::VideoSurveillance(Configuration &conf) {
+VideoSurveillance::VideoSurveillance(Configuration &conf) : Job("Video Surveillance") {
 	camera_property = conf.getCameraProperty();
 	image_processor_property = conf.getImageProcessorProperty();
 
@@ -65,10 +65,11 @@ void VideoSurveillance::start() {
     	thread_pool.push_back(working);
     }
 
+    std::cout<<"sleep in vs"<<std::endl;
     sleep(60);
 
     for(unsigned long i = 0; i < image_processor_pool.size(); ++i){
-    	image_processor_pool[i]->start();
+    	image_processor_pool[i]->stop();
     	thread_pool[i]->join();
     	delete thread_pool[i];
     	thread_pool[i] = nullptr;

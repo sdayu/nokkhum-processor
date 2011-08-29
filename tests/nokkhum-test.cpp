@@ -16,6 +16,7 @@ using namespace std;
 
 #include "json_test/json_parser_test.hpp"
 #include "processor_builder/processor_builder.hpp"
+#include "surveillance/surveillance.hpp"
 
 int main() {
 	cout << "Hello World, Hello Nukkhum" << endl; // prints Hello World, Hello Nukkhum
@@ -24,8 +25,11 @@ int main() {
 //	CppUnit::TestCaller<nokkhum::JsonParserTest> test( "testJsonParser",
 //	                                             &nokkhum::JsonParserTest::testJsonParser );
 
-	CppUnit::TestCaller<nokkhum::ProcessorBuilderTest> test( "testProcessorBuilder",
-		                                             &nokkhum::ProcessorBuilderTest::testProcessorBuilder );
+//	CppUnit::TestCaller<nokkhum::ProcessorBuilderTest> test( "testProcessorBuilder",
+//		                                             &nokkhum::ProcessorBuilderTest::testProcessorBuilder );
+
+	CppUnit::TestCaller<nokkhum::Surveillance> test( "testSurveillance",
+		                                             &nokkhum::Surveillance::testSurveillance );
 
 	CppUnit::TestResult result;
 	test.run( &result );

@@ -13,7 +13,7 @@
 
 #include <opencv2/core/core.hpp>
 
-#include "../../camera/cv_ip_camera.hpp"
+#include "../../camera/camera.hpp"
 #include "../../util/multiple_mat_queue.hpp"
 
 #include "../job.hpp"
@@ -30,7 +30,7 @@ public:
 	bool running;
 	void stop();
 
-	CvMatQueue& getNewOutputImageQueue();
+	CvMatQueue *getNewOutputImageQueue();
 	nokkhum::MultipleMatQueue *getOutputImageQueue();
 
 private:

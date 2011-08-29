@@ -26,14 +26,18 @@ CvVideoWriter::CvVideoWriter(string filename, string directory, int width,
 
 CvVideoWriter::~CvVideoWriter() {
 	delete record;
-	record = NULL;
+	record = nullptr;
 }
 
 void CvVideoWriter::open(string filename, string directory, int width,
 		int height, int frame_rate) {
+	if (record) {
+		delete record;
+		record = nullptr;
+	}
 	record = new cv::VideoWriter(getRecordName().c_str(),
 			CV_FOURCC('D', 'I', 'V', 'X'), frame_rate, cv::Size(width, height),
-			//0, fps, cv::Size(width, height),
+			//CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
 			true);
 }
 

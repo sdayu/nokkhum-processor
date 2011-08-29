@@ -33,7 +33,8 @@ MotionDetector::~MotionDetector() {
 }
 
 void MotionDetector::start() {
-//	cv::namedWindow("Motion Detection", 1);
+	std::cout<<"Motion detector start"<<std::endl;
+	cv::namedWindow("Motion Detection", 1);
 
 	cv::Mat prevgray, gray, flow, cflow, frame;
 
@@ -50,6 +51,11 @@ void MotionDetector::start() {
 		}
 
 		frame = input_image_queue.pop();
+
+		for(unsigned long i = 0;i<output_image_queue.getSize();++i)
+			output_image_queue.get(i)->push(frame);
+
+
 		if(image_count++ < compute_step){
 			continue;
 		}
@@ -82,11 +88,11 @@ void MotionDetector::start() {
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 			}
 
-			//cv::imshow("Motion Detection", cflow);
+			cv::imshow("Motion Detection", cflow);
 		}
 
-//		if (cv::waitKey(30) >= 0)
-//			break;
+		if (cv::waitKey(30) >= 0)
+			break;
 
 		std::swap(prevgray, gray);
 	}

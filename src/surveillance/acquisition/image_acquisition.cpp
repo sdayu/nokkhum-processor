@@ -15,6 +15,10 @@ ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
 
 	this->running = false;
 
+	for(unsigned int i = 0; i < queue_size; ++i){
+		this->multiple_queue.getNew();
+	}
+
 }
 
 ImageAcquisition::~ImageAcquisition() {
@@ -30,7 +34,7 @@ void ImageAcquisition::start() {
 		camera >> image;
 		copy_image = image.clone();
 		for (i = 0; i < multiple_queue.getSize(); ++i) {
-			multiple_queue.get(i).push(copy_image);
+			multiple_queue.get(i)->push(copy_image);
 		}
 	}
 }
@@ -43,7 +47,7 @@ void ImageAcquisition::stop() {
 	this->running = false;
 }
 
-CvMatQueue & ImageAcquisition::getNewOutputImageQueue() {
+CvMatQueue* ImageAcquisition::getNewOutputImageQueue() {
 	return this->multiple_queue.getNew();
 }
 

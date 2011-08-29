@@ -29,19 +29,19 @@ MultipleMatQueue::~MultipleMatQueue() {
 		}
 }
 
-CvMatQueue & MultipleMatQueue::get(int index) {
-	return *cvmat_queue_container[index];
+CvMatQueue* MultipleMatQueue::get(int index) {
+	return cvmat_queue_container[index];
 }
 
 int MultipleMatQueue::getSize() {
 	return cvmat_queue_container.size();
 }
 
-CvMatQueue & MultipleMatQueue::getNew() {
+CvMatQueue* MultipleMatQueue::getNew() {
 	CvMatQueue *newCvMatQueue = new CvMatQueue();
 	cvmat_queue_container.push_back(newCvMatQueue);
 
-	return *newCvMatQueue;
+	return newCvMatQueue;
 }
 
 void MultipleMatQueue::deleteQueue(int index) {

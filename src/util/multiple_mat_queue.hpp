@@ -21,10 +21,10 @@ public:
 	MultipleMatQueue();
 	virtual ~MultipleMatQueue();
 
-	CvMatQueue& get(int index);
+	CvMatQueue* get(int index);
 	int getSize();
 
-	CvMatQueue& getNew();
+	CvMatQueue* getNew();
 	void deleteQueue(int index);
 
 	private:

@@ -35,7 +35,7 @@ FaceDetector::~FaceDetector() {
 }
 
 void FaceDetector::start() {
-	cv::namedWindow("Face Detection", 1);
+//	cv::namedWindow("Face Detection", 1);
 
 	const int compute_step = 10;
 	int image_count = 0;
@@ -76,10 +76,10 @@ void FaceDetector::start() {
 
 		detectAndDraw(frame, cascade, nestedCascade, scale);
 
-		cv::imshow("Face Detection", frame);
+//		cv::imshow("Face Detection", frame);
 
-		if (cv::waitKey(30) > 0)
-			break;
+//		if (cv::waitKey(30) > 0)
+//			break;
 
 	}
 }

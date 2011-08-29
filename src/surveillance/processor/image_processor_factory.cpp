@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <vector>
+#include <exception>
 
 namespace nokkhum {
 
@@ -56,8 +57,8 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 	return nullptr;
 }
 
-std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(ImageProcessorProperty *ipp,
-		MultipleMatQueue &mmq) {
+std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
+		ImageProcessorProperty *ipp, MultipleMatQueue &mmq) {
 	ImageProcessor *tmp = nullptr;
 
 	std::cout
@@ -65,6 +66,7 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(ImageP
 			<< std::endl;
 
 	std::cout << "name: " << ipp->getName() << std::endl;
+	std::cout << "mmq size: " << mmq.getSize() << std::endl;
 	std::vector<ImageProcessor*> image_processor_pool;
 
 	CvMatQueue cv_mat_queue;
@@ -79,17 +81,21 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(ImageP
 		std::cout << "Build processor name V1: " << ippv[i]->getName()
 				<< std::endl;
 
-		auto cv_mat_queue = mmq.get(i);
+		CvMatQueue *cv_mat_queue = mmq.get(i);
 
-		tmp = this->getImageProcessor(ippv[i], &cv_mat_queue);
+		std::cout << "get queue " << std::endl;
+
+		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorPropertyVector().size();
 
 		std::cout << "size: " << size << std::endl;
-		if (size > 0){
-			auto imageProcessorPropertyVector = ippv[i]->getImageProcessorPropertyVector();
-			this->getImageProcessorFromVector(image_processor_pool, imageProcessorPropertyVector, tmp);
+		if (size > 0) {
+			auto imageProcessorPropertyVector =
+					ippv[i]->getImageProcessorPropertyVector();
+			this->getImageProcessorFromVector(image_processor_pool,
+					imageProcessorPropertyVector, tmp);
 		}
 
 	}
@@ -117,23 +123,24 @@ void ImageProcessorFactory::getImageProcessorFromVector(
 		std::vector<ImageProcessorProperty*> & ippv,
 		ImageProcessor *parent_image_processor) {
 
-
 	ImageProcessor *tmp = nullptr;
 	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ippv.size();
 			i++) {
 		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 				<< std::endl;
 
-		auto cv_mat_queue = parent_image_processor->getNewOutputImageQueue();
-		tmp = this->getImageProcessor(ippv[i], &cv_mat_queue);
+		CvMatQueue *cv_mat_queue = parent_image_processor->getNewOutputImageQueue();
+		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorPropertyVector().size();
 
 		std::cout << "size: " << size << std::endl;
-		if (size > 0){
-			auto imageProcessorPropertyVector = ippv[i]->getImageProcessorPropertyVector();
-			this->getImageProcessorFromVector(image_processor_pool, imageProcessorPropertyVector, tmp);
+		if (size > 0) {
+			auto imageProcessorPropertyVector =
+					ippv[i]->getImageProcessorPropertyVector();
+			this->getImageProcessorFromVector(image_processor_pool,
+					imageProcessorPropertyVector, tmp);
 		}
 
 	}

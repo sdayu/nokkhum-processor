@@ -30,7 +30,8 @@ void Job::stop() {
 }
 
 void Job::operator ()() {
-	running = true;
+	this->running = true;
+//	std::cout<<"Call start with operator () status: "<< this->running <<" this-> "<<this<<std::endl;
 	start();
 }
 

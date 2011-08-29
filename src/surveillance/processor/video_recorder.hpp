@@ -8,6 +8,8 @@
 #ifndef NOKKHUM_VIDEO_RECORDER_HPP_
 #define NOKKHUM_VIDEO_RECORDER_HPP_
 
+#include <string>
+
 #include <opencv2/core/core.hpp>
 
 #include "image_processor.hpp"
@@ -26,10 +28,15 @@ public:
 
 	void start();
 
+
 private:
 	nokkhum::VideoWriter *writer;
+	std::string filename;
+	std::string directory;
+	unsigned int width;
+	unsigned int height;
+	unsigned int fps;
 
-	bool running;
 };
 
 }

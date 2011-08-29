@@ -13,6 +13,8 @@
 
 #include <opencv2/core/core.hpp>
 
+#include "job.hpp"
+
 #include "../config/configuration.hpp"
 #include "../config/camera_property.hpp"
 #include "../config/image_processor_property.hpp"
@@ -25,7 +27,7 @@
 
 namespace nokkhum {
 
-class VideoSurveillance {
+class VideoSurveillance : public Job {
 public:
 	VideoSurveillance(Configuration &conf);
 	virtual ~VideoSurveillance();
