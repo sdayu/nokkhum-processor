@@ -3,8 +3,8 @@
 		"name":"Camera 1",
 		"model":"Logitech",
 		"fps":10,
-		"width":320,
-		"height":240,
+		"width":640,
+		"height":480,
 		"url":"rtsp://172.30.143.249/play1.sdp",
 		"username":"",
 		"password":""
@@ -13,15 +13,15 @@
 "processors":[
 		{
 		"name":"Motion Detector",
-		"interval":2,
+		"interval":3,
 		"resolution":98,
 		"processors":	[
 			{
 			"name":"Video Recorder",
 			"fps":10,
 			"directory":"/tmp",
-			"width":320,
-			"height":240
+			"width":640,
+			"height":480
 			},
 			{
 			"name":"Face Detector",
@@ -35,8 +35,8 @@
 		"name":"Video Recorder",
 		"fps":10,
 		"directory":"/tmp",
-		"width":320,
-		"height":240,
+		"width":640,
+		"height":420,
 		}
 		]
 

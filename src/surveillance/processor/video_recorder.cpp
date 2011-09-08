@@ -26,6 +26,8 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 	this->running = false;
 	this->writer = nullptr;
 
+	this->period = 60;
+
 	std::cout << "Construct video recorder without property" << std::endl;
 }
 
@@ -55,6 +57,7 @@ VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 	this->width = vrp->getWidth();
 	this->height = vrp->getHeight();
 	this->fps = vrp->getFps();
+	this->period = 10;
 
 	this->writer = new CvVideoWriter(oss.str(), vrp->getDirectory(),
 			vrp->getWidth(), vrp->getHeight(), vrp->getFps());
@@ -77,13 +80,31 @@ void VideoRecorder::start() {
 //	std::cout << "Start record tread/running status: " << running << " this-> "
 //			<< this << std::endl;
 
+	int last_minute = -1;
+
 	while (running) {
+		time_t rawtime;
+		time(&rawtime);
+
+		tm* time_struct = localtime(&rawtime);
+		int minute = time_struct->tm_min;
+
+
+
+		if (last_minute % this->period != 0  && minute % this->period == 0) {
+			std::cout<<"last minute: "<<last_minute<<" minute: "<<minute<<std::endl;
+			this->changeNewVideoWriter();
+		}
+
+		last_minute = minute;
+
 		if (input_image_queue.empty()) {
 //			std::cout << "sleep .zZ" << std::endl;
 			usleep(1000);
 			continue;
 		}
-		std::cout << "write to file " << this->filename<< std::endl;
+		std::cout<<"minute: "<<minute<<" sec: "<<time_struct->tm_sec<<std::endl;
+		std::cout << "write to file " << this->filename << std::endl;
 
 		frame = input_image_queue.pop();
 
@@ -94,6 +115,33 @@ void VideoRecorder::start() {
 //			break;
 	}
 
+}
+
+void VideoRecorder::changeNewVideoWriter() {
+
+	std::cout<<"Change new writer"<<std::endl;
+	std::ostringstream oss;
+	time_t rawtime;
+	time(&rawtime);
+
+	timeval tv;
+	gettimeofday(&tv, NULL);
+
+	tm* time_struct = localtime(&rawtime);
+	oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
+			<< std::setfill('0') << time_struct->tm_mon + 1 << "-"
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_mday << "-"
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_hour << "-"
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_min << "-"
+			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec << "-"
+			<< std::setw(5) << std::setfill('0') << tv.tv_usec << ".avi";
+
+	delete this->writer;
+	this->writer = nullptr;
+
+	this->writer = new CvVideoWriter(oss.str(), this->directory,
+				this->width, this->height, this->fps
+	);
 }
 
 }

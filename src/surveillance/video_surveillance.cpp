@@ -66,7 +66,7 @@ void VideoSurveillance::start() {
     }
 
     std::cout<<"sleep in vs"<<std::endl;
-    sleep(60);
+    sleep(600);
 
     for(unsigned long i = 0; i < image_processor_pool.size(); ++i){
     	image_processor_pool[i]->stop();

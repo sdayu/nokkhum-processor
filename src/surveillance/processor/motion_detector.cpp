@@ -41,8 +41,9 @@ void MotionDetector::start() {
 	int motion_count = 0;
 	int step = 15;
 
-	const int compute_step = 3;
 	int image_count = 0;
+
+	std::vector<cv::Mat> tmp_mat;
 
 	while (running) {
 
@@ -51,12 +52,9 @@ void MotionDetector::start() {
 		}
 
 		frame = input_image_queue.pop();
+		tmp_mat.push_back(frame);
 
-		for(unsigned long i = 0;i<output_image_queue.getSize();++i)
-			output_image_queue.get(i)->push(frame);
-
-
-		if(image_count++ < compute_step){
+		if(image_count++ < this->interval){
 			continue;
 		}
 		else{
@@ -86,6 +84,13 @@ void MotionDetector::start() {
 			if(motion_count > 4){
 				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+
+				for(unsigned long i = 0; i<output_image_queue.getSize();++i){
+					cv::Mat tmp_frame = tmp_mat[i];
+					for(unsigned long j = 0; j<output_image_queue.getSize();++j)
+						output_image_queue.get(j)->push(tmp_frame);
+				}
+				tmp_mat.clear();
 			}
 
 			cv::imshow("Motion Detection", cflow);

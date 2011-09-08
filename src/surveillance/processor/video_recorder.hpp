@@ -36,6 +36,9 @@ private:
 	unsigned int width;
 	unsigned int height;
 	unsigned int fps;
+	unsigned int period;
+
+	void changeNewVideoWriter();
 
 };
 
