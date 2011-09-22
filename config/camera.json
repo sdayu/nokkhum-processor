@@ -21,7 +21,8 @@
 			"fps":10,
 			"directory":"/tmp",
 			"width":640,
-			"height":480
+			"height":480,
+			"motion":true
 			},
 			{
 			"name":"Face Detector",

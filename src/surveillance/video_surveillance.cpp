@@ -66,14 +66,24 @@ void VideoSurveillance::start() {
     }
 
     std::cout<<"sleep in vs"<<std::endl;
-    sleep(600);
+    sleep(700);
+
+    std::cout<<"start terminate vs"<<std::endl;
+    this->image_acquisition->stop();
+    acquisiting.join();
 
     for(unsigned long i = 0; i < image_processor_pool.size(); ++i){
+    	std::cout<<"start to stop"<<std::endl;
     	image_processor_pool[i]->stop();
+    	std::cout<<"start to join"<<std::endl;
     	thread_pool[i]->join();
+    	std::cout<<"start to delete"<<std::endl;
     	delete thread_pool[i];
+    	std::cout<<"delete success"<<std::endl;
     	thread_pool[i] = nullptr;
     }
+
+
 
     std::cout<< "end"<<std::endl;
 }

@@ -9,6 +9,8 @@
 #define NOKKHUM_VIDEO_RECORDER_HPP_
 
 #include <string>
+#include <thread>
+#include <mutex>
 
 #include <opencv2/core/core.hpp>
 
@@ -27,6 +29,7 @@ public:
 	virtual ~VideoRecorder();
 
 	void start();
+	void stop();
 
 
 private:
@@ -38,7 +41,14 @@ private:
 	unsigned int fps;
 	unsigned int period;
 
-	void changeNewVideoWriter();
+	std::thread timer;
+	std::mutex writer_mutex;
+
+
+	void getNewVideoWriter();
+	void startRecord();
+	void startTimer();
+	void clock();
 
 };
 

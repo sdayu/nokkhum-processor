@@ -30,6 +30,7 @@ private:
 
     int interval;
     int resolution;
+    int drop_motion;
 };
 
 }

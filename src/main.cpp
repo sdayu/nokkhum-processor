@@ -9,6 +9,7 @@
 #include <ctime>
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #include <opencv2/core/core.hpp>
@@ -28,7 +29,7 @@ int main() {
 
 	if (!ifs) {
 		std::cerr << "file error: " << file_name << std::endl;
-		return;
+		return -1;
 	}
 	std::ostringstream oss;
 
