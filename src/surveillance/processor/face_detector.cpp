@@ -37,13 +37,12 @@ FaceDetector::~FaceDetector() {
 void FaceDetector::start() {
 //	cv::namedWindow("Face Detection", 1);
 
-	const int compute_step = 10;
 	int image_count = 0;
 
 	std::string cascadeName =
-			"/usr/share/doc/opencv-doc/examples/haarcascades/haarcascade_frontalface_alt.xml";
+			"/usr/share/opencv/haarcascades/haarcascade_frontalface_alt.xml";
 	std::string nestedCascadeName =
-			"/usr/share/doc/opencv-doc/examples/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
+			"/usr/share/opencv/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
 	double scale = 1.3;
 
 	cv::Mat frame, image;
@@ -60,32 +59,45 @@ void FaceDetector::start() {
 				<< std::endl;
 	}
 
+
 	while (running) {
 
 		while (input_image_queue.empty()) {
 			usleep(100);
 		}
 
+//		std::cout<< "wait: "<<image_count<<std::endl;
+
 		frame = input_image_queue.pop();
 
-		if (image_count++ < compute_step) {
+		if (++image_count < this->interval) {
 			continue;
 		} else {
 			image_count = 0; //reset image count
 		}
 
-		detectAndDraw(frame, cascade, nestedCascade, scale);
+//		std::cout<< "detect face"<<std::endl;
+
+		bool result = detectAndDraw(frame, cascade, nestedCascade, scale);
+		if (result){
+			for(int i = 0; i < output_image_queue.getSize(); ++i){
+//				std::cout<<"push face detect"<<std::endl;
+				output_image_queue.get(i)->push(frame);
+			}
+		}
+
 
 //		cv::imshow("Face Detection", frame);
 
-//		if (cv::waitKey(30) > 0)
-//			break;
+		if (cv::waitKey(30) > 0)
+			break;
 
 	}
 }
 
-void FaceDetector::detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
+bool FaceDetector::detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
 		cv::CascadeClassifier& nestedCascade, double scale) {
+	bool detect = false;
 	int i = 0;
 	// double t = 0;
 	std::vector<cv::Rect> faces;
@@ -118,6 +130,8 @@ void FaceDetector::detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
 		center.y = cvRound((r->y + r->height * 0.5) * scale);
 		radius = cvRound((r->width + r->height) * 0.25 * scale);
 		circle(img, center, radius, color, 3, 8, 0);
+		if (radius > 0)
+			detect = true;
 		if (nestedCascade.empty())
 			continue;
 		smallImgROI = smallImg(*r);
@@ -133,8 +147,13 @@ void FaceDetector::detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
 			center.y = cvRound((r->y + nr->y + nr->height * 0.5) * scale);
 			radius = cvRound((nr->width + nr->height) * 0.25 * scale);
 			circle(img, center, radius, color, 3, 8, 0);
+			if (radius > 0)
+				detect = true;
 		}
+
+
 	}
+	return detect;
 } // end detectAndDraw
 
 } //end namespce nokkhum

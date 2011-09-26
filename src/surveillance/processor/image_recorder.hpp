@@ -8,6 +8,8 @@
 #ifndef NOKKHUM_IMAGE_RECORDER_HPP_
 #define NOKKHUM_IMAGE_RECORDER_HPP_
 
+#include <string>
+
 #include "image_processor.hpp"
 #include "../../config/image_recorder_property.hpp"
 
@@ -20,6 +22,11 @@ public:
 	virtual ~ImageRecorder();
 
 	void start();
+
+private:
+	unsigned int width;
+	unsigned int height;
+	std::string directory;
 };
 
 } /* namespace nokkhum */

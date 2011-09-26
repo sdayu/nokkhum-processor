@@ -22,11 +22,20 @@
 			"directory":"/tmp",
 			"width":640,
 			"height":480,
-			"motion":true
+			"record_motion":true,
+			"maximum_wait_motion":1
 			},
 			{
 			"name":"Face Detector",
-			"interval":20
+			"interval":5,
+			"processors":	[
+				{
+				"name":"Image Recorder",
+				"directory":"/tmp",
+				"width":640,
+				"height":480
+				}
+			]
 			}
 			
 			]

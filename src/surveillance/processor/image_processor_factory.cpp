@@ -17,6 +17,7 @@
 #include "image_processor.hpp"
 #include "video_recorder.hpp"
 #include "image_recorder.hpp"
+#include "video_motion_recorder.hpp"
 
 #include <iostream>
 #include <vector>
@@ -44,13 +45,20 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 		FaceDetectorProperty *fdp = dynamic_cast<FaceDetectorProperty*>(ipp);
 		FaceDetector *fd = new FaceDetector(*cv_mat_queue, fdp);
 		return fd;
+
 	} else if (ipp->getName() == "Video Recorder") {
 		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
 		VideoRecorder *vr = new VideoRecorder(*cv_mat_queue, vrp);
 		return vr;
+
+	} else if (ipp->getName() == "Video Motion Recorder") {
+		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
+		VideoMotionRecorder *vmr = new VideoMotionRecorder(*cv_mat_queue, vrp);
+		return vmr;
+
 	} else if (ipp->getName() == "Image Recorder") {
 		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*>(ipp);
-		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue);
+		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue, irp);
 		return ir;
 	}
 
@@ -129,7 +137,8 @@ void ImageProcessorFactory::getImageProcessorFromVector(
 		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 				<< std::endl;
 
-		CvMatQueue *cv_mat_queue = parent_image_processor->getNewOutputImageQueue();
+		CvMatQueue *cv_mat_queue =
+				parent_image_processor->getNewOutputImageQueue();
 		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 

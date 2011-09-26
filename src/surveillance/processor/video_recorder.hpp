@@ -32,7 +32,7 @@ public:
 	void stop();
 
 
-private:
+protected:
 	nokkhum::VideoWriter *writer;
 	std::string filename;
 	std::string directory;
@@ -48,6 +48,7 @@ private:
 	void getNewVideoWriter();
 	void startRecord();
 	void startTimer();
+	void stopTimer();
 	void clock();
 
 };

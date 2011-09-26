@@ -39,6 +39,7 @@ void Surveillance::testSurveillance() {
 
 	oss << ifs.rdbuf();
 
+	std::cout << "Surveillance start parsor ... " << std::endl;
 	nokkhum::Configuration conf(oss.str());
 	ifs.close();
 

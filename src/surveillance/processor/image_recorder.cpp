@@ -15,17 +15,21 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 namespace nokkhum {
 
 ImageRecorder::ImageRecorder(CvMatQueue &input_image_queue) :
-		ImageProcessor("Image Recorder", input_image_queue) {
-	// TODO Auto-generated constructor stub
+		ImageProcessor("Image Recorder", input_image_queue), width(320), height(240), directory("/tmp") {
 
 }
 
 ImageRecorder::ImageRecorder(CvMatQueue & input_image_queue,
 		ImageRecorderProperty *irp)  :
 		ImageProcessor("Image Recorder", input_image_queue){
+	this->width = irp->getWidth();
+	this->height = irp->getHeight();
+	this->directory = irp->getDirectory();
 }
 
 ImageRecorder::~ImageRecorder() {
@@ -35,6 +39,7 @@ ImageRecorder::~ImageRecorder() {
 void ImageRecorder::start() {
 	cv::Mat frame;
 	while (running) {
+//		std::cout<<"wait to save image"<<std::endl;
 
 		while (input_image_queue.empty()) {
 			usleep(100);
@@ -42,22 +47,26 @@ void ImageRecorder::start() {
 
 		frame = input_image_queue.pop();
 
-		time_t rawtime;
-		time(&rawtime);
-		tm* time_struct = localtime(&rawtime);
+		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+
+//		time_t rawtime;
+//		time(&rawtime);
+//		tm* time_struct = localtime(&rawtime);
 
 		std::string record_name;
 		std::ostringstream oss;
-		oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
-				<< std::setfill('0') << time_struct->tm_mon + 1 << "-"
-				<< std::setw(2) << std::setfill('0') << time_struct->tm_mday
-				<< "-" << std::setw(2) << std::setfill('0')
-				<< time_struct->tm_hour << "-" << std::setw(2)
-				<< std::setfill('0') << time_struct->tm_min << "-"
-				<< std::setw(2) << std::setfill('0') << time_struct->tm_sec
+		oss << this->directory <<"/"
+				<< current_time.date().year() << "-"
+				<< std::setw(2) << std::setfill('0') << (int)current_time.date().month() << "-"
+				<< std::setw(2) << std::setfill('0') << current_time.date().month() << "-"
+				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
+				<< std::setw(2)	<< std::setfill('0') << current_time.time_of_day().minutes() << "-"
+				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
+				<< std::setw(6) << std::setfill('0') << current_time.time_of_day().total_microseconds()%1000000
 				<< ".png";
 
 		cv::imwrite(oss.str(), frame);
+//		std::cout<<"save file name: "<<oss.str()<<std::endl;
 	}
 }
 

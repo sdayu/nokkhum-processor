@@ -32,7 +32,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 
 VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 		VideoRecorderProperty *vrp) :
-		ImageProcessor("VDO Recorder", input_image_queue) {
+		ImageProcessor(vrp->getName(), input_image_queue) {
 	this->running = false;
 	this->directory = vrp->getDirectory();
 	this->width = vrp->getWidth();
@@ -60,24 +60,10 @@ void VideoRecorder::start() {
 
 void VideoRecorder::stop() {
 	Job::stop();
-//	time_t rawtime;
-
-//	std::cout<<"runing: "<<this->running<<std::endl;
-	try{
-		this->timer.detach();
-	}
-	catch (std::exception e) {
-		//std::cout<<"exception:  !!!!"<<e.what()<<std::endl;
-	}
-//	time(&rawtime);
-//	std::cout<<"start join timer:"<<ctime(&rawtime)<<std::endl;
-	//this->timer.join();
-//	time(&rawtime);
-//	std::cout<<"start end join timer:"<<ctime(&rawtime)<<std::endl;
+	this->stopTimer();
 }
 
 void VideoRecorder::getNewVideoWriter() {
-
 
 	std::ostringstream oss;
 	time_t rawtime;
@@ -111,7 +97,15 @@ void VideoRecorder::startRecord() {
 	cv::Mat frame;
 	//	cv::namedWindow("video", 1);
 
-	//	std::cout << "Start record tread/running status: " << running << " this-> "
+	//	std::cout << "Start record tread/running status: " << runnin//	time_t rawtime;
+
+	//	std::cout<<"runing: "<<this->running<<std::endl;
+
+	//	time(&rawtime);
+	//	std::cout<<"start join timer:"<<ctime(&rawtime)<<std::endl;
+		//this->timer.join();
+	//	time(&rawtime);
+	//	std::cout<<"start end join timer:"<<ctime(&rawtime)<<std::endl;g << " this-> "
 	//			<< this << std::endl;
 
 	while (running) {
@@ -140,6 +134,13 @@ void VideoRecorder::startTimer() {
 	timer = std::thread(&VideoRecorder::clock, this);
 }
 
+void VideoRecorder::stopTimer() {
+	try {
+		this->timer.detach();
+	} catch (std::exception e) {
+		//std::cout<<"exception:  !!!!"<<e.what()<<std::endl;
+	}
+}
 void VideoRecorder::clock() {
 
 //	std::cout<<"This in clock: "<<this<<std::endl;
@@ -161,7 +162,6 @@ void VideoRecorder::clock() {
 		int sleep_time = (this->period
 				- ((this->period + current_time->tm_min) % this->period)) * 60;
 		sleep_time = sleep_time - current_time->tm_sec;
-
 
 		// std::cout << "sleep ---> " << sleep_time << std::endl;
 		sleep(sleep_time);

@@ -18,11 +18,18 @@ class VideoRecorderProperty: public RecorderProperty {
 public:
 	VideoRecorderProperty(std::string name, std::string directory, int width,
 			int height, int fps);
+	VideoRecorderProperty(std::string name, std::string directory, int width,
+			int height, int fps, bool record_motion, int maximum_wait_motion);
 	virtual ~VideoRecorderProperty();
 	int getFps() const;
 	void setFps(int fps);
+	int getMaximumWaitMotion() const;
+	bool isRecordMotion() const;
+
 private:
 	int fps;
+	bool record_motion;
+	int maximum_wait_motion;
 };
 
 } /* namespace nokkhum */

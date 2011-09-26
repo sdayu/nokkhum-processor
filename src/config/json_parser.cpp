@@ -146,9 +146,25 @@ ImageProcessorProperty* JsonParser::parseVideoRecorder(
 	width = this->findValue(image_processor_obj, "width").get_int();
 	height = this->findValue(image_processor_obj, "height").get_int();
 
-	// std::cout << "Processor name : " << name << std::endl;
+	std::cout << "Processor name : " << name << std::endl;
 
-	VideoRecorderProperty* vrp = new VideoRecorderProperty(name, directory, width, height, fps);
+	VideoRecorderProperty* vrp = nullptr;
+
+	if(this->findKey(image_processor_obj, "record_motion") && this->findKey(image_processor_obj, "maximum_wait_motion")){
+		bool record_motion = this->findValue(image_processor_obj, "record_motion").get_bool();
+		int maximum_wait_motion = this->findValue(image_processor_obj, "maximum_wait_motion").get_int();
+		name = "Video Motion Recorder";
+
+		if(record_motion){
+			vrp = new VideoRecorderProperty(name, directory, width, height, fps, record_motion, maximum_wait_motion);
+		}
+		else{
+			vrp = new VideoRecorderProperty(name, directory, width, height, fps);
+		}
+	}
+	else{
+		vrp = new VideoRecorderProperty(name, directory, width, height, fps);
+	}
 
 	if (this->findKey(image_processor_obj, "processors")){
 		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), vrp );
