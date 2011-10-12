@@ -6,6 +6,7 @@
  */
 
 #include "image_acquisition.hpp"
+#include <iostream>
 
 namespace nokkhum {
 
@@ -22,14 +23,14 @@ ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
 }
 
 ImageAcquisition::~ImageAcquisition() {
-	// TODO Auto-generated destructor stub
 }
 
 void ImageAcquisition::start() {
+
 	cv::Mat image, copy_image;
 	running = true;
-	int i = 0;
-
+	unsigned int i = 0;
+//	std::cout<<"ImageAcquisition start: "<<this<<std::endl;
 	while (running) {
 		camera >> image;
 		copy_image = image.clone();

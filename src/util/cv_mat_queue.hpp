@@ -21,7 +21,7 @@ public:
 	cv::Mat pop();
 	void push(cv::Mat);
 	bool empty();
-	int size();
+	unsigned int size();
 private:
 	std::queue<cv::Mat> cv_mat_queue;
 };

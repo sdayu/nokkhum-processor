@@ -10,6 +10,7 @@
 
 #include <queue>
 #include <vector>
+#include <thread>
 
 #include <opencv2/core/core.hpp>
 
@@ -25,14 +26,17 @@
 #include "processor/image_processor.hpp"
 #include "acquisition/image_acquisition.hpp"
 
+
 namespace nokkhum {
 
 class VideoSurveillance : public Job {
 public:
+	VideoSurveillance();
 	VideoSurveillance(Configuration &conf);
 	virtual ~VideoSurveillance();
 
 	void start();
+	void stop();
 
 private:
 	CameraProperty *camera_property;
@@ -42,6 +46,9 @@ private:
 	std::vector<ImageProcessor*> image_processor_pool;
 
 	ImageAcquisition *image_acquisition;
+
+	std::vector<std::thread*> thread_pool;
+	std::thread acquisiting;
 
 };
 

@@ -41,5 +41,7 @@ int main() {
     nokkhum::VideoSurveillance vs(conf);
     vs.start();
 
+
+
     return 0;
 }

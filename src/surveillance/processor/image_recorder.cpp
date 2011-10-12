@@ -41,11 +41,14 @@ void ImageRecorder::start() {
 	while (running) {
 //		std::cout<<"wait to save image"<<std::endl;
 
-		while (input_image_queue.empty()) {
-			usleep(100);
+		if (input_image_queue.empty()) {
+			usleep(1000);
+			//std::cout<<"sleep img"<<std::endl;
+			continue;
 		}
 
 		frame = input_image_queue.pop();
+
 
 		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 

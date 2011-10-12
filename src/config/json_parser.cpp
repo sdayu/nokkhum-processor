@@ -146,7 +146,7 @@ ImageProcessorProperty* JsonParser::parseVideoRecorder(
 	width = this->findValue(image_processor_obj, "width").get_int();
 	height = this->findValue(image_processor_obj, "height").get_int();
 
-	std::cout << "Processor name : " << name << std::endl;
+	//std::cout << "Processor name : " << name << std::endl;
 
 	VideoRecorderProperty* vrp = nullptr;
 

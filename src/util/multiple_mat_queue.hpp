@@ -22,7 +22,7 @@ public:
 	virtual ~MultipleMatQueue();
 
 	CvMatQueue* get(int index);
-	int getSize();
+	unsigned int getSize();
 
 	CvMatQueue* getNew();
 	void deleteQueue(int index);

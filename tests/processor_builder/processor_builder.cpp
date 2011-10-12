@@ -57,7 +57,7 @@ void ProcessorBuilderTest::testProcessorBuilder() {
 
 	auto imageProcessorPropertyVector = processorProperty->getImageProcessorPropertyVector();
 
-	for(auto i = 0; i < imageProcessorPropertyVector.size(); i++){
+	for(unsigned int i = 0; i < imageProcessorPropertyVector.size(); i++){
 		std::cout<<"Processor name: "<<imageProcessorPropertyVector[i]->getName()<<std::endl;
 	}
 

@@ -10,13 +10,14 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <glog/logging.h>
 
-#include "../../src/surveillance/video_surveillance.hpp"
+#include "../../src/surveillance/surveillance_manager.hpp"
 
 namespace nokkhum {
 
 Surveillance::Surveillance() {
-	// TODO Auto-generated constructor stub
+	google::InitGoogleLogging("nokkhum-processor-test");
 
 }
 
@@ -38,20 +39,19 @@ void Surveillance::testSurveillance() {
 	std::ostringstream oss;
 
 	oss << ifs.rdbuf();
-
-	std::cout << "Surveillance start parsor ... " << std::endl;
-	nokkhum::Configuration conf(oss.str());
+	std::cout << "Surveillance constructor ... " << std::endl;
+	LOG(INFO) << "Surveillance constructor ... " ;
+	SurveillanceManager sm(oss.str());
 	ifs.close();
 
-	std::cout << "Surveillance constructor ... " << std::endl;
-	nokkhum::VideoSurveillance vs(conf);
-
-	std::cout << "Start Surveillance ... " << std::endl;
-	vs.start();
+	std::cout << "sleep Surveillance" << std::endl;
+	LOG(INFO) << "sleep Surveillance" ;
+	sleep(60);
 
 	std::cout << "Stop Surveillance ... " << std::endl;
-	vs.stop();
+	sm.stopSurveillanceApplication();
 	std::cout << "End Surveillance ... " << std::endl;
+	LOG(INFO) << "End Surveillance ... ";
 
 }
 

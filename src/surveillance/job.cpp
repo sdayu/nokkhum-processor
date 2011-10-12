@@ -8,6 +8,7 @@
 #include "job.hpp"
 
 #include <iostream>
+#include <glog/logging.h>
 
 namespace nokkhum {
 
@@ -18,11 +19,12 @@ Job::Job() {
 
 Job::Job(std::string name, bool running) :
 		name(name), running(running) {
-
+	LOG(INFO) << "Construct Job name: " << name;
 }
 
 Job::~Job() {
-	// TODO Auto-generated destructor stub
+	//std::cout<<"Terminate Job name: "<<getName()<<std::endl;
+	LOG(INFO) << "Terminate Job name: "<<getName();
 }
 
 void Job::stop() {
@@ -32,6 +34,7 @@ void Job::stop() {
 void Job::operator ()() {
 	this->running = true;
 //	std::cout<<"Call start with operator () status: "<< this->running <<" this-> "<<this<<std::endl;
+	LOG(INFO) << "Job Start name: " << name;
 	start();
 }
 

@@ -33,7 +33,7 @@ CvMatQueue* MultipleMatQueue::get(int index) {
 	return cvmat_queue_container[index];
 }
 
-int MultipleMatQueue::getSize() {
+unsigned int MultipleMatQueue::getSize() {
 	return cvmat_queue_container.size();
 }
 

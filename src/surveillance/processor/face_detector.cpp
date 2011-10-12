@@ -62,8 +62,9 @@ void FaceDetector::start() {
 
 	while (running) {
 
-		while (input_image_queue.empty()) {
-			usleep(100);
+		if (input_image_queue.empty()) {
+			usleep(1000);
+			continue;
 		}
 
 //		std::cout<< "wait: "<<image_count<<std::endl;
@@ -80,7 +81,7 @@ void FaceDetector::start() {
 
 		bool result = detectAndDraw(frame, cascade, nestedCascade, scale);
 		if (result){
-			for(int i = 0; i < output_image_queue.getSize(); ++i){
+			for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
 //				std::cout<<"push face detect"<<std::endl;
 				output_image_queue.get(i)->push(frame);
 			}

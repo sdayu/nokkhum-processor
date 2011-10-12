@@ -56,8 +56,9 @@ void MotionDetector::start() {
 
 	while (running) {
 
-		while(input_image_queue.empty()){
-			usleep(100);
+		if(input_image_queue.empty()){
+			usleep(1000);
+			continue;
 		}
 
 		frame = input_image_queue.pop();
@@ -80,11 +81,13 @@ void MotionDetector::start() {
 		if (prevgray.data) {
 			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
 				1, 1.2, 0);
-			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
-			drawOptFlowMap(flow, cflow, step+1, 1.5, CV_RGB(0, 255, 0));
+			//cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
+			//drawOptFlowMap(flow, cflow, step+1, 1.5, CV_RGB(0, 255, 0));
 
-			for (int y = 0; y < cflow.rows; y += step+1){
-				for (int x = 0; x < cflow.cols; x += step+1) {
+//			for (int y = 0; y < cflow.rows; y += step+1){
+//				for (int x = 0; x < cflow.cols; x += step+1) {
+			for (int y = 0; y < flow.rows; y += step + 1) {
+				for (int x = 0; x < flow.cols; x += step + 1) {
 					const cv::Point2f& fxy = flow.at<cv::Point2f> (y, x);
 
 					if(cvRound(fxy.x) != 0 && cvRound(fxy.y)!= 0){
@@ -95,7 +98,7 @@ void MotionDetector::start() {
 
 			if(motion_count > 4){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-//				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 
 //				std::cout<<"temporary queue size: "<< std::dec << tmp_mat.size()<<std::endl;
 				for(unsigned long i = 0; i<tmp_mat.size();++i){

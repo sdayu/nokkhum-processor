@@ -27,7 +27,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 
 	this->period = 10;
 
-	std::cout << "Construct video recorder without property" << std::endl;
+	// std::cout << "Construct video recorder without property" << std::endl;
 }
 
 VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,

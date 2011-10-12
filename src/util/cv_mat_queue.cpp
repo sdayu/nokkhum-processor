@@ -35,7 +35,7 @@ bool CvMatQueue::empty() {
 	return cv_mat_queue.empty();
 }
 
-int CvMatQueue::size() {
+unsigned int CvMatQueue::size() {
 	return cv_mat_queue.size();
 }
 

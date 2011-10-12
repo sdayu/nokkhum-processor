@@ -12,6 +12,7 @@ using namespace std;
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
+
 using namespace cv;
 
 /* IP_CAMERA_HPP_ */
@@ -23,7 +24,7 @@ namespace nokkhum
 		capture = new VideoCapture(url);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
-        cout<< "url: "<<url<<endl;
+//        cout<< "url: "<<url<<endl;
 
         if(!capture->isOpened()){
             cerr << "Camera failed to open!\n";

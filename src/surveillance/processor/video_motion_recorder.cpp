@@ -17,11 +17,11 @@ VideoMotionRecorder::VideoMotionRecorder(CvMatQueue & input_image_queue,
 		VideoRecorderProperty *vrp) : VideoRecorder(input_image_queue, vrp) {
 	this->maximum_wait_motion = vrp->getMaximumWaitMotion();
 
-	std::cout<<"construct VideoMotionRecorder"<<std::endl;
+	// std::cout<<"construct VideoMotionRecorder"<<std::endl;
 }
 
 VideoMotionRecorder::~VideoMotionRecorder() {
-	std::cout<<"destroy VideoMotionRecorder"<<std::endl;
+	// std::cout<<"destroy VideoMotionRecorder"<<std::endl;
 }
 
 void VideoMotionRecorder::start(){
@@ -46,7 +46,7 @@ void VideoMotionRecorder::startRecord() {
 				if((unsigned int)td.seconds() > this->maximum_wait_motion){
 					stopTimer();
 					delete writer;
-					std::cout<<"stop timer: "<<td<<std::endl;
+					// std::cout<<"stop timer: "<<td<<std::endl;
 				}
 			}
 
