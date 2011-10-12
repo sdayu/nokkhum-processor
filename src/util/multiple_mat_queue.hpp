@@ -5,8 +5,8 @@
  *      Author: boatkrap
  */
 
-#ifndef MULTIPLE_QUEUE_HPP_
-#define MULTIPLE_QUEUE_HPP_
+#ifndef NOKKHUM_MULTIPLE_QUEUE_HPP_
+#define NOKKHUM_MULTIPLE_QUEUE_HPP_
 
 #include <vector>
 
@@ -33,4 +33,4 @@ public:
 
 }
 
-#endif /* MULTIPLE_QUEUE_HPP_ */
+#endif /* NOKKHUM_MULTIPLE_QUEUE_HPP_ */

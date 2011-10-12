@@ -5,8 +5,8 @@
  *      Author: boatkrap
  */
 
-#ifndef JSON_PASER_TEST_H_
-#define JSON_PASER_TEST_H_
+#ifndef NOKKHUM_JSON_PASER_TEST_H_
+#define NOKKHUM_JSON_PASER_TEST_H_
 
 #include <cppunit/TestFixture.h>
 

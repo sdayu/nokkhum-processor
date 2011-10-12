@@ -5,42 +5,23 @@
 // Copyright   :
 // Description : Hello World in C++
 //============================================================================
-#include <cmath>
-#include <ctime>
 
-#include <iostream>
-#include <fstream>
-using namespace std;
+#include <glog/logging.h>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include "surveillance/surveillance_manager.hpp"
 
-using namespace cv;
-
-#include "camera/cv_ip_camera.hpp"
-#include "video/cv_video_writer.hpp"
-#include "surveillance/video_surveillance.hpp"
-
-int main() {
-	cout << "Hello World, Hello Nuk Khum" << endl; // prints Hello World, Hello Nukkhum
-
-	std::string file_name = "config/camera.json";
-	std::ifstream ifs(file_name.c_str(), std::ios::in);
-
-	if (!ifs) {
-		std::cerr << "file error: " << file_name << std::endl;
+int main(int argc, char** argv) {
+	if(argc < 2)
 		return -1;
-	}
-	std::ostringstream oss;
 
-	oss << ifs.rdbuf();
+	google::InitGoogleLogging("nokkhum-processor");
+	LOG(INFO) << "Surveillance constructor ... " ;
+	nokkhum::SurveillanceManager sm(argv[1]);
 
-	nokkhum::Configuration conf(oss.str());
-	ifs.close();
+	sm.processCommand();
 
-    nokkhum::VideoSurveillance vs(conf);
-    vs.start();
-
+	sm.stopSurveillanceApplication();
+	LOG(INFO) << "End Surveillance ... ";
 
 
     return 0;

@@ -32,8 +32,8 @@ Configuration::Configuration(std::string json) {
 
 	std::vector<ImageProcessorProperty*> ipp = this->image_processor_property->getImageProcessorPropertyVector();
 
-//	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ipp.size();++i){
-//		std::cout<<"processor name: "<<ipp[i]->getName()<<std::endl;
+//	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ipp.size(); ++i){
+//		std::cout << "processor name: " << ipp[i]->getName() << std::endl;
 //	}
 }
 

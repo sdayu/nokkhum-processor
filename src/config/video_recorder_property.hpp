@@ -5,8 +5,8 @@
  *      Author: boatkrap
  */
 
-#ifndef VIDEO_RECORDER_PROPERTY_HPP_
-#define VIDEO_RECORDER_PROPERTY_HPP_
+#ifndef NOKKHUM_VIDEO_RECORDER_PROPERTY_HPP_
+#define NOKKHUM_VIDEO_RECORDER_PROPERTY_HPP_
 
 #include <string>
 
@@ -33,4 +33,4 @@ private:
 };
 
 } /* namespace nokkhum */
-#endif /* VIDEO_RECORDER_PROPERTY_HPP_ */
+#endif /* NOKKHUM_VIDEO_RECORDER_PROPERTY_HPP_ */

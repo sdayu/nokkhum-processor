@@ -5,8 +5,8 @@
  *      Author: boatkrap
  */
 
-#ifndef PROCESSOR_BUILDER_TEST_H_
-#define PROCESSOR_BUILDER_TEST_H_
+#ifndef NOKKHUM_PROCESSOR_BUILDER_TEST_H_
+#define NOKKHUM_PROCESSOR_BUILDER_TEST_H_
 
 #include <cppunit/TestFixture.h>
 
