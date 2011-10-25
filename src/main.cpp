@@ -5,14 +5,16 @@
 // Copyright   :
 // Description : Hello World in C++
 //============================================================================
-
+#include <iostream>
 #include <glog/logging.h>
 
 #include "surveillance/surveillance_manager.hpp"
 
 int main(int argc, char** argv) {
-	if(argc < 2)
+	if(argc < 2){
+		std::cerr << "arg miss match" << std::endl;
 		return -1;
+	}
 
 	google::InitGoogleLogging("nokkhum-processor");
 	LOG(INFO) << "Surveillance constructor ... " ;

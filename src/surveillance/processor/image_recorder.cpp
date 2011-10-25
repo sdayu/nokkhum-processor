@@ -17,6 +17,8 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "../../util/directory_manager.hpp"
+
 namespace nokkhum {
 
 ImageRecorder::ImageRecorder(CvMatQueue &input_image_queue) :
@@ -56,12 +58,17 @@ void ImageRecorder::start() {
 //		time(&rawtime);
 //		tm* time_struct = localtime(&rawtime);
 
+		nokkhum::DirectoryManager dm (this->directory, "image");
+		if(! dm.checkAndCreate()){
+
+		}
+
 		std::string record_name;
 		std::ostringstream oss;
-		oss << this->directory <<"/"
+		oss << dm.getDirectoryName() << "/"
 				<< current_time.date().year() << "-"
 				<< std::setw(2) << std::setfill('0') << (int)current_time.date().month() << "-"
-				<< std::setw(2) << std::setfill('0') << current_time.date().month() << "-"
+				<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
 				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
 				<< std::setw(2)	<< std::setfill('0') << current_time.time_of_day().minutes() << "-"
 				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"

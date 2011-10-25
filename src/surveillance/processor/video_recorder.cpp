@@ -16,6 +16,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "../../video/cv_video_writer.hpp"
 
+#include "../../util/directory_manager.hpp"
+
 #include <sys/time.h>
 
 namespace nokkhum {
@@ -65,12 +67,23 @@ void VideoRecorder::stop() {
 
 void VideoRecorder::getNewVideoWriter() {
 
+	nokkhum::DirectoryManager dm (this->directory, "video");
+	if(! dm.checkAndCreate()){
+
+	}
+
 	std::ostringstream oss;
 	time_t rawtime;
 	time(&rawtime);
 //	std::cout << "get new writer time: " <<ctime(&rawtime)<< std::endl;
 	timeval tv;
 	gettimeofday(&tv, NULL);
+
+	std::string name = this->getName();
+	for (int i  = 0; i < name.length(); ++i){
+		if (name.at(i) == ' ')
+			name.at(i) = '_';
+	}
 
 	tm* time_struct = localtime(&rawtime);
 	oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
@@ -79,13 +92,14 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_hour << "-"
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_min << "-"
 			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec << "-"
-			<< std::setw(6) << std::setfill('0') << tv.tv_usec << ".avi";
+			<< std::setw(6) << std::setfill('0') << tv.tv_usec << "-"
+			<< name << ".avi";
 
 	writer_mutex.lock();
 	delete this->writer;
 	this->writer = nullptr;
 
-	this->writer = new CvVideoWriter(oss.str(), this->directory, this->width,
+	this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(), this->width,
 			this->height, this->fps);
 	writer_mutex.unlock();
 

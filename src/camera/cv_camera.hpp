@@ -12,7 +12,6 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-using namespace cv;
 
 namespace nokkhum {
 
@@ -21,10 +20,10 @@ public:
 	CvCamera(int width, int height, int fps, int device);
 	virtual ~CvCamera();
 
-	void getImage(Mat& image);
+	void getImage(cv::Mat& image);
 
 private:
-	VideoCapture *capture;
+	cv::VideoCapture *capture;
 	int device;
 };
 
