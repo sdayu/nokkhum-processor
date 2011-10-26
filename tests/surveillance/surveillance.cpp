@@ -17,8 +17,9 @@
 namespace nokkhum {
 
 Surveillance::Surveillance() {
-	google::InitGoogleLogging("nokkhum-processor-test");
 
+	google::InitGoogleLogging("nokkhum-processor-test");
+	FLAGS_logbufsecs = 0;
 }
 
 Surveillance::~Surveillance() {

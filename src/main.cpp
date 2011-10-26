@@ -16,7 +16,10 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	google::InitGoogleLogging("nokkhum-processor");
+
+	google::InitGoogleLogging(argv[0]);
+	FLAGS_logbufsecs = 0;
+
 	LOG(INFO) << "Surveillance constructor ... " ;
 	nokkhum::SurveillanceManager sm(argv[1]);
 
