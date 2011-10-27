@@ -17,7 +17,10 @@ namespace nokkhum {
 
 SurveillanceManager::SurveillanceManager(std::string config) {
 
+	LOG(INFO) << "Start build configuration ";
 	conf = new nokkhum::Configuration(config);
+
+	LOG(INFO) << "Start construct VideoSurveillance ";
 	// need to check configuration is available
 	vs = new nokkhum::VideoSurveillance(*conf);
 	vs->start();

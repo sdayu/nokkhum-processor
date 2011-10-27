@@ -16,6 +16,8 @@
 #include <sstream>
 #include <vector>
 
+//#include <glog/logging.h>
+
 #include "../camera/cv_ip_camera.hpp"
 
 #include "../surveillance/processor/face_detector.hpp"
@@ -58,23 +60,25 @@ PropertyMap* JsonParser::parse(std::string json) {
 	PropertyMap *property_map = new PropertyMap();
 	Property *property = nullptr;
 
+//	LOG(DEBUG) << "JSON :" << json;
+//	LOG(DEBUG) << "parse camera :" << json_spirit::write(value);
 	property = this->parseCamera(obj["camera"].get_obj());
-
+//	LOG(DEBUG) << "end parse camera";
 	  // first insert function version (single parameter):
 	(*property_map)["camera"] = property;
-
+//	LOG(DEBUG) << "parse processor";
 	ImageProcessorProperty* ipp = new ImageProcessorProperty();
 
 	this->parseImageProcessor( obj["processors"].get_array(), ipp);
 	(*property_map)["processors"] = ipp;
 
 //	std::cout << std::endl << "---------- end ----------" << std::endl;
-
+//	LOG(INFO) << "success";
 	return property_map;
 }
 
 CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
-
+//	LOG(INFO) << "parse camera 0.0";
 	int width = 0;
 	int height = 0;
 	int fps = 0;
@@ -83,7 +87,7 @@ CameraProperty* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
 	std::string model;
 	std::string username;
 	std::string password;
-
+//	LOG(INFO) << "parse camera 0";
 	width = this->findValue(camera_obj, "width").get_int();
 	height = this->findValue(camera_obj, "height").get_int();
 	fps = this->findValue(camera_obj, "fps").get_int();

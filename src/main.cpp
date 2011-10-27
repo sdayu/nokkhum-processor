@@ -6,6 +6,7 @@
 // Description : Hello World in C++
 //============================================================================
 #include <iostream>
+#include <string>
 #include <glog/logging.h>
 
 #include "surveillance/surveillance_manager.hpp"
@@ -20,9 +21,13 @@ int main(int argc, char** argv) {
 	google::InitGoogleLogging(argv[0]);
 	FLAGS_logbufsecs = 0;
 
-	LOG(INFO) << "Surveillance constructor ... " ;
-	nokkhum::SurveillanceManager sm(argv[1]);
+	LOG(INFO) << "argv[1]: " << argv[1] ;
 
+	LOG(INFO) << "Surveillance constructor ... " ;
+	std::string attribute = argv[1];
+	nokkhum::SurveillanceManager sm(attribute);
+
+	LOG(INFO) << "Wait for command ... " ;
 	sm.processCommand();
 
 	sm.stopSurveillanceApplication();

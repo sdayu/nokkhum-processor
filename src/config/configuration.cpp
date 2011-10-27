@@ -4,6 +4,7 @@
  *  Created on: Jul 22, 2011
  *      Author: boatkrap
  */
+//#include <glog/logging.h>
 
 #include "configuration.hpp"
 #include "json_parser.hpp"
@@ -16,8 +17,11 @@ Configuration::Configuration() {
 }
 
 Configuration::Configuration(std::string json) {
+//	LOG(INFO) << "Start JSON Parser";
 	JsonParser jp;
+//	LOG(INFO) << "Start JSON Parser 2";
 	PropertyMap* property_map = jp.parse(json);
+//	LOG(INFO) << "end JSON Parser";
 	this->camera_property = (CameraProperty*)(*property_map)["camera"];
 	this->image_processor_property = (ImageProcessorProperty*)(*property_map)["processors"];
 
