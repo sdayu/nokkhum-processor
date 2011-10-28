@@ -35,6 +35,11 @@ void SurveillanceManager::processCommand() {
 	nokkhum::CommandParser cp;
 	while(true){
 
+		if(std::cin.eof()){
+			LOG(INFO) << "camera id: " << this->name << " terminate because compute is unavailable ";
+			this->stopSurveillanceApplication();
+			break;
+		}
 		std::getline( std::cin, command_string );
 
 		LOG(INFO) << "camera id: " << this->name << " get command -> " << command_string;
@@ -50,6 +55,7 @@ void SurveillanceManager::processCommand() {
 			this->stopSurveillanceApplication();
 			result_json.push_back( json_spirit::Pair( "result", "stop ok" ) );
 			std::cout<<json_spirit::write(result_json)<<std::endl;
+			LOG(INFO) << json_spirit::write(result_json);
 			break;
 		}
 		else if (cp.getCommand() == "start"){
@@ -62,6 +68,7 @@ void SurveillanceManager::processCommand() {
 				continue;
 			}
 			result_json.push_back( json_spirit::Pair( "result", "start ok" ) );
+			std::cout<<json_spirit::write(result_json)<<std::endl;
 			LOG(INFO) << json_spirit::write(result_json);
 		}
 

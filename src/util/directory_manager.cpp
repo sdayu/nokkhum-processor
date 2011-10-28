@@ -24,7 +24,9 @@ DirectoryManager::DirectoryManager(std::string root_directory, std::string type)
 			<< std::setfill('0') << (int) ((current_time.date().month()))
 			<< std::setw(2) << std::setfill('0') << current_time.date().day();
 	if (type == "image") {
-		oss << "/" << "images";
+		oss << "/" << "images" << "/"
+				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
+				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes();
 	} else if (type == "video") {
 		oss << "/" << "video";
 	} else {

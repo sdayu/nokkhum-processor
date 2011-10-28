@@ -14,6 +14,8 @@
 #include <exception>
 
 #include <opencv2/highgui/highgui.hpp>
+#include <glog/logging.h>
+
 #include "../../video/cv_video_writer.hpp"
 
 #include "../../util/directory_manager.hpp"
@@ -104,6 +106,8 @@ void VideoRecorder::getNewVideoWriter() {
 	writer_mutex.unlock();
 
 	this->filename = oss.str();
+	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName() << this->filename;
+
 }
 
 void VideoRecorder::startRecord() {
