@@ -19,11 +19,13 @@ public:
 	virtual ~SurveillanceManager();
 
 	void processCommand();
-	void startSurveillanceApplication();
+	void startSurveillanceApplication(std::string config);
 	void stopSurveillanceApplication();
 private:
 	nokkhum::VideoSurveillance* vs;
 	nokkhum::Configuration* conf;
+
+	std::string name;
 
 };
 

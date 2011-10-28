@@ -21,6 +21,7 @@ public:
 
 	void paseCommand(std::string json);
 	std::string getCommand();
+	std::string getCameraAttribute();
 
 private:
 	json_spirit::mValue value;

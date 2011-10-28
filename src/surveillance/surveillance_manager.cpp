@@ -8,6 +8,7 @@
 #include "surveillance_manager.hpp"
 
 #include <iostream>
+#include <exception>
 #include <glog/logging.h>
 
 #include "../surveillance/video_surveillance.hpp"
@@ -15,21 +16,13 @@
 
 namespace nokkhum {
 
-SurveillanceManager::SurveillanceManager(std::string config) {
-
-	LOG(INFO) << "Start build configuration ";
-	conf = new nokkhum::Configuration(config);
-
-	LOG(INFO) << "Start construct VideoSurveillance ";
-	// need to check configuration is available
-	vs = new nokkhum::VideoSurveillance(*conf);
-	vs->start();
-	LOG(INFO) << "SurveillanceManager start: " << conf->getCameraProperty()->getName();
+SurveillanceManager::SurveillanceManager(std::string name) : name(name) {
+	this->conf = nullptr;
 }
 
 SurveillanceManager::~SurveillanceManager() {
 	//std::cout << "Terminate SurveillanceManager" << conf->getCameraProperty()->getName() << std::endl;
-	LOG(INFO) << "Terminate SurveillanceManager name: " << conf->getCameraProperty()->getName();
+	LOG(INFO) << "Terminate SurveillanceManager name: " << this->name;
 	delete vs;
 	vs = nullptr;
 	delete conf;
@@ -40,10 +33,18 @@ void SurveillanceManager::processCommand() {
 	std::string command_string;
 	json_spirit::Object result_json;
 	nokkhum::CommandParser cp;
-	LOG(INFO) << "SurveillanceManager name: " << conf->getCameraProperty()->getName();
 	while(true){
-		std::cin >> command_string;
-		cp.paseCommand(command_string);
+
+		std::getline( std::cin, command_string );
+
+		LOG(INFO) << "camera id: " << this->name << " get command -> " << command_string;
+
+		try{
+			cp.paseCommand(command_string);
+		}
+		catch (std::exception e) {
+			LOG(ERROR) << "camera id: " << this->name << " get command error " << e.what();
+		}
 
 		if(cp.getCommand() == "stop"){
 			this->stopSurveillanceApplication();
@@ -52,17 +53,38 @@ void SurveillanceManager::processCommand() {
 			break;
 		}
 		else if (cp.getCommand() == "start"){
-			this->startSurveillanceApplication();
+			try{
+				this->startSurveillanceApplication(cp.getCameraAttribute());
+			}
+			catch (std::exception e) {
+				result_json.push_back( json_spirit::Pair( "result", e.what() ) );
+				LOG(ERROR) << e.what();
+				continue;
+			}
 			result_json.push_back( json_spirit::Pair( "result", "start ok" ) );
-			std::cout<<json_spirit::write(result_json)<<std::endl;
+			LOG(INFO) << json_spirit::write(result_json);
 		}
 
 		result_json.clear();
+
 	}
 }
 
-void SurveillanceManager::startSurveillanceApplication() {
+void SurveillanceManager::startSurveillanceApplication(std::string config) {
+
+	if(conf){
+		LOG(INFO) << "Try to start but ignor command";
+		return;
+	}
+
+	LOG(INFO) << "Start build configuration for camera id: " << this->name;
+	conf = new nokkhum::Configuration(config);
+
+	LOG(INFO) << "Start construct VideoSurveillance for camera id: " << this->name;
+	// need to check configuration is available
+	vs = new nokkhum::VideoSurveillance(*conf);
 	vs->start();
+	LOG(INFO) << "SurveillanceManager start: " << this->name;
 }
 
 void SurveillanceManager::stopSurveillanceApplication() {

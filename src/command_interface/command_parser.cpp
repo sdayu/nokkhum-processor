@@ -30,6 +30,10 @@ std::string CommandParser::getCommand() {
 	return obj["action"].get_str();
 }
 
+std::string CommandParser::getCameraAttribute() {
+	json_spirit::mObject obj = value.get_obj();
 
+	return obj["attributes"].get_str();
+}
 
 } /* namespace nokkhum */
