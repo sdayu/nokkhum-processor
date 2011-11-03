@@ -8,31 +8,40 @@
 #include <iostream>
 #include <string>
 #include <glog/logging.h>
+#include <boost/filesystem.hpp>
 
 #include "surveillance/surveillance_manager.hpp"
 
 int main(int argc, char** argv) {
-	if(argc < 2){
+	if (argc < 2) {
 		std::cerr << "arg miss match" << std::endl;
 		return -1;
 	}
 
-
 	google::InitGoogleLogging(argv[0]);
 	FLAGS_logbufsecs = 0;
 
-	LOG(INFO) << "argv[1]: " << argv[1] ;
+	std::string p = "/tmp/nokkhum/processor";
+	p = p + argv[1];
 
-	LOG(INFO) << "Surveillance constructor ... " ;
+	if (!boost::filesystem::exists(p)) {
+
+		if (boost::filesystem::create_directories(p)) {
+			LOG(INFO) << "Create log name: " << p;
+		}
+	}
+	FLAGS_log_dir = p.c_str();
+
+	LOG(INFO) << "Surveillance constructor ... ";
 	std::string attribute = argv[1];
 	nokkhum::SurveillanceManager sm(attribute);
 
-	LOG(INFO) << "Wait for command ... " ;
+	LOG(INFO) << "Wait for command ... ";
 	sm.processCommand();
+	LOG(INFO) << "End command ... ";
 
-	sm.stopSurveillanceApplication();
+//	sm.stopSurveillanceApplication();
 	LOG(INFO) << "End Surveillance ... ";
 
-
-    return 0;
+	return 0;
 }

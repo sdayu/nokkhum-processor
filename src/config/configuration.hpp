@@ -22,10 +22,13 @@ public:
 	virtual ~Configuration();
 	CameraProperty *getCameraProperty() const;
 	ImageProcessorProperty *getImageProcessorProperty() const;
+	std::string getAttributes() const;
 
 private:
 	CameraProperty *camera_property;
 	ImageProcessorProperty *image_processor_property;
+
+	std::string attributes;
 
 };
 

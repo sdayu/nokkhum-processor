@@ -16,7 +16,8 @@
 
 namespace nokkhum {
 
-SurveillanceManager::SurveillanceManager(std::string name) : name(name) {
+SurveillanceManager::SurveillanceManager(std::string name) :
+		name(name) {
 	this->conf = nullptr;
 }
 
@@ -33,42 +34,51 @@ void SurveillanceManager::processCommand() {
 	std::string command_string;
 	json_spirit::Object result_json;
 	nokkhum::CommandParser cp;
-	while(true){
+	while (true) {
 
-		if(std::cin.eof()){
-			LOG(INFO) << "camera id: " << this->name << " terminate because compute is unavailable ";
+		if (std::cin.eof()) {
+			LOG(INFO) << "camera id: " << this->name
+					<< " terminate because compute is unavailable ";
 			this->stopSurveillanceApplication();
 			break;
 		}
-		std::getline( std::cin, command_string );
 
-		LOG(INFO) << "camera id: " << this->name << " get command -> " << command_string;
+		std::getline(std::cin, command_string);
+		LOG(INFO) << "camera id: " << this->name << " get command -> "
+				<< command_string;
 
-		try{
+		try {
 			cp.paseCommand(command_string);
-		}
-		catch (std::exception e) {
-			LOG(ERROR) << "camera id: " << this->name << " get command error " << e.what();
+		} catch (std::exception e) {
+			LOG(ERROR) << "camera id: " << this->name
+					<< " get command error " << e.what();
+			continue;
 		}
 
-		if(cp.getCommand() == "stop"){
+		if (cp.getCommand() == "stop") {
 			this->stopSurveillanceApplication();
-			result_json.push_back( json_spirit::Pair( "result", "stop ok" ) );
-			std::cout<<json_spirit::write(result_json)<<std::endl;
+			result_json.push_back(json_spirit::Pair("result", "stop ok"));
+			std::cout << json_spirit::write(result_json) << std::endl;
 			LOG(INFO) << json_spirit::write(result_json);
 			break;
-		}
-		else if (cp.getCommand() == "start"){
-			try{
+		} else if (cp.getCommand() == "start") {
+			try {
 				this->startSurveillanceApplication(cp.getCameraAttribute());
-			}
-			catch (std::exception e) {
-				result_json.push_back( json_spirit::Pair( "result", e.what() ) );
+			} catch (std::exception e) {
+				result_json.push_back(json_spirit::Pair("result", e.what()));
 				LOG(ERROR) << e.what();
 				continue;
 			}
-			result_json.push_back( json_spirit::Pair( "result", "start ok" ) );
-			std::cout<<json_spirit::write(result_json)<<std::endl;
+			result_json.push_back(json_spirit::Pair("result", "start ok"));
+			std::cout << json_spirit::write(result_json) << std::endl;
+			LOG(INFO) << json_spirit::write(result_json);
+		} else if (cp.getCommand() == "get_attributes") {
+			result_json.push_back(json_spirit::Pair("result", this->conf->getAttributes()));
+			std::cout << json_spirit::write(result_json) << std::endl;
+			LOG(INFO) << json_spirit::write(result_json);
+		} else if (cp.getCommand() == "get_name") {
+			result_json.push_back(json_spirit::Pair("result", this->name));
+			std::cout << json_spirit::write(result_json) << std::endl;
 			LOG(INFO) << json_spirit::write(result_json);
 		}
 
@@ -79,7 +89,7 @@ void SurveillanceManager::processCommand() {
 
 void SurveillanceManager::startSurveillanceApplication(std::string config) {
 
-	if(conf){
+	if (conf) {
 		LOG(INFO) << "Try to start but ignor command";
 		return;
 	}
@@ -87,7 +97,8 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 	LOG(INFO) << "Start build configuration for camera id: " << this->name;
 	conf = new nokkhum::Configuration(config);
 
-	LOG(INFO) << "Start construct VideoSurveillance for camera id: " << this->name;
+	LOG(INFO) << "Start construct VideoSurveillance for camera id: "
+			<< this->name;
 	// need to check configuration is available
 	vs = new nokkhum::VideoSurveillance(*conf);
 	vs->start();
