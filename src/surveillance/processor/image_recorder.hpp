@@ -11,14 +11,14 @@
 #include <string>
 
 #include "image_processor.hpp"
-#include "../../config/image_recorder_property.hpp"
+#include "../../config/image_recorder_attribute.hpp"
 
 namespace nokkhum {
 
 class ImageRecorder: public nokkhum::ImageProcessor {
 public:
 	ImageRecorder(CvMatQueue &input_image_queue);
-	ImageRecorder(CvMatQueue &input_image_queue, ImageRecorderProperty *irp);
+	ImageRecorder(CvMatQueue &input_image_queue, ImageRecorderAttribute *irp);
 	virtual ~ImageRecorder();
 
 	void start();

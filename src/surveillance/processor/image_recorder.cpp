@@ -27,7 +27,7 @@ ImageRecorder::ImageRecorder(CvMatQueue &input_image_queue) :
 }
 
 ImageRecorder::ImageRecorder(CvMatQueue & input_image_queue,
-		ImageRecorderProperty *irp)  :
+		ImageRecorderAttribute *irp)  :
 		ImageProcessor("Image Recorder", input_image_queue){
 	this->width = irp->getWidth();
 	this->height = irp->getHeight();

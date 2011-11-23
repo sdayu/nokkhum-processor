@@ -1,20 +1,20 @@
 /*
- * Property.cpp
+ * Attribute.cpp
  *
  *  Created on: Jul 22, 2011
  *      Author: boatkrap
  */
 
-#include "property.hpp"
+#include "attribute.hpp"
 
 namespace nokkhum {
 
-Property::Property() {
+Attribute::Attribute() {
 	// TODO Auto-generated constructor stub
 
 }
 
-Property::~Property() {
+Attribute::~Attribute() {
 	// TODO Auto-generated destructor stub
 }
 

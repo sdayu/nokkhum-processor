@@ -17,7 +17,7 @@
 #include "image_processor.hpp"
 #include "../../video/video_writer.hpp"
 #include "../../util/cv_mat_queue.hpp"
-#include "../../config/video_recorder_property.hpp"
+#include "../../config/video_recorder_attribute.hpp"
 
 
 namespace nokkhum {
@@ -25,7 +25,7 @@ namespace nokkhum {
 class VideoRecorder : public nokkhum::ImageProcessor {
 public:
 	VideoRecorder(CvMatQueue& input_image_queue);
-	VideoRecorder(CvMatQueue& input_image_queue, VideoRecorderProperty* vrp);
+	VideoRecorder(CvMatQueue& input_image_queue, VideoRecorderAttribute* vrp);
 	virtual ~VideoRecorder();
 
 	void start();

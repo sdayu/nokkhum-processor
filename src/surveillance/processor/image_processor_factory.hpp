@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "image_processor.hpp"
-#include "../../config/image_processor_property.hpp"
+#include "../../config/image_processor_attribute.hpp"
 #include "../../util/cv_mat_queue.hpp"
 
 namespace nokkhum {
@@ -21,10 +21,10 @@ public:
 	ImageProcessorFactory();
 	virtual ~ImageProcessorFactory();
 
-	ImageProcessor* getImageProcessor(ImageProcessorProperty* ipp, CvMatQueue* cv_mat_queue = nullptr);
-	std::vector<ImageProcessor*> getImageProcessorPool(ImageProcessorProperty* ipp, MultipleMatQueue &mmq);
+	ImageProcessor* getImageProcessor(ImageProcessorAttribute* ipp, CvMatQueue* cv_mat_queue = nullptr);
+	std::vector<ImageProcessor*> getImageProcessorPool(ImageProcessorAttribute* ipp, MultipleMatQueue &mmq);
 
-	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorProperty*> &ippv, ImageProcessor *parent_image_processor);
+	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorAttribute*> &ippv, ImageProcessor *parent_image_processor);
 };
 
 } /* namespace nokkhum */

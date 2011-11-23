@@ -7,10 +7,10 @@
 
 #include "image_processor_factory.hpp"
 
-#include "../../config/motion_detector_property.hpp"
-#include "../../config/face_detector_property.hpp"
-#include "../../config/video_recorder_property.hpp"
-#include "../../config/image_recorder_property.hpp"
+#include "../../config/motion_detector_attribute.hpp"
+#include "../../config/face_detector_attribute.hpp"
+#include "../../config/video_recorder_attribute.hpp"
+#include "../../config/image_recorder_attribute.hpp"
 
 #include "face_detector.hpp"
 #include "motion_detector.hpp"
@@ -35,29 +35,29 @@ ImageProcessorFactory::~ImageProcessorFactory() {
 }
 
 ImageProcessor *ImageProcessorFactory::getImageProcessor(
-		ImageProcessorProperty *ipp, CvMatQueue* cv_mat_queue) {
+		ImageProcessorAttribute *ipp, CvMatQueue* cv_mat_queue) {
 	if (ipp->getName() == "Motion Detector") {
-		MotionDetectorProperty *mdp = dynamic_cast<MotionDetectorProperty*>(ipp);
+		MotionDetectorAttribute *mdp = dynamic_cast<MotionDetectorAttribute*>(ipp);
 		MotionDetector *md = new MotionDetector(*cv_mat_queue, mdp);
 		return md;
 
 	} else if (ipp->getName() == "Face Detector") {
-		FaceDetectorProperty *fdp = dynamic_cast<FaceDetectorProperty*>(ipp);
+		FaceDetectorAttribute *fdp = dynamic_cast<FaceDetectorAttribute*>(ipp);
 		FaceDetector *fd = new FaceDetector(*cv_mat_queue, fdp);
 		return fd;
 
 	} else if (ipp->getName() == "Video Recorder") {
-		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
+		VideoRecorderAttribute *vrp = dynamic_cast<VideoRecorderAttribute*>(ipp);
 		VideoRecorder *vr = new VideoRecorder(*cv_mat_queue, vrp);
 		return vr;
 
 	} else if (ipp->getName() == "Video Motion Recorder") {
-		VideoRecorderProperty *vrp = dynamic_cast<VideoRecorderProperty*>(ipp);
+		VideoRecorderAttribute *vrp = dynamic_cast<VideoRecorderAttribute*>(ipp);
 		VideoMotionRecorder *vmr = new VideoMotionRecorder(*cv_mat_queue, vrp);
 		return vmr;
 
 	} else if (ipp->getName() == "Image Recorder") {
-		ImageRecorderProperty *irp = dynamic_cast<ImageRecorderProperty*>(ipp);
+		ImageRecorderAttribute *irp = dynamic_cast<ImageRecorderAttribute*>(ipp);
 		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue, irp);
 		return ir;
 	}
@@ -66,11 +66,11 @@ ImageProcessor *ImageProcessorFactory::getImageProcessor(
 }
 
 std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
-		ImageProcessorProperty *ipp, MultipleMatQueue &mmq) {
+		ImageProcessorAttribute *ipp, MultipleMatQueue &mmq) {
 	ImageProcessor *tmp = nullptr;
 
 //	std::cout
-//			<< "-------------------------- Start Image Processor Property ------------------------------------"
+//			<< "-------------------------- Start Image Processor Attribute ------------------------------------"
 //			<< std::endl;
 //
 //	std::cout << "name: " << ipp->getName() << std::endl;
@@ -82,9 +82,9 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 
 	}
 
-	auto ippv = ipp->getImageProcessorPropertyVector();
+	auto ippv = ipp->getImageProcessorAttributeVector();
 
-	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ippv.size();
+	for (std::vector<ImageProcessorAttribute*>::size_type i = 0; i < ippv.size();
 			i++) {
 //		std::cout << "Build processor name V1: " << ippv[i]->getName()
 //				<< std::endl;
@@ -96,20 +96,20 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
-		int size = ippv[i]->getImageProcessorPropertyVector().size();
+		int size = ippv[i]->getImageProcessorAttributeVector().size();
 
 //		std::cout << "size: " << size << std::endl;
 		if (size > 0) {
-			auto imageProcessorPropertyVector =
-					ippv[i]->getImageProcessorPropertyVector();
+			auto imageProcessorAttributeVector =
+					ippv[i]->getImageProcessorAttributeVector();
 			this->getImageProcessorFromVector(image_processor_pool,
-					imageProcessorPropertyVector, tmp);
+					imageProcessorAttributeVector, tmp);
 		}
 
 	}
 
 //	std::cout
-//			<< "-------------------------- Show Image Processor Property --------------------------------------"
+//			<< "-------------------------- Show Image Processor Attribute --------------------------------------"
 //			<< std::endl;
 //	for (unsigned long i = 0; i < image_processor_pool.size(); i++) {
 //		if (image_processor_pool[i])
@@ -119,7 +119,7 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 //			std::cout << "Vector, processor name: nullptr" << std::endl;
 //	}
 //	std::cout
-//			<< "-------------------------- End Image Processor Property --------------------------------------"
+//			<< "-------------------------- End Image Processor Attribute --------------------------------------"
 //			<< std::endl;
 
 	return image_processor_pool;
@@ -128,11 +128,11 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 
 void ImageProcessorFactory::getImageProcessorFromVector(
 		std::vector<ImageProcessor*> & image_processor_pool,
-		std::vector<ImageProcessorProperty*> & ippv,
+		std::vector<ImageProcessorAttribute*> & ippv,
 		ImageProcessor *parent_image_processor) {
 
 	ImageProcessor *tmp = nullptr;
-	for (std::vector<ImageProcessorProperty*>::size_type i = 0; i < ippv.size();
+	for (std::vector<ImageProcessorAttribute*>::size_type i = 0; i < ippv.size();
 			i++) {
 //		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 //				<< std::endl;
@@ -142,14 +142,14 @@ void ImageProcessorFactory::getImageProcessorFromVector(
 		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
-		int size = ippv[i]->getImageProcessorPropertyVector().size();
+		int size = ippv[i]->getImageProcessorAttributeVector().size();
 
 //		std::cout << "size: " << size << std::endl;
 		if (size > 0) {
-			auto imageProcessorPropertyVector =
-					ippv[i]->getImageProcessorPropertyVector();
+			auto imageProcessorAttributeVector =
+					ippv[i]->getImageProcessorAttributeVector();
 			this->getImageProcessorFromVector(image_processor_pool,
-					imageProcessorPropertyVector, tmp);
+					imageProcessorAttributeVector, tmp);
 		}
 
 	}

@@ -1,23 +1,23 @@
 /*
- * camera_property.hpp
+ * camera_attribute.hpp
  *
  *  Created on: Jul 21, 2011
  *      Author: boatkrap
  */
 
-#ifndef NOKKHUM_CAMERA_PROPERTY_HPP_
-#define NOKKHUM_CAMERA_PROPERTY_HPP_
+#ifndef NOKKHUM_CAMERA_ATTRIBUTE_HPP_
+#define NOKKHUM_CAMERA_ATTRIBUTE_HPP_
 
 #include <string>
 
-#include "property.hpp"
+#include "attribute.hpp"
 
 namespace nokkhum {
 
-class CameraProperty : public Property {
+class CameraAttribute : public Attribute {
 public:
-	CameraProperty(std::string name, std::string model, std::string url, int width, int hight, int fps, std::string username, std::string password);
-	virtual ~CameraProperty();
+	CameraAttribute(std::string name, std::string model, std::string url, int width, int hight, int fps, std::string username, std::string password);
+	virtual ~CameraAttribute();
 
     int getFps() const;
     int getHeight() const;
@@ -49,4 +49,4 @@ private:
 };
 
 } /* namespace nokkhum */
-#endif /* NOKKHUM_CAMERA_PROPERTY_HPP_ */
+#endif /* NOKKHUM_CAMERA_ATTRIBUTE_HPP_ */

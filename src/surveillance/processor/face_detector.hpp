@@ -13,14 +13,14 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 
-#include "../../config/face_detector_property.hpp"
+#include "../../config/face_detector_attribute.hpp"
 
 namespace nokkhum {
 
 class FaceDetector: public nokkhum::ImageProcessor {
 public:
 	FaceDetector(CvMatQueue &input_image_queue);
-	FaceDetector(CvMatQueue &input_image_queue, FaceDetectorProperty *fdp);
+	FaceDetector(CvMatQueue &input_image_queue, FaceDetectorAttribute *fdp);
 	virtual ~FaceDetector();
 
 	void start();

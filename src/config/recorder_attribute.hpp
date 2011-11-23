@@ -1,22 +1,22 @@
 /*
- * recorder_property.hpp
+ * recorder_attribute.hpp
  *
  *  Created on: Jul 21, 2011
  *      Author: boatkrap
  */
 
-#ifndef NOKKHUM_RECORDER_PROPERTY_HPP_
-#define NOKKHUM_RECORDER_PROPERTY_HPP_
+#ifndef NOKKHUM_RECORDER_ATTRIBUTE_HPP_
+#define NOKKHUM_RECORDER_ATTRIBUTE_HPP_
 
-#include "image_processor_property.hpp"
+#include "image_processor_attribute.hpp"
 #include <string>
 
 namespace nokkhum {
 
-class RecorderProperty : public ImageProcessorProperty {
+class RecorderAttribute : public ImageProcessorAttribute {
 public:
-	RecorderProperty(std::string name, std::string directory, int width, int height);
-	virtual ~RecorderProperty();
+	RecorderAttribute(std::string name, std::string directory, int width, int height);
+	virtual ~RecorderAttribute();
     std::string getDirectory() const;
     int getHeight() const;
     int getWidth() const;
@@ -32,4 +32,4 @@ private:
 };
 
 } /* namespace nokkhum */
-#endif /* NOKKHUM_RECORDER_PROPERTY_HPP_ */
+#endif /* NOKKHUM_RECORDER_ATTRIBUTE_HPP_ */

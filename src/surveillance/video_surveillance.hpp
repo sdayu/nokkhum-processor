@@ -17,8 +17,8 @@
 #include "job.hpp"
 
 #include "../config/configuration.hpp"
-#include "../config/camera_property.hpp"
-#include "../config/image_processor_property.hpp"
+#include "../config/camera_attribute.hpp"
+#include "../config/image_processor_attribute.hpp"
 
 
 #include "../camera/camera.hpp"
@@ -39,8 +39,8 @@ public:
 	void stop();
 
 private:
-	CameraProperty *camera_property;
-	ImageProcessorProperty *image_processor_property;
+	CameraAttribute *camera_attribute;
+	ImageProcessorAttribute *image_processor_attribute;
 
 	nokkhum::Camera *camera;
 	std::vector<ImageProcessor*> image_processor_pool;

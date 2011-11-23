@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include "camera_property.hpp"
-#include "image_processor_property.hpp"
+#include "camera_attribute.hpp"
+#include "image_processor_attribute.hpp"
 
 namespace nokkhum {
 
@@ -20,13 +20,13 @@ public:
 	Configuration();
 	Configuration(std::string json);
 	virtual ~Configuration();
-	CameraProperty *getCameraProperty() const;
-	ImageProcessorProperty *getImageProcessorProperty() const;
+	CameraAttribute *getCameraAttribute() const;
+	ImageProcessorAttribute *getImageProcessorAttribute() const;
 	std::string getAttributes() const;
 
 private:
-	CameraProperty *camera_property;
-	ImageProcessorProperty *image_processor_property;
+	CameraAttribute *camera_attribute;
+	ImageProcessorAttribute *image_processor_attribute;
 
 	std::string attributes;
 

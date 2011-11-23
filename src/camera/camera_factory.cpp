@@ -19,11 +19,11 @@ CameraFactory::~CameraFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-nokkhum::Camera *CameraFactory::getCamera(nokkhum::CameraProperty *cameraProperty) {
-	LOG(INFO) << "Build camera name: " << cameraProperty->getName() << " url: " << cameraProperty->getUrl();
-	return new nokkhum::CvIpCamera(cameraProperty->getWidth(), cameraProperty->getHeight(),
-			cameraProperty->getFps(), cameraProperty->getUrl(), cameraProperty->getUsername(),
-			cameraProperty->getPassword());
+nokkhum::Camera *CameraFactory::getCamera(nokkhum::CameraAttribute *cameraAttribute) {
+	LOG(INFO) << "Build camera name: " << cameraAttribute->getName() << " url: " << cameraAttribute->getUrl();
+	return new nokkhum::CvIpCamera(cameraAttribute->getWidth(), cameraAttribute->getHeight(),
+			cameraAttribute->getFps(), cameraAttribute->getUrl(), cameraAttribute->getUsername(),
+			cameraAttribute->getPassword());
 }
 
 }

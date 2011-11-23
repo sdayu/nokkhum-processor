@@ -35,7 +35,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 }
 
 VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
-		VideoRecorderProperty *vrp) :
+		VideoRecorderAttribute *vrp) :
 		ImageProcessor(vrp->getName(), input_image_queue) {
 	this->running = false;
 	this->directory = vrp->getDirectory();

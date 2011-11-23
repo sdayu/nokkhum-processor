@@ -35,8 +35,8 @@ using std::string;
 
 namespace nokkhum {
 VideoSurveillance::VideoSurveillance(){
-	camera_property = nullptr;
-	image_processor_property = nullptr;
+	camera_attribute = nullptr;
+	image_processor_attribute = nullptr;
 	camera = nullptr;
 	image_acquisition = nullptr;
 }
@@ -45,17 +45,17 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 		Job("Video Surveillance") {
 	LOG(INFO) << "VideoSurveillance start constructor";
 
-	camera_property = conf.getCameraProperty();
-	image_processor_property = conf.getImageProcessorProperty();
+	camera_attribute = conf.getCameraAttribute();
+	image_processor_attribute = conf.getImageProcessorAttribute();
 
 	CameraFactory cf;
-	this->camera = cf.getCamera(camera_property);
+	this->camera = cf.getCamera(camera_attribute);
 	this->image_acquisition = new ImageAcquisition(*camera,
-			image_processor_property->getImageProcessorPropertyVector().size());
+			image_processor_attribute->getImageProcessorAttributeVector().size());
 
 	ImageProcessorFactory ipf;
 	this->image_processor_pool = ipf.getImageProcessorPool(
-			image_processor_property,
+			image_processor_attribute,
 			*this->image_acquisition->getOutputImageQueue());
 
 }
