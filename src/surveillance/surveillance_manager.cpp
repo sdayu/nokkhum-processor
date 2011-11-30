@@ -90,7 +90,7 @@ void SurveillanceManager::processCommand() {
 void SurveillanceManager::startSurveillanceApplication(std::string config) {
 
 	if (conf) {
-		LOG(INFO) << "Try to start but ignor command";
+		LOG(INFO) << "Try to start but ignore command";
 		return;
 	}
 

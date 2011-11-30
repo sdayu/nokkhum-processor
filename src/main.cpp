@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 	google::InitGoogleLogging(argv[0]);
 	FLAGS_logbufsecs = 0;
 
-	std::string p = "/tmp/nokkhum/processor";
+	std::string p = "/tmp/nokkhum-log/processor/";
 	p = p + argv[1];
 
 	if (!boost::filesystem::exists(p)) {
