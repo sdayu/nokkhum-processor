@@ -225,14 +225,14 @@ void RecordTimer::start(){
 	LOG(INFO) << "start Clock :";
 	running = true;
 	LOG(INFO) << "start Clock 1";
-	timer_thred = std::thread(&RecordTimer::clock, this);
+	timer_thred = boost::thread(&RecordTimer::clock, this);
 	LOG(INFO) << "end Clock :";
 }
 
 void RecordTimer::stop(){
 	LOG(INFO) << "stop Clock :";
 	running = false;
-	timer_thred.detach();
+	timer_thred.interrupt();
 	LOG(INFO) << "end stop Clock :";
 }
 

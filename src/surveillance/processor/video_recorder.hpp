@@ -10,6 +10,7 @@
 
 #include <string>
 #include <thread>
+#include <boost/thread.hpp>
 #include <mutex>
 
 #include <opencv2/core/core.hpp>
@@ -41,7 +42,7 @@ private:
 	bool running;
 	VideoRecorder *video_recorder;
 	int period;
-	std::thread timer_thred;
+	boost::thread timer_thred;
 };
 
 class VideoRecorder : public nokkhum::ImageProcessor {
