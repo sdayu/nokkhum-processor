@@ -32,7 +32,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 	this->writer = nullptr;
 
 	this->period = 10;
-	timer = nullptr;
+	this->timer = nullptr;
 
 	// std::cout << "Construct video recorder without property" << std::endl;
 }
@@ -47,21 +47,15 @@ VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 	this->fps = vrp->getFps();
 	this->period = 10;
 	this->writer = nullptr;
-
-	LOG(INFO) << "timer initial";
-	timer = nullptr;
-	LOG(INFO) << "end timer initial";
+	this->timer = nullptr;
 }
 
 VideoRecorder::~VideoRecorder() {
-
 	delete this->writer;
 	this->writer = nullptr;
 
 	delete this->timer;
 	this->timer = nullptr;
-
-//	std::cerr << "Terminate record tread" << std::endl;
 }
 
 void VideoRecorder::start() {
@@ -165,19 +159,22 @@ void VideoRecorder::startTimer() {
 	// LOG(INFO) << "Timer RUN";
 	this->timer = new RecordTimer(this, this->period);
 	this->timer->start();
-	LOG(INFO) << this->getName() << " start Timer";
+	// LOG(INFO) << this->getName() << " start Timer";
 }
 
 void VideoRecorder::stopTimer() {
+	// LOG(INFO) << this->getName() << " stop Timer";
 	try {
-		LOG(INFO) << this->getName() << " stop Timer";
-		this->timer->stop();
-		LOG(INFO) << this->getName() << " delete Timer";
-		delete this->timer;
-		this->timer = nullptr;
+		if(this->timer != nullptr){
+			this->timer->stop();
+			// LOG(INFO) << this->getName() << " delete Timer";
+			delete this->timer;
+			this->timer = nullptr;
+		}
 	} catch (std::exception e) {
 		LOG(INFO) << "exception in stop timer: " << e.what() << std::endl;
 	}
+	// LOG(INFO) << this->getName() << " end stop Timer";
 }
 
 bool VideoRecorder::is_writer_available(){
@@ -213,33 +210,31 @@ RecordTimer& RecordTimer::operator = (const RecordTimer& rt){
 }
 
 RecordTimer::~RecordTimer(){
-	LOG(INFO) << "begin teminate timmer id: "<<this;
-	LOG(INFO) << "joinable "<<this->timer_thred.joinable();
+	// LOG(INFO) << "begin teminate timmer id: "<<this;
 	if(!this->timer_thred.joinable())
 		this->timer_thred.join();
 
-	LOG(INFO) << "teminate timmer id: "<<this;
+	// LOG(INFO) << "teminate timmer id: "<<this;
 }
 
 void RecordTimer::start(){
-	LOG(INFO) << "start Clock :";
+	// LOG(INFO) << "start Clock :";
 	running = true;
-	LOG(INFO) << "start Clock 1";
 	timer_thred = boost::thread(&RecordTimer::clock, this);
-	LOG(INFO) << "end Clock :";
+	// LOG(INFO) << "end start Clock :";
 }
 
 void RecordTimer::stop(){
-	LOG(INFO) << "stop Clock :";
+	// LOG(INFO) << "stop Clock :";
 	running = false;
 	timer_thred.interrupt();
-	LOG(INFO) << "end stop Clock :";
+	// LOG(INFO) << "end stop Clock :";
 }
 
 void RecordTimer::clock(){
-	LOG(INFO) << "new Clock :"<<this<<" name: "<<video_recorder->getName()<<" thread id: "<<std::this_thread::get_id();
+	// LOG(INFO) << "new Clock :"<<this<<" name: "<<video_recorder->getName()<<" thread id: "<<std::this_thread::get_id();
 	while (running) {
-		LOG(INFO) << "Clock working: "<<this<<" name: "<<video_recorder->getName();
+		// LOG(INFO) << "Clock working: "<<this<<" name: "<<video_recorder->getName();
 		boost::posix_time::ptime start_time = boost::posix_time::microsec_clock::local_time();
 
 		if (start_time.time_of_day().minutes() % this->period == 0) {
@@ -258,16 +253,16 @@ void RecordTimer::clock(){
 		sleep_time = sleep_time - current_time.time_of_day().seconds();
 
 		if (sleep_time <= 120){
-			LOG(INFO) << "Clock sleep more time "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
+			// LOG(INFO) << "Clock sleep more time "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
 			sleep_time += (this->period*60);
 		}
 
 		// std::cout << "sleep ---> " << sleep_time << std::endl;
-		LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
+		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
 		sleep(sleep_time);
 
 	}
-	LOG(INFO) << "Clock end: "<<this<<" name: "<<video_recorder->getName();
+	// LOG(INFO) << "Clock end: "<<this<<" name: "<<video_recorder->getName();
 }
 
 }

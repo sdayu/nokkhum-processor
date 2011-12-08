@@ -46,18 +46,18 @@ void VideoMotionRecorder::startRecord() {
 					stopTimer();
 					delete writer;
 					writer = nullptr;
-					LOG(INFO) << "stop timer: "<<td<<std::endl;
+					// LOG(INFO) << "stop timer: "<<td<<std::endl;
 				}
 			}
 
-			continue;
+			if(!running)
+				return;
 		}
 
 		if(!writer){
-			LOG(INFO) << "Wait for start timer --> "<<input_image_queue.size()<<std::endl;
+			// LOG(INFO) << "get new writer --> "<<input_image_queue.size()<<std::endl;
 			this->getNewVideoWriter();
 			startTimer();
-			LOG(INFO) << "End Wait"<<std::endl;
 		}
 
 		frame = input_image_queue.pop();
