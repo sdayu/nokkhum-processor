@@ -28,8 +28,8 @@ public:
 
 private:
 	int fps;
-	bool record_motion;
 	int maximum_wait_motion;
+	bool record_motion;
 };
 
 } /* namespace nokkhum */

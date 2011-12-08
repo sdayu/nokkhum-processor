@@ -25,6 +25,7 @@ public:
 	virtual void writeFrame(Mat &frame) = 0;
 	string getRecordName();
 
+	virtual bool isAvailable();
 	virtual VideoWriter& operator <<(Mat& frame);
 
 private:

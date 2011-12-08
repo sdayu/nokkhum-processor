@@ -11,6 +11,8 @@
 
 #include <iostream>
 
+#include <glog/logging.h>
+
 namespace nokkhum {
 
 VideoMotionRecorder::VideoMotionRecorder(CvMatQueue & input_image_queue,
@@ -24,45 +26,44 @@ VideoMotionRecorder::~VideoMotionRecorder() {
 	// std::cout<<"destroy VideoMotionRecorder"<<std::endl;
 }
 
-void VideoMotionRecorder::start(){
-	this->startRecord();
-}
-
 void VideoMotionRecorder::startRecord() {
 
 	cv::Mat frame;
 	boost::posix_time::ptime current_time, start_time;
 
 	while (running) {
+
 		start_time = boost::posix_time::microsec_clock::local_time();
 
-		if (input_image_queue.empty()) {
+		while(input_image_queue.empty()) {
 			usleep(1000);
 
+			// LOG(INFO)<<"Empty "<<std::endl;
 			if(writer){
 				current_time = boost::posix_time::microsec_clock::local_time();
 				boost::posix_time::time_duration td = current_time - start_time;
-				//std::cout<<"current_time: "<<current_time<<std::endl;
-				if((unsigned int)td.seconds() > this->maximum_wait_motion){
+				if((unsigned int)td.total_seconds() >= this->maximum_wait_motion){
 					stopTimer();
 					delete writer;
-					// std::cout<<"stop timer: "<<td<<std::endl;
+					writer = nullptr;
+					LOG(INFO) << "stop timer: "<<td<<std::endl;
 				}
 			}
 
 			continue;
 		}
-		else{
-			if(!writer){
-				getNewVideoWriter();
-				startTimer();
-			}
+
+		if(!writer){
+			LOG(INFO) << "Wait for start timer --> "<<input_image_queue.size()<<std::endl;
+			this->getNewVideoWriter();
+			startTimer();
+			LOG(INFO) << "End Wait"<<std::endl;
 		}
 
 		frame = input_image_queue.pop();
 
 		writer_mutex.lock();
-		//std::cout<<"write to: "<<filename<<std::endl;
+		// LOG(INFO)<<"write to: "<<filename<<std::endl;
 		*writer << frame;
 		writer_mutex.unlock();
 

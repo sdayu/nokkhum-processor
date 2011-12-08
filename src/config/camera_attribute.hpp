@@ -38,12 +38,12 @@ public:
 
 
 private:
+    std::string name;
+    std::string model;
+    std::string url;
 	int width;
 	int height;
 	int fps;
-	std::string url;
-	std::string name;
-	std::string model;
 	std::string username;
 	std::string password;
 };

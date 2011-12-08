@@ -26,6 +26,7 @@ public:
 	virtual ~CvVideoWriter();
 
 	void open(string filename, string directory, int width, int height, int frame_rate);
+	bool isAvailable();
 
 	void writeFrame(Mat &frame);
 

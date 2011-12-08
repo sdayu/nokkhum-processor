@@ -22,6 +22,8 @@
 
 #include <sys/time.h>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 namespace nokkhum {
 
 VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
@@ -30,6 +32,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 	this->writer = nullptr;
 
 	this->period = 10;
+	timer = nullptr;
 
 	// std::cout << "Construct video recorder without property" << std::endl;
 }
@@ -45,8 +48,9 @@ VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 	this->period = 10;
 	this->writer = nullptr;
 
-	this->getNewVideoWriter();
-
+	LOG(INFO) << "timer initial";
+	timer = nullptr;
+	LOG(INFO) << "end timer initial";
 }
 
 VideoRecorder::~VideoRecorder() {
@@ -54,10 +58,14 @@ VideoRecorder::~VideoRecorder() {
 	delete this->writer;
 	this->writer = nullptr;
 
+	delete this->timer;
+	this->timer = nullptr;
+
 //	std::cerr << "Terminate record tread" << std::endl;
 }
 
 void VideoRecorder::start() {
+	// this->getNewVideoWriter();
 	this->startTimer();
 	this->startRecord();
 }
@@ -75,38 +83,41 @@ void VideoRecorder::getNewVideoWriter() {
 	}
 
 	std::ostringstream oss;
-	time_t rawtime;
-	time(&rawtime);
-//	std::cout << "get new writer time: " <<ctime(&rawtime)<< std::endl;
-	timeval tv;
-	gettimeofday(&tv, NULL);
 
 	std::string name = this->getName();
-	for (int i  = 0; i < name.length(); ++i){
+	for (unsigned int i  = 0; i < name.length(); ++i){
 		if (name.at(i) == ' ')
 			name.at(i) = '_';
 	}
 
-	tm* time_struct = localtime(&rawtime);
-	oss << time_struct->tm_year + 1900 << "-" << std::setw(2)
-			<< std::setfill('0') << time_struct->tm_mon + 1 << "-"
-			<< std::setw(2) << std::setfill('0') << time_struct->tm_mday << "-"
-			<< std::setw(2) << std::setfill('0') << time_struct->tm_hour << "-"
-			<< std::setw(2) << std::setfill('0') << time_struct->tm_min << "-"
-			<< std::setw(2) << std::setfill('0') << time_struct->tm_sec << "-"
-			<< std::setw(6) << std::setfill('0') << tv.tv_usec << "-"
+	boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+
+	oss << current_time.date().year() << "-"
+			<< std::setw(2) << std::setfill('0') << current_time.date().month() << "-"
+			<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
+			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
+			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"
+			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
+			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
 			<< name << ".avi";
 
 	writer_mutex.lock();
 	delete this->writer;
 	this->writer = nullptr;
 
-	this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(), this->width,
+	while(this->writer == nullptr){
+		this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(), this->width,
 			this->height, this->fps);
+
+		if(!this->writer->isAvailable()){
+			delete this->writer;
+			this->writer = nullptr;
+		}
+	}
 	writer_mutex.unlock();
 
 	this->filename = oss.str();
-	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName() << this->filename;
+	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName() << this->filename ;
 
 }
 
@@ -149,42 +160,114 @@ void VideoRecorder::startRecord() {
 }
 
 void VideoRecorder::startTimer() {
-	timer = std::thread(&VideoRecorder::clock, this);
+	// LOG(INFO) << "Start Timer";
+	// timer = std::thread(&VideoRecorder::clock, this);
+	// LOG(INFO) << "Timer RUN";
+	this->timer = new RecordTimer(this, this->period);
+	this->timer->start();
+	LOG(INFO) << this->getName() << " start Timer";
 }
 
 void VideoRecorder::stopTimer() {
 	try {
-		this->timer.detach();
+		LOG(INFO) << this->getName() << " stop Timer";
+		this->timer->stop();
+		LOG(INFO) << this->getName() << " delete Timer";
+		delete this->timer;
+		this->timer = nullptr;
 	} catch (std::exception e) {
-		//std::cout<<"exception:  !!!!"<<e.what()<<std::endl;
+		LOG(INFO) << "exception in stop timer: " << e.what() << std::endl;
 	}
 }
-void VideoRecorder::clock() {
 
-//	std::cout<<"This in clock: "<<this<<std::endl;
-//	int counter = 0;
+bool VideoRecorder::is_writer_available(){
+	if (this->writer)
+		return true;
+	else
+		return false;
+}
+
+RecordTimer::RecordTimer(VideoRecorder *video_recorder, int period = 10) :
+		video_recorder(video_recorder), period(period) {
+	running = false;
+}
+
+RecordTimer::RecordTimer(){
+	running = false;
+	video_recorder = nullptr;
+	period = 0;
+}
+
+RecordTimer::RecordTimer(const RecordTimer& rt){
+	this->running = rt.running;
+	this->period  = rt.period;
+	this->video_recorder = rt.video_recorder;
+}
+
+RecordTimer& RecordTimer::operator = (const RecordTimer& rt){
+	this->running = rt.running;
+	this->period  = rt.period;
+	this->video_recorder = rt.video_recorder;
+
+	return *this;
+}
+
+RecordTimer::~RecordTimer(){
+	LOG(INFO) << "begin teminate timmer id: "<<this;
+	LOG(INFO) << "joinable "<<this->timer_thred.joinable();
+	if(!this->timer_thred.joinable())
+		this->timer_thred.join();
+
+	LOG(INFO) << "teminate timmer id: "<<this;
+}
+
+void RecordTimer::start(){
+	LOG(INFO) << "start Clock :";
+	running = true;
+	LOG(INFO) << "start Clock 1";
+	timer_thred = std::thread(&RecordTimer::clock, this);
+	LOG(INFO) << "end Clock :";
+}
+
+void RecordTimer::stop(){
+	LOG(INFO) << "stop Clock :";
+	running = false;
+	timer_thred.detach();
+	LOG(INFO) << "end stop Clock :";
+}
+
+void RecordTimer::clock(){
+	LOG(INFO) << "new Clock :"<<this<<" name: "<<video_recorder->getName()<<" thread id: "<<std::this_thread::get_id();
 	while (running) {
-		time_t rawtime;
-		time(&rawtime);
+		LOG(INFO) << "Clock working: "<<this<<" name: "<<video_recorder->getName();
+		boost::posix_time::ptime start_time = boost::posix_time::microsec_clock::local_time();
 
-		tm* begin_time = localtime(&rawtime);
-		int minute = begin_time->tm_min;
-		// std::cout << "current time start: " << ctime(&rawtime) << " count: " << counter << std::endl;
-		if (minute % this->period == 0) {
-//			std::cout << " minute: " << minute << std::endl;
-			this->getNewVideoWriter();
+		if (start_time.time_of_day().minutes() % this->period == 0) {
+			video_recorder->getNewVideoWriter();
 		}
-		time(&rawtime);
-		tm* current_time = localtime(&rawtime);
-		// std::cout << "current time: " << ctime(&rawtime) << " count: " << counter++ << std::endl;
+		else if (!video_recorder->is_writer_available()){
+			video_recorder->getNewVideoWriter();
+		}
+
+		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+
+
 		int sleep_time = (this->period
-				- ((this->period + current_time->tm_min) % this->period)) * 60;
-		sleep_time = sleep_time - current_time->tm_sec;
+				- ((this->period + current_time.time_of_day().minutes()) % this->period)) * 60;
+
+		sleep_time = sleep_time - current_time.time_of_day().seconds();
+
+		if (sleep_time <= 120){
+			LOG(INFO) << "Clock sleep more time "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
+			sleep_time += (this->period*60);
+		}
 
 		// std::cout << "sleep ---> " << sleep_time << std::endl;
+		LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
 		sleep(sleep_time);
 
 	}
+	LOG(INFO) << "Clock end: "<<this<<" name: "<<video_recorder->getName();
 }
 
 }

@@ -13,6 +13,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
 
+#include <glog/logging.h>
+
 #include <ctime>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -30,7 +32,7 @@ MotionDetector::MotionDetector(CvMatQueue &input_image_queue, MotionDetectorAttr
 	this->interval = mdp->getInterval();
 	this->resolution = mdp->getResolution();
 
-	this->drop_motion = 20;
+	this->drop_motion = 5;
 
 }
 
@@ -96,10 +98,10 @@ void MotionDetector::start() {
 				}
 			}
 
-			if(motion_count > 4){
+			if(motion_count > 5){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-
+				// LOG(INFO) << "Have motion" << std::dec << tmp_mat.size() ;
 //				std::cout<<"temporary queue size: "<< std::dec << tmp_mat.size()<<std::endl;
 				for(unsigned long i = 0; i<tmp_mat.size();++i){
 					cv::Mat tmp_frame = tmp_mat[i];
@@ -115,7 +117,10 @@ void MotionDetector::start() {
 			else{
 				current_time = boost::posix_time::microsec_clock::local_time();
 				boost::posix_time::time_duration td = current_time - motion_time;
-				if(td.seconds() >= this->drop_motion){
+
+				// LOG(INFO) << "motion diff time: " << td.total_seconds();
+				if(td.total_seconds() >= this->drop_motion){
+					// LOG(INFO) << "Drop motion : " << std::dec << tmp_mat.size() ;
 //					std::cout<<"drop frame:"<<tmp_mat.size()<<std::endl;
 					tmp_mat.clear();
 
@@ -124,7 +129,7 @@ void MotionDetector::start() {
 					for(unsigned long i = 0; i<tmp_mat.size();++i){
 						cv::Mat tmp_frame = tmp_mat[i];
 						for(unsigned long j = 0; j<output_image_queue.getSize();++j){
-//							std::cout<<"push frame with out motion: "<<i<<" to queue: "<<j<<std::endl;
+							// LOG(INFO) << "push frame with out motion: " <<i<< " to queue: " <<j<<std::endl;
 							output_image_queue.get(j)->push(tmp_frame);
 						}
 					}

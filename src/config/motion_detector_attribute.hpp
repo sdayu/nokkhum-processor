@@ -22,8 +22,8 @@ public:
     void setInterval(int interval);
     void setResolution(int resolution);
 private:
-    int interval;
     int resolution;
+    int interval;
 };
 
 } /* namespace nokkhum */

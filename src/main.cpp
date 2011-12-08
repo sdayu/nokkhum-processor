@@ -18,19 +18,20 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	google::InitGoogleLogging(argv[0]);
-	FLAGS_logbufsecs = 0;
-
 	std::string p = "/tmp/nokkhum-log/processor/";
-	p = p + argv[1];
+	p = p + argv[1] + "/";
 
 	if (!boost::filesystem::exists(p)) {
 
 		if (boost::filesystem::create_directories(p)) {
-			LOG(INFO) << "Create log name: " << p;
+			// LOG(INFO) << "Create log dir name: " << p;
 		}
 	}
+
+	// google log flags
+	FLAGS_logbufsecs = 0;
 	FLAGS_log_dir = p.c_str();
+	google::InitGoogleLogging(argv[0]);
 
 	LOG(INFO) << "Surveillance constructor ... ";
 	std::string attribute = argv[1];

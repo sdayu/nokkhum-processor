@@ -34,4 +34,8 @@ VideoWriter& VideoWriter::operator <<(Mat& frame) {
 	return *this;
 }
 
+bool VideoWriter::isAvailable(){
+	return false;
+}
+
 }

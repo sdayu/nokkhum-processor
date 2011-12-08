@@ -41,6 +41,13 @@ void CvVideoWriter::open(string filename, string directory, int width,
 			true);
 }
 
+bool CvVideoWriter::isAvailable(){
+	if(record && record->isOpened())
+		return true;
+	else
+		return false;
+}
+
 void CvVideoWriter::writeFrame(Mat& frame) {
 	(*(record)) << frame;
 }

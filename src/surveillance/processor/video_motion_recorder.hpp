@@ -17,7 +17,6 @@ public:
 	VideoMotionRecorder(CvMatQueue & input_image_queue, VideoRecorderAttribute *vrp);
 	virtual ~VideoMotionRecorder();
 
-	void start();
 	void startRecord();
 
 private:
