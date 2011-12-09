@@ -87,7 +87,7 @@ void VideoRecorder::getNewVideoWriter() {
 	boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
 	oss << current_time.date().year() << "-"
-			<< std::setw(2) << std::setfill('0') << current_time.date().month() << "-"
+			<< std::setw(2) << std::setfill('0') << (int)current_time.date().month() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"

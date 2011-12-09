@@ -32,6 +32,7 @@ void VideoMotionRecorder::startRecord() {
 	boost::posix_time::ptime current_time, start_time;
 
 	while (running) {
+		// LOG(INFO)<<"start "<<std::endl;
 
 		start_time = boost::posix_time::microsec_clock::local_time();
 
@@ -59,6 +60,7 @@ void VideoMotionRecorder::startRecord() {
 			this->getNewVideoWriter();
 			startTimer();
 		}
+		// LOG(INFO)<<"write "<<std::endl;
 
 		frame = input_image_queue.pop();
 
@@ -66,6 +68,7 @@ void VideoMotionRecorder::startRecord() {
 		// LOG(INFO)<<"write to: "<<filename<<std::endl;
 		*writer << frame;
 		writer_mutex.unlock();
+		// LOG(INFO)<<"end "<<std::endl;
 
 	}
 
