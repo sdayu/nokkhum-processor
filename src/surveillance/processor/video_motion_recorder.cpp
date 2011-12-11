@@ -45,8 +45,10 @@ void VideoMotionRecorder::startRecord() {
 				boost::posix_time::time_duration td = current_time - start_time;
 				if((unsigned int)td.total_seconds() >= this->maximum_wait_motion){
 					stopTimer();
+					writer_mutex.lock();
 					delete writer;
 					writer = nullptr;
+					writer_mutex.unlock();
 					// LOG(INFO) << "stop timer: "<<td<<std::endl;
 				}
 			}
@@ -55,7 +57,7 @@ void VideoMotionRecorder::startRecord() {
 				return;
 		}
 
-		if(!writer){
+		if(!isWriterAvailable()){
 			// LOG(INFO) << "get new writer --> "<<input_image_queue.size()<<std::endl;
 			this->getNewVideoWriter();
 			startTimer();

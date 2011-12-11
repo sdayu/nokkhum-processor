@@ -47,8 +47,15 @@ void SurveillanceManager::processCommand() {
 		LOG(INFO) << "camera id: " << this->name << " get command -> "
 				<< command_string;
 
+
+
 		try {
-			cp.paseCommand(command_string);
+			if (!cp.paseCommand(command_string)){
+				result_json.push_back(json_spirit::Pair("result", "can not process command"));
+				std::cout << json_spirit::write(result_json) << std::endl;
+				LOG(INFO) << json_spirit::write(result_json);
+				continue;
+			}
 		} catch (std::exception e) {
 			LOG(ERROR) << "camera id: " << this->name
 					<< " get command error " << e.what();
@@ -106,7 +113,8 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 }
 
 void SurveillanceManager::stopSurveillanceApplication() {
-	vs->stop();
+	if (vs)
+		vs->stop();
 }
 
 } /* namespace nokkhum */

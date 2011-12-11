@@ -86,14 +86,27 @@ void VideoRecorder::getNewVideoWriter() {
 
 	boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
-	oss << current_time.date().year() << "-"
+	oss << name << "-" << current_time.date().year() << "-"
 			<< std::setw(2) << std::setfill('0') << (int)current_time.date().month() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
-			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
-			<< name << ".avi";
+			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds()
+			<< ".avi";
+
+	std::string old_name = this->filename.substr (0, this->filename.rfind("-"));
+	std::string new_name = oss.str().substr (0, oss.str().rfind("-"));
+
+//	LOG(INFO)<<"old: "<<old_name;
+//	LOG(INFO)<<"new: "<<new_name;
+
+	if (old_name.compare(new_name) == 0)
+		if(isWriterAvailable()){
+//			LOG(INFO)<<"avialable : "<<new_name;
+			return;
+		}
+
 
 	writer_mutex.lock();
 	delete this->writer;
@@ -117,6 +130,7 @@ void VideoRecorder::getNewVideoWriter() {
 
 void VideoRecorder::startRecord() {
 
+	this->getNewVideoWriter();
 	cv::Mat frame;
 	//	cv::namedWindow("video", 1);
 
@@ -177,11 +191,16 @@ void VideoRecorder::stopTimer() {
 	// LOG(INFO) << this->getName() << " end stop Timer";
 }
 
-bool VideoRecorder::is_writer_available(){
-	if (this->writer)
-		return true;
+bool VideoRecorder::isWriterAvailable(){
+	bool result = false;
+	writer_mutex.lock();
+	if (this->writer != nullptr)
+		result = true;
 	else
-		return false;
+		result = false;
+	writer_mutex.unlock();
+
+	return result;
 }
 
 RecordTimer::RecordTimer(VideoRecorder *video_recorder, int period = 10) :
@@ -210,25 +229,25 @@ RecordTimer& RecordTimer::operator = (const RecordTimer& rt){
 }
 
 RecordTimer::~RecordTimer(){
-	// LOG(INFO) << "begin teminate timmer id: "<<this;
+//	LOG(INFO) << "begin teminate timmer id: "<<this;
 	if(!this->timer_thred.joinable())
 		this->timer_thred.join();
 
-	// LOG(INFO) << "teminate timmer id: "<<this;
+//	LOG(INFO) << "teminate timmer id: "<<this;
 }
 
 void RecordTimer::start(){
-	// LOG(INFO) << "start Clock :";
+	// LOG(INFO) << "start Clock";
 	running = true;
 	timer_thred = boost::thread(&RecordTimer::clock, this);
-	// LOG(INFO) << "end start Clock :";
+	// LOG(INFO) << "end start Clock";
 }
 
 void RecordTimer::stop(){
-	// LOG(INFO) << "stop Clock :";
+	// LOG(INFO) << "stop Clock";
 	running = false;
 	timer_thred.interrupt();
-	// LOG(INFO) << "end stop Clock :";
+//	LOG(INFO) << "end stop Clock";
 }
 
 void RecordTimer::clock(){
@@ -237,12 +256,13 @@ void RecordTimer::clock(){
 		// LOG(INFO) << "Clock working: "<<this<<" name: "<<video_recorder->getName();
 		boost::posix_time::ptime start_time = boost::posix_time::microsec_clock::local_time();
 
+//		LOG(INFO) << "Clock working: "<<start_time.time_of_day().minutes()<<" : "<<this->period;
 		if (start_time.time_of_day().minutes() % this->period == 0) {
 			video_recorder->getNewVideoWriter();
 		}
-		else if (!video_recorder->is_writer_available()){
-			video_recorder->getNewVideoWriter();
-		}
+//		else if (!video_recorder->isWriterAvailable()){
+//			video_recorder->getNewVideoWriter();
+//		}
 
 		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
@@ -252,17 +272,19 @@ void RecordTimer::clock(){
 
 		sleep_time = sleep_time - current_time.time_of_day().seconds();
 
-		if (sleep_time <= 120){
+		if (sleep_time <= 180){
 			// LOG(INFO) << "Clock sleep more time "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
 			sleep_time += (this->period*60);
 		}
 
 		// std::cout << "sleep ---> " << sleep_time << std::endl;
 		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
-		sleep(sleep_time);
+		boost::posix_time::time_duration sleep_time_d = boost::posix_time::seconds(sleep_time);
+//		LOG(INFO) << video_recorder->getName() << " sleep time: "<<sleep_time_d;
+		boost::this_thread::sleep(sleep_time_d);
 
 	}
-	// LOG(INFO) << "Clock end: "<<this<<" name: "<<video_recorder->getName();
+//	LOG(INFO) << "Clock end";
 }
 
 }

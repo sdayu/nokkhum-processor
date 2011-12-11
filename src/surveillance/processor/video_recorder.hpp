@@ -54,7 +54,7 @@ public:
 	void start();
 	void stop();
 
-	bool is_writer_available();
+	bool isWriterAvailable();
 
 	friend class RecordTimer;
 protected:

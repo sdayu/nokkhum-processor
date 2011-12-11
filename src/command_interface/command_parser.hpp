@@ -19,7 +19,7 @@ public:
 	CommandParser();
 	virtual ~CommandParser();
 
-	void paseCommand(std::string json);
+	bool paseCommand(std::string json);
 	std::string getCommand();
 	std::string getCameraAttribute();
 

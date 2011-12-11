@@ -26,8 +26,8 @@ public:
     bool isRunning() const;
 
 protected:
+    std::string name;
 	bool running;
-	std::string name;
 
 };
 

@@ -6,7 +6,7 @@
  */
 
 #include "command_parser.hpp"
-
+#include <glog/logging.h>
 namespace nokkhum {
 
 CommandParser::CommandParser() {
@@ -18,9 +18,10 @@ CommandParser::~CommandParser() {
 	// TODO Auto-generated destructor stub
 }
 
-void CommandParser::paseCommand(std::string json) {
+bool CommandParser::paseCommand(std::string json) {
 
-	json_spirit::read(json, value);
+	bool result = json_spirit::read(json, value);
+	return result;
 
 }
 
