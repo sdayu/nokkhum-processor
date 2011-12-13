@@ -129,7 +129,10 @@ void VideoRecorder::getNewVideoWriter() {
 				boost::posix_time::time_duration(hours, minutes, seconds));
 
 		boost::posix_time::time_duration td = current_time - old_time;
-		if (this->writer != nullptr && td.seconds() < 3) {
+//		LOG(INFO) << "cur time " << current_time;
+//		LOG(INFO) << "old time " << old_time;
+//		LOG(INFO) << "td.total_seconds() " << td.total_seconds();
+		if (this->writer != nullptr && td.total_seconds() < 3) {
 //			LOG(INFO) << "less than 3 ";
 			return;
 		}
@@ -169,7 +172,7 @@ void VideoRecorder::startRecord() {
 	//	std::cout<<"runing: "<<this->running<<std::endl;
 
 	//	time(&rawtime);
-	//	std::cout<<"start join timer:"<<ctime(&rawtime)<<std::endl;
+	//	std::cout<<"start join timer:"<<ctime(&rawtime)<<std::endl;//	LOG(INFO) << "Clock end";
 	//this->timer.join();
 	//	time(&rawtime);
 	//	std::cout<<"start end join timer:"<<ctime(&rawtime)<<std::endl;g << " this-> "
@@ -198,7 +201,7 @@ void VideoRecorder::startRecord() {
 }
 
 void VideoRecorder::startTimer() {
-	// LOG(INFO) << "Start Timer";
+//	LOG(INFO) << "Start Timer";
 	// timer = std::thread(&VideoRecorder::clock, this);
 	// LOG(INFO) << "Timer RUN";
 	this->timer = new RecordTimer(this, this->period);
@@ -272,7 +275,7 @@ void RecordTimer::start() {
 //		LOG(INFO) << "Clock is available";
 		return;
 	}
-	running = true;
+	running = true;//	LOG(INFO) << "Clock end";
 	timer_thred = boost::thread(&RecordTimer::clock, this);
 	// LOG(INFO) << "end start Clock";
 }
@@ -294,6 +297,7 @@ void RecordTimer::clock() {
 
 //		LOG(INFO) << "Clock working: "<<start_time.time_of_day().minutes()<<" : "<<this->period;
 		if (start_time.time_of_day().minutes() % this->period == 0) {
+//			LOG(INFO) << "Clock get new writer";
 			video_recorder->getNewVideoWriter();
 		}
 //		else if (!video_recorder->isWriterAvailable()){
