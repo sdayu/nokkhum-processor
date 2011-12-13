@@ -58,7 +58,7 @@ void VideoMotionRecorder::startRecord() {
 		}
 
 		if(!isWriterAvailable()){
-			// LOG(INFO) << "get new writer --> "<<input_image_queue.size()<<std::endl;
+//			LOG(INFO) << "get new writer --> "<<input_image_queue.size()<<std::endl;
 			this->getNewVideoWriter();
 			startTimer();
 		}
