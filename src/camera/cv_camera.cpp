@@ -8,7 +8,7 @@
 #include "cv_camera.hpp"
 
 #include <iostream>
-using namespace std;
+#include <exception>
 
 namespace nokkhum {
 
@@ -19,7 +19,8 @@ CvCamera::CvCamera(int width, int height, int fps, int device) :
 	// cerr << "capture: " <<capture->get(CV_CAP_PROP_FPS)<<endl;
 
 	if (!capture->isOpened()) {
-		cerr << "Camera failed to open!\n";
+		std::cerr << "Camera failed to open!\n";
+		throw std::exception(); //TODO need to specify exception
 	}
 
 }

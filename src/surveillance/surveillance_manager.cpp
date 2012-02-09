@@ -36,6 +36,8 @@ void SurveillanceManager::processCommand() {
 	nokkhum::CommandParser cp;
 	while (true) {
 
+		json_spirit::Object result_json;
+
 		if (std::cin.eof()) {
 			LOG(INFO) << "camera id: " << this->name
 					<< " terminate because compute is unavailable ";
@@ -46,8 +48,6 @@ void SurveillanceManager::processCommand() {
 		std::getline(std::cin, command_string);
 		LOG(INFO) << "camera id: " << this->name << " get command -> "
 				<< command_string;
-
-
 
 		try {
 			if (!cp.paseCommand(command_string)){
@@ -74,7 +74,10 @@ void SurveillanceManager::processCommand() {
 			} catch (std::exception e) {
 				result_json.push_back(json_spirit::Pair("result", e.what()));
 				LOG(ERROR) << e.what();
-				continue;
+				result_json.push_back(json_spirit::Pair("result", "stop because cannot start capture or configuration wrong"));
+				std::cout << json_spirit::write(result_json) << std::endl;
+				LOG(INFO) << json_spirit::write(result_json);
+				break;
 			}
 			result_json.push_back(json_spirit::Pair("result", "start ok"));
 			std::cout << json_spirit::write(result_json) << std::endl;
@@ -88,8 +91,6 @@ void SurveillanceManager::processCommand() {
 			std::cout << json_spirit::write(result_json) << std::endl;
 			LOG(INFO) << json_spirit::write(result_json);
 		}
-
-		result_json.clear();
 
 	}
 }

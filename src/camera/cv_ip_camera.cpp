@@ -8,7 +8,7 @@
 #include "cv_ip_camera.hpp"
 
 #include <iostream>
-using namespace std;
+#include <exception>
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
@@ -26,9 +26,10 @@ namespace nokkhum
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
 //        cout<< "url: "<<url<<endl;
 
-        if(!capture->isOpened()){
-            cerr << "Camera failed to open!\n";
-        }
+		if (!capture->isOpened()) {
+				std::cerr << "Camera failed to open!\n";
+				throw std::exception(); //TODO need to specify exception
+		}
     }
 
     CvIpCamera::~CvIpCamera()

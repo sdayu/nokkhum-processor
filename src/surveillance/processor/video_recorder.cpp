@@ -24,6 +24,7 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/filesystem.hpp>
 
 namespace nokkhum {
 
@@ -67,6 +68,7 @@ void VideoRecorder::start() {
 void VideoRecorder::stop() {
 	Job::stop();
 	this->stopTimer();
+	this->stopRecord();
 }
 
 void VideoRecorder::getNewVideoWriter() {
@@ -87,7 +89,7 @@ void VideoRecorder::getNewVideoWriter() {
 	boost::posix_time::ptime current_time =
 			boost::posix_time::microsec_clock::local_time();
 
-	oss << name << "-" << current_time.date().year() << "-"
+	oss << "__" << name << "-" << current_time.date().year() << "-"
 			<< std::setw(2) << std::setfill('0') << (int) current_time.date().month() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
@@ -117,6 +119,9 @@ void VideoRecorder::getNewVideoWriter() {
 
 		for (unsigned long i = 0; i < old_name.length(); i++) {
 			if (old_name[i] == '-') {
+				old_name[i] = ' ';
+			}
+			if (old_name[i] == '_') {
 				old_name[i] = ' ';
 			}
 		}
@@ -152,6 +157,13 @@ void VideoRecorder::getNewVideoWriter() {
 		}
 	}
 	writer_mutex.unlock();
+
+	if (this->filename.length() > 0 && this->filename.find("__") != std::string::npos) {
+		unsigned int replace_position = this->filename.find("__");
+		std::string finish_name = this->filename;
+		finish_name.replace(replace_position, replace_position+2, "");
+		boost::filesystem::rename(dm.getDirectoryName()+"/"+this->filename, dm.getDirectoryName()+"/"+finish_name);
+	}
 
 	this->filename = oss.str();
 	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName()
@@ -198,6 +210,24 @@ void VideoRecorder::startRecord() {
 		//			break;
 	}
 //	std::cout<<"record stop"<<std::endl;
+}
+
+void VideoRecorder::stopRecord(){
+	if (this->writer == nullptr)
+		return;
+
+	writer_mutex.lock();
+	delete this->writer;
+	this->writer = nullptr;
+	if (this->filename.length() > 0 && this->filename.find("__") != std::string::npos) {
+			unsigned int replace_position = this->filename.find("__");
+			std::string finish_name = this->filename;
+			finish_name.replace(replace_position, replace_position+2, "");
+			nokkhum::DirectoryManager dm(this->directory, "video");
+			boost::filesystem::rename(dm.getDirectoryName()+"/"+this->filename, dm.getDirectoryName()+"/"+finish_name);
+			this->filename.clear();
+	}
+	writer_mutex.unlock();
 }
 
 void VideoRecorder::startTimer() {

@@ -71,6 +71,7 @@ protected:
 
 	virtual void getNewVideoWriter();
 	virtual void startRecord();
+	virtual void stopRecord();
 	virtual void startTimer();
 	virtual void stopTimer();
 
