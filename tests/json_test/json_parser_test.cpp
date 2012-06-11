@@ -43,9 +43,9 @@ void JsonParserTest::testJsonParser() {
 	nokkhum::Configuration conf(oss.str());
 	ifs.close();
 
-	// auto cameraProperty = conf.getCameraProperty();
+	auto cameraAttribute = conf.getCameraAttribute();
 
-	// std::cout<<cameraProperty->getName()<<std::endl;
+	std::cout<<cameraAttribute->getName()<<std::endl;
 
 
 }
