@@ -46,7 +46,7 @@ void VideoMotionRecorder::startRecord() {
 				if((unsigned int)td.total_seconds() >= this->maximum_wait_motion){
 					stopTimer();
 					stopRecord();
-					// LOG(INFO) << "stop timer: "<<td<<std::endl;
+					LOG(INFO) << "stop timer: "<<td<<std::endl;
 				}
 			}
 

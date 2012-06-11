@@ -61,11 +61,12 @@ VideoRecorder::~VideoRecorder() {
 }
 
 void VideoRecorder::start() {
-//	LOG(INFO) << "start record";
+	LOG(INFO) << "Start Record";
 	this->startRecord();
 }
 
 void VideoRecorder::stop() {
+	LOG(INFO)<<"Stop Record";
 	Job::stop();
 	this->stopTimer();
 	this->stopRecord();

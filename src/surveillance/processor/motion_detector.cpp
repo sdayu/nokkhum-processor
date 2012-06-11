@@ -47,7 +47,7 @@ void MotionDetector::start() {
 	cv::Mat prevgray, gray, flow, cflow, frame;
 
 	boost::posix_time::ptime current_time, motion_time;
-	motion_time = boost::posix_time::microsec_clock::local_time();
+//	motion_time = boost::posix_time::microsec_clock::local_time();
 
 	int motion_count = 0;
 	int step = 15;
@@ -101,7 +101,7 @@ void MotionDetector::start() {
 			if(motion_count > 5){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-				// LOG(INFO) << "Have motion" << std::dec << tmp_mat.size() ;
+//				LOG(INFO) << "Have motion: " << std::dec << tmp_mat.size() ;
 //				std::cout<<"temporary queue size: "<< std::dec << tmp_mat.size()<<std::endl;
 				for(unsigned long i = 0; i<tmp_mat.size();++i){
 					cv::Mat tmp_frame = tmp_mat[i];
@@ -120,7 +120,7 @@ void MotionDetector::start() {
 
 				// LOG(INFO) << "motion diff time: " << td.total_seconds();
 				if(td.total_seconds() >= this->drop_motion){
-					// LOG(INFO) << "Drop motion : " << std::dec << tmp_mat.size() ;
+//					LOG(INFO) << "Drop frame : " << std::dec << tmp_mat.size() << "time: "<< td.total_seconds();
 //					std::cout<<"drop frame:"<<tmp_mat.size()<<std::endl;
 					tmp_mat.clear();
 
@@ -133,7 +133,7 @@ void MotionDetector::start() {
 							output_image_queue.get(j)->push(tmp_frame);
 						}
 					}
-//					std::cout<<"write with out motion: "<<tmp_mat.size()<<std::endl;
+//					LOG(INFO) << "write with out motion: "<<tmp_mat.size();
 					tmp_mat.clear();
 
 				}

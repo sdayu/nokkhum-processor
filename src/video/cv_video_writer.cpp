@@ -19,6 +19,8 @@ CvVideoWriter::CvVideoWriter(string filename, string directory, int width,
 		VideoWriter(filename, directory, width, height, fps) {
 
 	record = new cv::VideoWriter(getRecordName().c_str(),
+			//CV_FOURCC('M', 'P', '4', '2'), fps, cv::Size(width, height),
+			//CV_FOURCC('X', '2', '6', '4'), fps, cv::Size(width, height),
 			CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
 			//0, fps, cv::Size(width, height),
 			true);

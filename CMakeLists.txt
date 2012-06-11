@@ -34,7 +34,7 @@ file(GLOB_RECURSE nokkhum_processor_CXX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_
  
 # complier
 set (CMAKE_CXX_COMPILER g++)
-add_definitions(-std=c++0x)
+add_definitions(-std=c++11)
 set (CMAKE_VERBOSE_MAKEFILE TRUE)
 
 set (CMAKE_CXX_FLAGS_DEBUG, "-g -Wall")
