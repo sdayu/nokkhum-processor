@@ -96,7 +96,9 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
-			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << ".avi";
+			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds()
+			// << ".avi";
+			<< ".ogv";
 
 //	std::string old_name = this->filename.substr (0, this->filename.rfind("-"));
 //	std::string new_name = oss.str().substr (0, oss.str().rfind("-"));
