@@ -10,8 +10,7 @@
 
 #include <string>
 #include <map>
-#include <json_spirit.h>
-
+#include <jsoncpp/json/reader.h>
 #include "../surveillance/processor/image_processor.hpp"
 #include "../camera/camera.hpp"
 #include "image_processor_attribute.hpp"
@@ -30,17 +29,15 @@ public:
 
 	AttributeMap* parse(std::string file_name);
 
-	CameraAttribute* parseCamera(const json_spirit::mObject camera_obj);
-	void parseImageProcessor(const json_spirit::mArray image_processor_array, ImageProcessorAttribute* ipp);
+	CameraAttribute* parseCamera(const Json::Value camera_obj);
+	void parseImageProcessor(const Json::Value image_processor_array, ImageProcessorAttribute* ipp);
 
 private:
-	const json_spirit::mValue& findValue( const json_spirit::mObject& obj, const std::string& name  );
-	const bool findKey( const json_spirit::mObject& obj, const std::string& name  );
 
-	ImageProcessorAttribute* parseVideoRecorder(const json_spirit::mObject image_processor_obj);
-	ImageProcessorAttribute* parseImageRecorder(const json_spirit::mObject image_processor_obj);
-	ImageProcessorAttribute* parseMotionDetector(const json_spirit::mObject image_processor_obj);
-	ImageProcessorAttribute* parseFaceDetector(const json_spirit::mObject image_processor_obj);
+	ImageProcessorAttribute* parseVideoRecorder(const Json::Value image_processor_obj);
+	ImageProcessorAttribute* parseImageRecorder(const Json::Value image_processor_obj);
+	ImageProcessorAttribute* parseMotionDetector(const Json::Value image_processor_obj);
+	ImageProcessorAttribute* parseFaceDetector(const Json::Value image_processor_obj);
 
 };
 

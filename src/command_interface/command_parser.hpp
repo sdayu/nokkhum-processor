@@ -10,7 +10,7 @@
 
 #include <string>
 #include <map>
-#include <json_spirit.h>
+#include <jsoncpp/json/reader.h>
 
 namespace nokkhum {
 
@@ -24,7 +24,7 @@ public:
 	std::string getCameraAttribute();
 
 private:
-	json_spirit::mValue value;
+	Json::Value value;
 
 };
 

@@ -19,22 +19,18 @@ CommandParser::~CommandParser() {
 }
 
 bool CommandParser::paseCommand(std::string json) {
-
-	bool result = json_spirit::read(json, value);
+    Json::Reader read;
+	bool result = read.parse(json, value);
 	return result;
 
 }
 
 std::string CommandParser::getCommand() {
-	json_spirit::mObject obj = value.get_obj();
-
-	return obj["action"].get_str();
+	return value["action"].asString();
 }
 
 std::string CommandParser::getCameraAttribute() {
-	json_spirit::mObject obj = value.get_obj();
-
-	return obj["attributes"].get_str();
+	return value["attributes"].asString();
 }
 
 } /* namespace nokkhum */

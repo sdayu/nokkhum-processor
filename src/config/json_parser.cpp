@@ -12,7 +12,7 @@
 #include <map>
 #include <string>
 #include <typeinfo>
-#include <json_spirit.h>
+#include <jsoncpp/json/writer.h>
 #include <sstream>
 #include <vector>
 
@@ -45,31 +45,31 @@ JsonParser::~JsonParser() {
 
 AttributeMap* JsonParser::parse(std::string json) {
 
-	json_spirit::mValue value;
-	json_spirit::read(json, value);
-
+	Json::Value value;
+    Json::Reader read;
+    read.parse(json,value);
 //	std::cout
 //			<< "JSON string: "
 //			<< std::endl
-//			<< json_spirit::write(value,
-//					json_spirit::pretty_print | json_spirit::raw_utf8)
+//			<< Json::write(value,
+//					Json::pretty_print | json_spirit::raw_utf8)
 //			<< std::endl;
 
-	json_spirit::mObject obj = value.get_obj();
+	Json::Value obj = value;
 
 	AttributeMap *property_map = new AttributeMap();
 	Attribute *property = nullptr;
 
 //	LOG(DEBUG) << "JSON :" << json;
-//	LOG(DEBUG) << "parse camera :" << json_spirit::write(value);
-	property = this->parseCamera(obj["camera"].get_obj());
+//	LOG(DEBUG) << "parse camera :" << Json::write(value);
+	property = parseCamera(obj["camera"]);
 //	LOG(DEBUG) << "end parse camera";
 	  // first insert function version (single parameter):
 	(*property_map)["camera"] = property;
 //	LOG(DEBUG) << "parse processor";
 	ImageProcessorAttribute* ipp = new ImageProcessorAttribute();
 
-	this->parseImageProcessor( obj["processors"].get_array(), ipp);
+	parseImageProcessor( obj["processors"], ipp);
 	(*property_map)["processors"] = ipp;
 
 //	std::cout << std::endl << "---------- end ----------" << std::endl;
@@ -77,7 +77,7 @@ AttributeMap* JsonParser::parse(std::string json) {
 	return property_map;
 }
 
-CameraAttribute* JsonParser::parseCamera(const json_spirit::mObject camera_obj) {
+CameraAttribute* JsonParser::parseCamera(const Json::Value camera_obj) {
 //	LOG(INFO) << "parse camera 0.0";
 	int width = 0;
 	int height = 0;
@@ -88,14 +88,14 @@ CameraAttribute* JsonParser::parseCamera(const json_spirit::mObject camera_obj) 
 	std::string username;
 	std::string password;
 //	LOG(INFO) << "parse camera 0";
-	width = this->findValue(camera_obj, "width").get_int();
-	height = this->findValue(camera_obj, "height").get_int();
-	fps = this->findValue(camera_obj, "fps").get_int();
-	url = this->findValue(camera_obj, "url").get_str();
-	name = this->findValue(camera_obj, "name").get_str();
-	model = this->findValue(camera_obj, "model").get_str();
-	username = this->findValue(camera_obj, "username").get_str();
-	password = this->findValue(camera_obj, "password").get_str();
+	width = camera_obj["width"].asInt();
+	height = camera_obj["height"].asInt();
+	fps = camera_obj["fps"].asInt();
+	url = camera_obj["url"].asString();
+	name = camera_obj["name"].asString();
+	model = camera_obj["model"].asString();
+	username = camera_obj["username"].asString();
+	password = camera_obj["password"].asString();
 
 //	std::cout << "Camera Name: " << name << std::endl;
 
@@ -105,18 +105,18 @@ CameraAttribute* JsonParser::parseCamera(const json_spirit::mObject camera_obj) 
 
 
 void JsonParser::parseImageProcessor(
-		const json_spirit::mArray image_processor_array,
+		const Json::Value image_processor_array,
 		ImageProcessorAttribute* ipp) {
 
 	ImageProcessorAttribute* tmp = nullptr;
 
-	for (json_spirit::mArray::size_type i = 0; i < image_processor_array.size();
+	for (auto i = 0; i < image_processor_array.size();
 			i++) {
-		json_spirit::mObject obj = image_processor_array[i].get_obj();
+		Json::Value obj = image_processor_array[i];
 
-		std::string processor_name = this->findValue(obj, "name").get_str();
+		std::string processor_name = obj["name"].asString();
 //		std::cout << "Processor " << i << " name : "
-//				<< this->findValue(obj, "name").get_str() << std::endl;
+//				<< obj, "name").asString() << std::endl;
 
 		if (processor_name == "Motion Detector") {
 			tmp = parseMotionDetector(obj);
@@ -136,7 +136,7 @@ void JsonParser::parseImageProcessor(
 }
 
 ImageProcessorAttribute* JsonParser::parseVideoRecorder(
-		const json_spirit::mObject image_processor_obj) {
+		const Json::Value image_processor_obj) {
 
 	std::string name;
 	std::string directory;
@@ -144,19 +144,19 @@ ImageProcessorAttribute* JsonParser::parseVideoRecorder(
 	int width;
 	int height;
 
-	name = this->findValue(image_processor_obj, "name").get_str();
-	directory = this->findValue(image_processor_obj, "directory").get_str();
-	fps = this->findValue(image_processor_obj, "fps").get_int();
-	width = this->findValue(image_processor_obj, "width").get_int();
-	height = this->findValue(image_processor_obj, "height").get_int();
+	name = image_processor_obj["name"].asString();
+	directory = image_processor_obj["directory"].asString();
+	fps = image_processor_obj["fps"].asInt();
+	width = image_processor_obj["width"].asInt();
+	height = image_processor_obj["height"].asInt();
 
 	//std::cout << "Processor name : " << name << std::endl;
 
 	VideoRecorderAttribute* vrp = nullptr;
 
-	if(this->findKey(image_processor_obj, "record_motion") && this->findKey(image_processor_obj, "maximum_wait_motion")){
-		bool record_motion = this->findValue(image_processor_obj, "record_motion").get_bool();
-		int maximum_wait_motion = this->findValue(image_processor_obj, "maximum_wait_motion").get_int();
+	if(image_processor_obj.isMember("record_motion") && image_processor_obj.isMember("maximum_wait_motion")){
+		bool record_motion = image_processor_obj.isMember("record_motion");
+		int maximum_wait_motion = image_processor_obj["maximum_wait_motion"].asInt();
 		name = "Video Motion Recorder";
 
 		if(record_motion){
@@ -170,94 +170,94 @@ ImageProcessorAttribute* JsonParser::parseVideoRecorder(
 		vrp = new VideoRecorderAttribute(name, directory, width, height, fps);
 	}
 
-	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), vrp );
+	if (image_processor_obj.isMember("processors")){
+		parseImageProcessor( image_processor_obj["processors"], vrp );
 	}
 
 	return vrp;
 }
 
 ImageProcessorAttribute* JsonParser::parseImageRecorder(
-		const json_spirit::mObject image_processor_obj) {
+		const Json::Value image_processor_obj) {
 
 	std::string name;
 	std::string directory;
 	int width;
 	int height;
 
-	name = this->findValue(image_processor_obj, "name").get_str();
-	directory = this->findValue(image_processor_obj, "directory").get_str();
-	width = this->findValue(image_processor_obj, "width").get_int();
-	height = this->findValue(image_processor_obj, "height").get_int();
+	name = image_processor_obj["name"].asString();
+	directory = image_processor_obj["directory"].asString();
+	width = image_processor_obj["width"].asInt();
+	height = image_processor_obj["height"].asInt();
 
 	// std::cout << "Processor name : " << name << std::endl;
 
 	ImageRecorderAttribute *irp = new ImageRecorderAttribute(name, directory, width, height);
-	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), irp );
+	if (image_processor_obj.isMember("processors")){
+		parseImageProcessor( image_processor_obj["processors"], irp );
 	}
 
 	return irp;
 }
 
 ImageProcessorAttribute* JsonParser::parseMotionDetector(
-		const json_spirit::mObject image_processor_obj) {
+		const Json::Value image_processor_obj) {
 
 	std::string name;
 	int interval = 0;
 	int resolution = 100;
 
-	name = this->findValue(image_processor_obj, "name").get_str();
-	interval = this->findValue(image_processor_obj, "interval").get_int();
-	resolution = this->findValue(image_processor_obj, "resolution").get_int();
+	name = image_processor_obj["name"].asString();
+	interval = image_processor_obj["interval"].asInt();
+	resolution = image_processor_obj["resolution"].asInt();
 
 	// std::cout << "Processor name : " << name << std::endl;
 
 	MotionDetectorAttribute* mdp = new MotionDetectorAttribute(name, resolution, interval);
-	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), mdp );
+	if (image_processor_obj.isMember("processors")){
+		parseImageProcessor( image_processor_obj["processors"], mdp );
 	}
 
 	return mdp;
 }
 
 ImageProcessorAttribute* JsonParser::parseFaceDetector(
-		const json_spirit::mObject image_processor_obj) {
+		const Json::Value image_processor_obj) {
 
 	std::string name;
 	int interval = 0;
 
-	name = this->findValue(image_processor_obj, "name").get_str();
-	interval = this->findValue(image_processor_obj, "interval").get_int();
+	name = image_processor_obj["name"].asString();
+	interval = image_processor_obj["interval"].asInt();
 
 	// std::cout << "Processor name : " << name << std::endl;
 
 	FaceDetectorAttribute* fdp = new FaceDetectorAttribute(name, interval);
-	if (this->findKey(image_processor_obj, "processors")){
-		this->parseImageProcessor( this->findValue(image_processor_obj, "processors").get_array(), fdp );
+	if (image_processor_obj.isMember("processors")){
+		parseImageProcessor( image_processor_obj["processors"], fdp );
 	}
 
 	return fdp;
 }
 
-const json_spirit::mValue& JsonParser::findValue(
-		const json_spirit::mObject& obj, const std::string& name) {
-	json_spirit::mObject::const_iterator i = obj.find(name);
+/*const Json::Value& JsonParser::
+		const Json::Value& obj, const std::string& name) {
+	Json::Value::const_iterator i = obj.find(name);
 
 	return i->second;
 }
 
-const bool JsonParser::findKey(const json_spirit::mObject& obj,
+const bool JsonParser::findKey(const Json::Value& obj,
 		const std::string& name) {
 	bool is_key = false;
 
-	json_spirit::mObject::const_iterator ci = obj.find(name);
+	Json::Value::const_iterator ci = obj.find(name);
 	if (ci == obj.end())
 		is_key = false;
 	else
 		is_key = true;
 
 	return is_key;
-}
+}*/
 
 } /* namespace nokkhum */

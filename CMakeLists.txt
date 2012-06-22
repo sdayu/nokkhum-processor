@@ -11,23 +11,24 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/nokkhum_processor_config.h.in"
   "${PROJECT_BINARY_DIR}/nokkhum_processor_config.h"
   )
-  
+
 
 # define library usage
 find_package(PkgConfig)
 pkg_check_modules(OPENCV REQUIRED "opencv >= 2.3")
 pkg_check_modules(LIBGLOG REQUIRED "libglog >= 0.3")
+pkg_check_modules(LIBJSONCPP REQUIRED "libjsoncpp")
 
 set (BOOST_LIBRARIES "-lboost_thread -lboost_filesystem -lboost_system -lboost_date_time")
 set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d")
-set (JSON_SPIRIT_LIBRARIES "-ljson_spirit")
+set (JSONCPP_LIBRARIES "-ljsoncpp")
 
 
 link_libraries(
 	${OPENCV_LIBRARIES}
 	${BOOST_LIBRARIES}
 	${LIBGLOG_LIBRARIES}
-	${JSON_SPIRIT_LIBRARIES}
+	${JSONCPP_LIBRARIES}
 )
  
 file(GLOB_RECURSE nokkhum_processor_CXX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")

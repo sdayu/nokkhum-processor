@@ -28,7 +28,7 @@ public:
 	virtual bool isAvailable();
 	virtual VideoWriter& operator <<(Mat& frame);
 
-private:
+protected:
 	string filename;
 	string directory;
 	string recordname;
