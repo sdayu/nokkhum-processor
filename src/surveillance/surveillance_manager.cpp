@@ -20,6 +20,7 @@ namespace nokkhum {
 SurveillanceManager::SurveillanceManager(std::string name) :
 		name(name) {
 	this->conf = nullptr;
+	this->vs = nullptr;
 }
 
 SurveillanceManager::~SurveillanceManager() {
