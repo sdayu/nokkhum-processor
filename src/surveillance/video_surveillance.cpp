@@ -62,13 +62,22 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 
 VideoSurveillance::~VideoSurveillance() {
 
-	delete camera;
-	delete image_acquisition;
-	camera = nullptr;
-	image_acquisition = nullptr;
+	//std::cerr << "delete camera" <<std::endl;
+
+	//delete camera;
+	if(camera){
+		delete camera;
+		camera = nullptr;
+	}
+
+	// delete image_acquisition;
+	if(image_acquisition){
+		delete image_acquisition;
+		image_acquisition = nullptr;
+	}
 
 	LOG(INFO) << "VideoSurveillance Terminate";
-	//std::cout << "End Terminate VideoSurveillance :" << getName() << std::endl;
+	//std::cerr << "End Terminate VideoSurveillance :" << getName() << std::endl;
 }
 
 // This member function start video surveillance process
@@ -84,7 +93,7 @@ void VideoSurveillance::start() {
 void VideoSurveillance::stop() {
 	Job::stop();
 
-	// std::cout << "start terminate vs" << std::endl;
+//	std::cerr << "start terminate vs" << std::endl;
 	LOG(INFO) << "VideoSurveillance stop";
 
 	this->image_acquisition->stop();
@@ -93,7 +102,6 @@ void VideoSurveillance::stop() {
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
 
 		image_processor_pool[i]->stop();
-
 		thread_pool[i]->join();
 
 		delete thread_pool[i];
@@ -102,8 +110,7 @@ void VideoSurveillance::stop() {
 		thread_pool[i] = nullptr;
 		image_processor_pool[i] = nullptr;
 	}
-
-	// std::cout << "end" << std::endl;
+//	std::cerr << "end" << std::endl;
 }
 
 }

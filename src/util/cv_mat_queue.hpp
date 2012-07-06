@@ -9,6 +9,7 @@
 #define NOKKHUM_CV_MAT_QUEUE_HPP_
 
 #include <queue>
+#include <mutex>
 #include <opencv2/core/core.hpp>
 
 namespace nokkhum {
@@ -24,6 +25,7 @@ public:
 	unsigned int size();
 private:
 	std::queue<cv::Mat> cv_mat_queue;
+	std::mutex queue_mutex;
 };
 
 }

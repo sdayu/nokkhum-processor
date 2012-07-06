@@ -24,18 +24,23 @@ SurveillanceManager::SurveillanceManager(std::string name) :
 }
 
 SurveillanceManager::~SurveillanceManager() {
-	//std::cout << "Terminate SurveillanceManager" << conf->getCameraProperty()->getName() << std::endl;
 	LOG(INFO) << "Terminate SurveillanceManager name: " << this->name;
-	delete vs;
-	vs = nullptr;
-	delete conf;
-	conf = nullptr;
+
+	if(vs){
+		delete vs;
+		vs = nullptr;
+	}
+
+	if(conf){
+		delete conf;
+		conf = nullptr;
+	}
 }
 
 void SurveillanceManager::processCommand() {
 	std::string command_string;
 	Json::Value result_json;
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
 	nokkhum::CommandParser cp;
 	while (true) {
 
@@ -55,7 +60,7 @@ void SurveillanceManager::processCommand() {
 		try {
 			if (!cp.paseCommand(command_string)){
 				result_json["result"]="can not process command";
-				std::cout << writer.write(result_json) << std::endl;
+				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				continue;
 			}
@@ -68,7 +73,7 @@ void SurveillanceManager::processCommand() {
 		if (cp.getCommand() == "stop") {
 			this->stopSurveillanceApplication();
 			result_json["result"]="stop ok";
-			std::cout << writer.write(result_json) << std::endl;
+			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 			break;
 		} else if (cp.getCommand() == "start") {
@@ -78,20 +83,20 @@ void SurveillanceManager::processCommand() {
 				result_json["result"]=e.what();
 				LOG(ERROR) << e.what();
 				result_json["result"]="stop because cannot start capture or configuration wrong";
-				std::cout << writer.write(result_json) << std::endl;
+				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				break;
 			}
 			result_json["result"]="start ok";
-			std::cout << writer.write(result_json) << std::endl;
+			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 		} else if (cp.getCommand() == "get_attributes") {
 			result_json["result"]=this->conf->getAttributes();
-			std::cout << writer.write(result_json) << std::endl;
+			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 		} else if (cp.getCommand() == "get_name") {
 			result_json["result"]=this->name;
-			std::cout << writer.write(result_json) << std::endl;
+			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 		}
 

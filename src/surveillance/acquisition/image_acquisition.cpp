@@ -30,7 +30,7 @@ void ImageAcquisition::start() {
 	cv::Mat image, copy_image;
 	running = true;
 	unsigned int i = 0;
-//	std::cout<<"ImageAcquisition start: "<<this<<std::endl;
+
 	while (running) {
 		camera >> image;
 		copy_image = image.clone();

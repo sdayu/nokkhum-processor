@@ -22,10 +22,13 @@ public:
 	VideoWriter(string filename, string directory, int width, int height, int fps);
 	virtual ~VideoWriter();
 
-	virtual void writeFrame(Mat &frame) = 0;
 	string getRecordName();
 
-	virtual bool isAvailable();
+	virtual bool open(string filename, string directory, int width, int height, int frame_rate) = 0;
+	virtual void release() = 0;
+	virtual void writeFrame(Mat &frame) = 0;
+	virtual bool isOpened();
+
 	virtual VideoWriter& operator <<(Mat& frame);
 
 protected:

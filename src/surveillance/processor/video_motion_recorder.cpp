@@ -19,7 +19,6 @@ VideoMotionRecorder::VideoMotionRecorder(CvMatQueue & input_image_queue,
 		VideoRecorderAttribute *vrp) : VideoRecorder(input_image_queue, vrp) {
 	this->maximum_wait_motion = vrp->getMaximumWaitMotion();
 
-	// std::cout<<"construct VideoMotionRecorder"<<std::endl;
 }
 
 VideoMotionRecorder::~VideoMotionRecorder() {

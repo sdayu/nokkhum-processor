@@ -11,49 +11,54 @@ namespace nokkhum {
 
 CvVideoWriter::CvVideoWriter() :
 		VideoWriter("", 0, 0, 0, 0) {
-	this->record = nullptr;
+
 }
 
 CvVideoWriter::CvVideoWriter(string filename, string directory, int width,
 		int height, int fps) :
 		VideoWriter(filename, directory, width, height, fps) {
 
-	record = new cv::VideoWriter(getRecordName().c_str(),
-			// CV_FOURCC('M', 'P', '4', '2'), fps, cv::Size(width, height),
-			// CV_FOURCC('X', '2', '6', '4'), fps, cv::Size(width, height),
-			// CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
-			CV_FOURCC('T', 'H', 'E', 'O'), fps, cv::Size(width, height),
-			//0, fps, cv::Size(width, height),
-			true);
+	this->open(filename, directory, width, height, fps);
 }
 
 CvVideoWriter::~CvVideoWriter() {
-	delete record;
-	record = nullptr;
+	this->release();
 }
 
-void CvVideoWriter::open(string filename, string directory, int width,
-		int height, int frame_rate) {
-	if (record) {
-		delete record;
-		record = nullptr;
+bool CvVideoWriter::open(string filename, string directory, int width,
+		int height, int fps) {
+	if (this->isOpened()) {
+		this->release();
 	}
-	record = new cv::VideoWriter(getRecordName().c_str(),
+
+	this->filename = filename;
+	this->directory = directory;
+	this->width	= width;
+	this->height = height;
+	this->fps = fps;
+
+	record = cv::VideoWriter(getRecordName().c_str(),
 			// CV_FOURCC('D', 'I', 'V', 'X'), frame_rate, cv::Size(width, height),
 			CV_FOURCC('T', 'H', 'E', 'O'), fps, cv::Size(width, height),
 			// CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
 			true);
+
+	return record.isOpened();
 }
 
-bool CvVideoWriter::isAvailable(){
-	if(record && record->isOpened())
+void CvVideoWriter::release(){
+	record.release();
+}
+
+bool CvVideoWriter::isOpened(){
+	if(record.isOpened())
 		return true;
 	else
 		return false;
 }
 
 void CvVideoWriter::writeFrame(Mat& frame) {
-	(*(record)) << frame;
+	record << frame;
 }
 
 CvVideoWriter& CvVideoWriter::operator <<(Mat& frame) {

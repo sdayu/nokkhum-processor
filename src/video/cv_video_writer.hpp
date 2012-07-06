@@ -25,14 +25,15 @@ public:
 	CvVideoWriter(string filename, string directory, int width, int height, int frame_rate);
 	virtual ~CvVideoWriter();
 
-	void open(string filename, string directory, int width, int height, int frame_rate);
-	bool isAvailable();
+	bool open(string filename, string directory, int width, int height, int frame_rate);
+	void release();
+	bool isOpened();
 
 	void writeFrame(Mat &frame);
 
 	CvVideoWriter& operator <<(Mat& frame);
 private:
-	cv::VideoWriter *record;
+	cv::VideoWriter record;
 };
 
 }

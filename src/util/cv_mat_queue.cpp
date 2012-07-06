@@ -22,12 +22,16 @@ CvMatQueue::~CvMatQueue() {
 }
 
 void CvMatQueue::push(cv::Mat mat) {
+	queue_mutex.lock();
 	cv_mat_queue.push(mat);
+	queue_mutex.unlock();
 }
 
 cv::Mat CvMatQueue::pop() {
+	queue_mutex.lock();
 	cv::Mat mat = cv_mat_queue.front().clone();
 	cv_mat_queue.pop();
+	queue_mutex.unlock();
 	return mat;
 }
 

@@ -58,6 +58,8 @@ public:
 
 	friend class RecordTimer;
 protected:
+
+	// need support all video writer
 	nokkhum::VideoWriter *writer;
 	std::string filename;
 	std::string directory;
@@ -66,7 +68,7 @@ protected:
 	unsigned int fps;
 	unsigned int period;
 
-	RecordTimer *timer;
+	RecordTimer timer;
 	std::mutex writer_mutex;
 
 	virtual void getNewVideoWriter();

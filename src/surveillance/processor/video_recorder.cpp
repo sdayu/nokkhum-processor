@@ -34,7 +34,6 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 	this->writer = nullptr;
 
 	this->period = 10;
-	this->timer = nullptr;
 
 	// std::cout << "Construct video recorder without property" << std::endl;
 }
@@ -49,15 +48,14 @@ VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
 	this->fps = vrp->getFps();
 	this->period = 10;
 	this->writer = nullptr;
-	this->timer = nullptr;
+
 }
 
 VideoRecorder::~VideoRecorder() {
 	delete this->writer;
 	this->writer = nullptr;
+	this->timer.stop();
 
-	delete this->timer;
-	this->timer = nullptr;
 }
 
 void VideoRecorder::start() {
@@ -140,42 +138,36 @@ void VideoRecorder::getNewVideoWriter() {
 //		LOG(INFO) << "cur time " << current_time;
 //		LOG(INFO) << "old time " << old_time;
 //		LOG(INFO) << "td.total_seconds() " << td.total_seconds();
-		if (this->writer != nullptr && td.total_seconds() < 3) {
+		if (this->writer != nullptr && td.total_seconds() < 1) {
 //			LOG(INFO) << "less than 3 ";
 			return;
 		}
 	}
 
+	// stop current record before start new record
+	this->stopRecord();
+
+	// begin to start new record
 	writer_mutex.lock();
-	delete this->writer;
-	this->writer = nullptr;
 
 	while (this->writer == nullptr) {
 		this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(),
 				this->width, this->height, this->fps);
-
-		if (!this->writer->isAvailable()) {
+		if (!this->writer->isOpened()) {
 			delete this->writer;
 			this->writer = nullptr;
 		}
 	}
 	writer_mutex.unlock();
 
-	if (this->filename.length() > 0 && this->filename.find("__") != std::string::npos) {
-		unsigned int replace_position = this->filename.find("__");
-		std::string finish_name = this->filename;
-		finish_name.replace(replace_position, replace_position+2, "");
-		boost::filesystem::rename(dm.getDirectoryName()+"/"+this->filename, dm.getDirectoryName()+"/"+finish_name);
-	}
-
 	this->filename = oss.str();
-	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName()
+	LOG(INFO) << "get new video writer name: " << dm.getDirectoryName() << "/"
 			<< this->filename;
 
 }
 
 void VideoRecorder::startRecord() {
-
+//	std::cerr<<"getNewVideoWriter"<<std::endl;
 	this->getNewVideoWriter();
 	this->startTimer();
 
@@ -222,35 +214,43 @@ void VideoRecorder::stopRecord(){
 	writer_mutex.lock();
 	delete this->writer;
 	this->writer = nullptr;
+
 	if (this->filename.length() > 0 && this->filename.find("__") != std::string::npos) {
 			unsigned int replace_position = this->filename.find("__");
 			std::string finish_name = this->filename;
 			finish_name.replace(replace_position, replace_position+2, "");
 			nokkhum::DirectoryManager dm(this->directory, "video");
-			boost::filesystem::rename(dm.getDirectoryName()+"/"+this->filename, dm.getDirectoryName()+"/"+finish_name);
+
+			std::string full_path_old_file = dm.getDirectoryName()+"/"+this->filename;
+			std::string full_path_new_file = dm.getDirectoryName()+"/"+finish_name;
+
+			if (boost::filesystem::exists(full_path_old_file)){
+				boost::filesystem::rename(full_path_old_file, full_path_new_file);
+			}
+			else{
+				LOG(INFO) << "video file not found: " << full_path_old_file;
+			}
+
 			this->filename.clear();
 	}
 	writer_mutex.unlock();
+
 }
 
 void VideoRecorder::startTimer() {
 //	LOG(INFO) << "Start Timer";
 	// timer = std::thread(&VideoRecorder::clock, this);
 	// LOG(INFO) << "Timer RUN";
-	this->timer = new RecordTimer(this, this->period);
-	this->timer->start();
+	this->timer = RecordTimer(this, this->period);
+	this->timer.start();
 	// LOG(INFO) << this->getName() << " start Timer";
 }
 
 void VideoRecorder::stopTimer() {
 	// LOG(INFO) << this->getName() << " stop Timer";
 	try {
-		if (this->timer != nullptr) {
-			this->timer->stop();
+		this->timer.stop();
 			// LOG(INFO) << this->getName() << " delete Timer";
-			delete this->timer;
-			this->timer = nullptr;
-		}
 	} catch (std::exception e) {
 		LOG(INFO) << "exception in stop timer: " << e.what() << std::endl;
 	}
@@ -260,7 +260,7 @@ void VideoRecorder::stopTimer() {
 bool VideoRecorder::isWriterAvailable() {
 	bool result = false;
 	writer_mutex.lock();
-	if (this->writer != nullptr)
+	if (this->writer != nullptr and this->writer->isOpened())
 		result = true;
 	else
 		result = false;
@@ -317,6 +317,9 @@ void RecordTimer::stop() {
 //	LOG(INFO) << "stop Clock";
 	running = false;
 	timer_thred.interrupt();
+
+	if (!this->timer_thred.joinable())
+		this->timer_thred.join();
 //	LOG(INFO) << "end stop Clock";
 }
 
