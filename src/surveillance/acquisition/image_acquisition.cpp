@@ -7,6 +7,7 @@
 
 #include "image_acquisition.hpp"
 #include <iostream>
+#include <glog/logging.h>
 
 namespace nokkhum {
 
@@ -33,6 +34,10 @@ void ImageAcquisition::start() {
 
 	while (running) {
 		camera >> image;
+		if(image.empty()){
+			LOG(INFO) << "Image Empty ";
+			continue;
+		}
 		copy_image = image.clone();
 		for (i = 0; i < multiple_queue.getSize(); ++i) {
 			multiple_queue.get(i)->push(copy_image);

@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include <glog/logging.h>
+
 namespace nokkhum {
 
 CvMatQueue::CvMatQueue() {
@@ -24,6 +26,8 @@ CvMatQueue::~CvMatQueue() {
 void CvMatQueue::push(cv::Mat mat) {
 	queue_mutex.lock();
 	cv_mat_queue.push(mat);
+	if (this->size() > 50 )
+		LOG(INFO) << "cv_mat_queue size: "<<this->size();
 	queue_mutex.unlock();
 }
 
