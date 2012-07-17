@@ -10,7 +10,9 @@
 #include <iostream>
 
 #include <glog/logging.h>
+
 #include <thread>
+#include <chrono>
 
 namespace nokkhum {
 
@@ -27,8 +29,11 @@ CvMatQueue::~CvMatQueue() {
 void CvMatQueue::push(cv::Mat mat) {
 	queue_mutex.lock();
 	cv_mat_queue.push(mat);
-	if (this->size() > 150 )
+	if (this->size() > 500 ){
 		LOG(INFO) <<"thread: " << std::this_thread::get_id()<<" cv_mat_queue size: "<<this->size();
+		std::chrono::milliseconds dura( 200 );
+		std::this_thread::sleep_for( dura );
+	}
 	queue_mutex.unlock();
 }
 
