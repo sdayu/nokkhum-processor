@@ -8,6 +8,7 @@
 #include "job.hpp"
 
 #include <iostream>
+#include <thread>
 #include <glog/logging.h>
 
 namespace nokkhum {
@@ -34,7 +35,7 @@ void Job::stop() {
 void Job::operator ()() {
 	this->running = true;
 //	std::cout<<"Call start with operator () status: "<< this->running <<" this-> "<<this<<std::endl;
-	LOG(INFO) << "Job Start name: " << name;
+	LOG(INFO) << "Job Start name: " << name << " thread id: " << std::this_thread::get_id();
 	start();
 }
 

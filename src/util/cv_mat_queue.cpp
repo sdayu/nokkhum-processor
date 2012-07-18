@@ -27,14 +27,25 @@ CvMatQueue::~CvMatQueue() {
 }
 
 void CvMatQueue::push(cv::Mat mat) {
+	if (this->size() > 1500 ){
+		if(this->drop){
+			this->drop = false;
+			LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue drop";
+			return;
+		}
+		this->drop = true;
+	}
+
 	queue_mutex.lock();
 	cv_mat_queue.push(mat);
+	queue_mutex.unlock();
+
 	if (this->size() > 500 ){
-		LOG(INFO) <<"thread: " << std::this_thread::get_id()<<" cv_mat_queue size: "<<this->size();
-		std::chrono::milliseconds dura( 200 );
+		LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue size: " << this->size();
+		std::chrono::milliseconds dura( 500 );
 		std::this_thread::sleep_for( dura );
 	}
-	queue_mutex.unlock();
+
 }
 
 cv::Mat CvMatQueue::pop() {

@@ -23,6 +23,7 @@ public:
 	void push(cv::Mat);
 	bool empty();
 	unsigned int size();
+	bool drop = false;
 private:
 	std::queue<cv::Mat> cv_mat_queue;
 	std::mutex queue_mutex;
