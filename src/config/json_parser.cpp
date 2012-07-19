@@ -110,7 +110,7 @@ void JsonParser::parseImageProcessor(
 
 	ImageProcessorAttribute* tmp = nullptr;
 
-	for (auto i = 0; i < image_processor_array.size();
+	for (unsigned int i = 0; i < image_processor_array.size();
 			i++) {
 		Json::Value obj = image_processor_array[i];
 

@@ -35,6 +35,7 @@ namespace nokkhum
     CvIpCamera::~CvIpCamera()
     {
     	delete capture;
+    	capture = nullptr;
     }
 
     void CvIpCamera::getImage(Mat& image)
@@ -51,6 +52,13 @@ namespace nokkhum
     {
     	this->getImage(image);
     	return *this;
+    }
+
+    bool CvIpCamera::isOpen(){
+    	if (capture == nullptr)
+    		return false;
+    	else
+    		return capture->isOpened();
     }
 
     // open the default camera

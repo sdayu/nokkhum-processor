@@ -24,6 +24,8 @@ public:
 	void getImage(Mat& image);
 	VideoCapture* getCapture();
 	CvIpCamera& operator >>(Mat& image);
+
+	bool isOpen();
 private:
 	VideoCapture *capture;
 };

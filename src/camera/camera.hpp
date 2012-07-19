@@ -25,6 +25,7 @@ public:
 	int getWidth();
 	int getHeight();
 	int getFps();
+	virtual bool isOpen();
 
 	virtual void getImage(cv::Mat& image) = 0;
 	Camera& operator >>(cv::Mat& image);

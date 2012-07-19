@@ -21,6 +21,7 @@ public:
 	virtual ~CvCamera();
 
 	void getImage(cv::Mat& image);
+	bool isOpen();
 
 private:
 	cv::VideoCapture *capture;

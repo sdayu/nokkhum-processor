@@ -56,4 +56,8 @@ void Camera::setName(std::string name) {
 	this->name = name;
 }
 
+bool Camera::isOpen(){
+	return false;
+}
+
 }

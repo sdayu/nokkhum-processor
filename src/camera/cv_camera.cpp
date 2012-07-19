@@ -33,4 +33,10 @@ void CvCamera::getImage(Mat& image) {
 	*(this->capture) >> image;
 }
 
+bool CvCamera::isOpen(){
+	if (capture == nullptr)
+		return false;
+	else
+		return capture->isOpened();
+}
 }

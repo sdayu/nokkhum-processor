@@ -122,8 +122,11 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 }
 
 void SurveillanceManager::stopSurveillanceApplication() {
-	if (vs)
+	LOG(INFO) << "Try to stop VS";
+	if (vs){
 		vs->stop();
+	}
+	LOG(INFO) << "Stop, Bye";
 }
 
 } /* namespace nokkhum */
