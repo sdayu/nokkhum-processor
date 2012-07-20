@@ -10,12 +10,14 @@
 
 #include <string>
 #include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace nokkhum {
 
 class DirectoryManager {
 public:
 	DirectoryManager(std::string root_directory, std::string type);
+	DirectoryManager(std::string root_directory, std::string type, boost::posix_time::ptime the_time);
 	virtual ~DirectoryManager();
 
 	bool checkAndCreate();

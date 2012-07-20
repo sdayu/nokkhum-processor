@@ -35,6 +35,26 @@ DirectoryManager::DirectoryManager(std::string root_directory, std::string type)
 
 	directory_path = boost::filesystem::path(oss.str());
 }
+DirectoryManager::DirectoryManager(std::string root_directory, std::string type, boost::posix_time::ptime the_time) :
+		root_directory(root_directory), type(type) {
+		std::ostringstream oss;
+		boost::posix_time::ptime current_time = the_time;
+		oss << root_directory << "/" << current_time.date().year() << std::setw(2)
+				<< std::setfill('0') << (int) ((current_time.date().month()))
+				<< std::setw(2) << std::setfill('0') << current_time.date().day();
+		if (type == "image") {
+			oss << "/" << "images" << "/"
+					<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
+					<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes();
+		} else if (type == "video") {
+			oss << "/" << "video";
+		} else {
+			oss << "/" << "unknow_type";
+		}
+
+		directory_path = boost::filesystem::path(oss.str());
+
+}
 
 DirectoryManager::~DirectoryManager() {
 	// TODO Auto-generated destructor stub

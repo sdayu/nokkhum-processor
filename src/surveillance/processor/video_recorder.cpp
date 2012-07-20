@@ -219,7 +219,25 @@ void VideoRecorder::stopRecord(){
 			unsigned int replace_position = this->filename.find("__");
 			std::string finish_name = this->filename;
 			finish_name.replace(replace_position, replace_position+2, "");
-			nokkhum::DirectoryManager dm(this->directory, "video");
+
+			string old_name = this->filename;
+			for (unsigned long i = 0; i < old_name.length(); i++) {
+				if (old_name[i] == '-') {
+						old_name[i] = ' ';
+				}
+				if (old_name[i] == '_') {
+						old_name[i] = ' ';
+				}
+			}
+
+			std::istringstream iss(old_name);
+			int day, month, year, hours, minutes, seconds;
+			iss >> year >> month >> day >> hours >> minutes >> seconds;
+			boost::posix_time::ptime old_time(
+				boost::gregorian::date(year, month, day),
+					boost::posix_time::time_duration(hours, minutes, seconds));
+
+			nokkhum::DirectoryManager dm(this->directory, "video", old_time);
 
 			std::string full_path_old_file = dm.getDirectoryName()+"/"+this->filename;
 			std::string full_path_new_file = dm.getDirectoryName()+"/"+finish_name;
