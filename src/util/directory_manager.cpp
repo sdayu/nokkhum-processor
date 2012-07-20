@@ -39,6 +39,7 @@ DirectoryManager::DirectoryManager(std::string root_directory, std::string type,
 		root_directory(root_directory), type(type) {
 		std::ostringstream oss;
 		boost::posix_time::ptime current_time = the_time;
+
 		oss << root_directory << "/" << current_time.date().year() << std::setw(2)
 				<< std::setfill('0') << (int) ((current_time.date().month()))
 				<< std::setw(2) << std::setfill('0') << current_time.date().day();

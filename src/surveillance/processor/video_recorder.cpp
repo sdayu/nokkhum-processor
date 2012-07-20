@@ -220,7 +220,8 @@ void VideoRecorder::stopRecord(){
 			std::string finish_name = this->filename;
 			finish_name.replace(replace_position, replace_position+2, "");
 
-			string old_name = this->filename;
+			std::string old_name = this->filename.substr(this->filename.find("-"),
+							this->filename.rfind("-"));
 			for (unsigned long i = 0; i < old_name.length(); i++) {
 				if (old_name[i] == '-') {
 						old_name[i] = ' ';
