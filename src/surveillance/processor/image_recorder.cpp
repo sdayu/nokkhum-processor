@@ -58,9 +58,9 @@ void ImageRecorder::start() {
 //		time(&rawtime);
 //		tm* time_struct = localtime(&rawtime);
 
-		nokkhum::DirectoryManager dm (this->directory, "image");
+		nokkhum::DirectoryManager dm (this->directory, "image", current_time);
 		if(! dm.checkAndCreate()){
-
+			continue;
 		}
 
 		std::string record_name;

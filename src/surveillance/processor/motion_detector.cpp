@@ -50,7 +50,7 @@ void MotionDetector::start() {
 //	motion_time = boost::posix_time::microsec_clock::local_time();
 
 	int motion_count = 0;
-	int step = 15;
+	int step = 40; // before step = 15
 
 	int image_count = 0;
 

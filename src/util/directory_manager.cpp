@@ -69,6 +69,7 @@ bool DirectoryManager::checkAndCreate() {
 		LOG(INFO) << "Create directory name: " << directory_path;
 		return true;
 	}
+	LOG(INFO) << "Can not create directory name: " << directory_path;
 	return false;
 }
 
