@@ -98,7 +98,7 @@ void MotionDetector::start() {
 				}
 			}
 
-			if(motion_count > 5){
+			if(motion_count > 3){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 //				LOG(INFO) << "Have motion: " << std::dec << tmp_mat.size() ;
