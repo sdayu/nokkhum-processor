@@ -46,8 +46,8 @@ void CvMatQueue::push(cv::Mat mat) {
 
 	if (this->size() > 100 ){
 		LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue size: " << this->size();
-		std::chrono::milliseconds dura( 500 );
-		std::this_thread::sleep_for( dura );
+		std::chrono::milliseconds duration( 100 );
+		std::this_thread::sleep_for( duration );
 	}
 
 
