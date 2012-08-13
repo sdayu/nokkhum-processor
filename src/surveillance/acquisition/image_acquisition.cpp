@@ -7,7 +7,7 @@
 
 #include "image_acquisition.hpp"
 #include <iostream>
-#include <exception>
+#include <thread>
 #include <glog/logging.h>
 
 namespace nokkhum {
@@ -31,8 +31,10 @@ void ImageAcquisition::start() {
 
 	cv::Mat image, copy_image;
 	running = true;
-	unsigned int i = 0;
+	unsigned int counter = 0;
 
+	ImageAcquisitionMonitor iam(running, counter);
+	std::thread monitor = std::thread(std::ref(iam));
 
 	while (running) {
 		camera >> image;
@@ -50,16 +52,19 @@ void ImageAcquisition::start() {
 					}
 					if (count > 30){
 						LOG(INFO) << "Image Empty more than 30";
-						throw std::exception();
+						throw std::runtime_error("Image Empty more than 30");
 					}
 				}
 			}
 		}
 		copy_image = image.clone();
-		for (i = 0; i < multiple_queue.getSize(); ++i) {
+		for (unsigned int  i = 0; i < multiple_queue.getSize(); ++i) {
 			multiple_queue.get(i)->push(copy_image);
 		}
+		++counter;
 	}
+
+	monitor.join();
 }
 
 void ImageAcquisition::operator()() {

@@ -10,6 +10,9 @@
 
 #include <queue>
 #include <string>
+#include <chrono>
+#include <thread>
+#include <stdexcept>
 
 #include <opencv2/core/core.hpp>
 
@@ -37,6 +40,27 @@ private:
 	nokkhum::MultipleMatQueue multiple_queue;
 	nokkhum::Camera &camera;
 
+};
+
+class ImageAcquisitionMonitor {
+public:
+	ImageAcquisitionMonitor(bool &running, unsigned int &counter, unsigned int time_to_sleep=2000):running(running), counter(counter), time_to_sleep(time_to_sleep){}
+	void operator() (){
+		while(running){
+			std::this_thread::yield();
+			std::this_thread::sleep_for(std::chrono::milliseconds(time_to_sleep));
+			if( counter>0 ){
+				counter = 0;
+			}
+			else{
+				throw std::runtime_error("ImageAcquisition could not get Image");
+			}
+		}
+	}
+private:
+	bool &running;
+	unsigned int &counter;
+	unsigned int time_to_sleep; // in milisecound
 };
 
 }
