@@ -8,12 +8,11 @@
 #include "cv_ip_camera.hpp"
 
 #include <iostream>
-#include <exception>
+#include <stdexcept>
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 
-using namespace cv;
 
 /* IP_CAMERA_HPP_ */
 namespace nokkhum
@@ -21,31 +20,30 @@ namespace nokkhum
     CvIpCamera::CvIpCamera(int width, int height, int fps, string url, string username, string password)
     :IpCamera(width, height, fps, url, username, password)
     {
-		capture = new VideoCapture(url);
+		capture = cv::VideoCapture(url);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
 //        cout<< "url: "<<url<<endl;
 
-		if (!capture->isOpened()) {
+		if (!capture.isOpened()) {
 				std::cerr << "Camera failed to open!\n";
-				throw std::exception(); //TODO need to specify exception
+				throw std::runtime_error("Camera failed to open!"); //TODO need to specify exception
 		}
     }
 
     CvIpCamera::~CvIpCamera()
     {
-    	delete capture;
-    	capture = nullptr;
+
     }
 
     void CvIpCamera::getImage(Mat& image)
     {
-    	*(this->capture) >> image;
+    	this->capture >> image;
     }
 
 
     VideoCapture* CvIpCamera::getCapture(){
-    	return this->capture;
+    	return &this->capture;
     }
 
     CvIpCamera & CvIpCamera::operator >>(Mat& image)
@@ -55,10 +53,7 @@ namespace nokkhum
     }
 
     bool CvIpCamera::isOpen(){
-    	if (capture == nullptr)
-    		return false;
-    	else
-    		return capture->isOpened();
+    	return capture.isOpened();
     }
 
     // open the default camera

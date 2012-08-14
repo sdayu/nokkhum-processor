@@ -160,14 +160,14 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 		name = "Video Motion Recorder";
 
 		if(record_motion){
-			std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion, maximum_wait_motion);
+			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion, maximum_wait_motion);
 		}
 		else{
-			std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
+			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
 		}
 	}
 	else{
-		std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
+		vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
 	}
 
 	if (image_processor_obj.isMember("processors")){

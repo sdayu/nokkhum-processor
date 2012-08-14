@@ -27,7 +27,7 @@ public:
 
 	bool isOpen();
 private:
-	VideoCapture *capture;
+	VideoCapture capture;
 };
 
 }

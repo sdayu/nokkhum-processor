@@ -19,22 +19,10 @@ namespace nokkhum {
 
 SurveillanceManager::SurveillanceManager(std::string name) :
 		name(name) {
-	this->conf = nullptr;
-	this->vs = nullptr;
 }
 
 SurveillanceManager::~SurveillanceManager() {
 	LOG(INFO) << "Terminate SurveillanceManager name: " << this->name;
-
-	if(vs){
-		delete vs;
-		vs = nullptr;
-	}
-
-	if(conf){
-		delete conf;
-		conf = nullptr;
-	}
 }
 
 void SurveillanceManager::processCommand() {
@@ -82,7 +70,7 @@ void SurveillanceManager::processCommand() {
 			} catch (std::exception e) {
 				result_json["result"]=e.what();
 				LOG(ERROR) << e.what();
-				result_json["result"]="stop because cannot start capture or configuration wrong";
+				result_json["result"] += "stop because cannot start capture or configuration wrong";
 				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				break;
@@ -105,19 +93,19 @@ void SurveillanceManager::processCommand() {
 
 void SurveillanceManager::startSurveillanceApplication(std::string config) {
 
-	if (conf) {
+	if (config.empty()) {
 		LOG(INFO) << "Try to start but ignore command";
 		return;
 	}
 
 	LOG(INFO) << "Start build configuration for camera id: " << this->name;
-	conf = new nokkhum::Configuration(config);
+	conf = nokkhum::Configuration(config);
 
 	LOG(INFO) << "Start construct VideoSurveillance for camera id: "
 			<< this->name;
 	// need to check configuration is available
-	vs = new nokkhum::VideoSurveillance(*conf);
-	vs->start();
+	vs = nokkhum::VideoSurveillance(conf);
+	vs.start();
 	LOG(INFO) << "SurveillanceManager start: " << this->name;
 }
 
