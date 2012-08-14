@@ -18,7 +18,7 @@ ImageProcessor::~ImageProcessor() {
 // TODO Auto-generated destructor stub
 }
 
-CvMatQueue* ImageProcessor::getNewOutputImageQueue() {
+std::shared_ptr<CvMatQueue> ImageProcessor::getNewOutputImageQueue() {
 	return this->output_image_queue.getNew();
 }
 

@@ -27,10 +27,10 @@ MotionDetector::MotionDetector(CvMatQueue &input_image_queue) :
 
 }
 
-MotionDetector::MotionDetector(CvMatQueue &input_image_queue, MotionDetectorAttribute *mdp) :
+MotionDetector::MotionDetector(CvMatQueue &input_image_queue, MotionDetectorAttribute &mdp) :
 	ImageProcessor("Motion Detection", input_image_queue) {
-	this->interval = mdp->getInterval();
-	this->resolution = mdp->getResolution();
+	this->interval = mdp.getInterval();
+	this->resolution = mdp.getResolution();
 
 	this->drop_motion = 5;
 

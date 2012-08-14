@@ -10,6 +10,7 @@
 
 #include <string>
 #include <map>
+#include <memory>
 #include <jsoncpp/json/reader.h>
 #include "../surveillance/processor/image_processor.hpp"
 #include "../camera/camera.hpp"
@@ -20,24 +21,24 @@
 
 namespace nokkhum {
 
-typedef std::map<std::string, Attribute*> AttributeMap;
+typedef std::map<std::string, std::shared_ptr<Attribute>> AttributeMap;
 
 class JsonParser {
 public:
 	JsonParser();
 	virtual ~JsonParser();
 
-	AttributeMap* parse(std::string file_name);
+	std::shared_ptr<AttributeMap> parse(std::string file_name);
 
-	CameraAttribute* parseCamera(const Json::Value camera_obj);
-	void parseImageProcessor(const Json::Value image_processor_array, ImageProcessorAttribute* ipp);
+	std::shared_ptr<CameraAttribute> parseCamera(const Json::Value camera_obj);
+	void parseImageProcessor(const Json::Value image_processor_array, std::shared_ptr<ImageProcessorAttribute> ipp);
 
 private:
 
-	ImageProcessorAttribute* parseVideoRecorder(const Json::Value image_processor_obj);
-	ImageProcessorAttribute* parseImageRecorder(const Json::Value image_processor_obj);
-	ImageProcessorAttribute* parseMotionDetector(const Json::Value image_processor_obj);
-	ImageProcessorAttribute* parseFaceDetector(const Json::Value image_processor_obj);
+	std::shared_ptr<ImageProcessorAttribute> parseVideoRecorder(const Json::Value image_processor_obj);
+	std::shared_ptr<ImageProcessorAttribute> parseImageRecorder(const Json::Value image_processor_obj);
+	std::shared_ptr<ImageProcessorAttribute> parseMotionDetector(const Json::Value image_processor_obj);
+	std::shared_ptr<ImageProcessorAttribute> parseFaceDetector(const Json::Value image_processor_obj);
 
 };
 

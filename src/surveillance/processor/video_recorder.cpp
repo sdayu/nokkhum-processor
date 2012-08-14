@@ -39,13 +39,13 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 }
 
 VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
-		VideoRecorderAttribute *vrp) :
-		ImageProcessor(vrp->getName(), input_image_queue) {
+		VideoRecorderAttribute &vrp) :
+		ImageProcessor(vrp.getName(), input_image_queue) {
 	this->running = false;
-	this->directory = vrp->getDirectory();
-	this->width = vrp->getWidth();
-	this->height = vrp->getHeight();
-	this->fps = vrp->getFps();
+	this->directory = vrp.getDirectory();
+	this->width = vrp.getWidth();
+	this->height = vrp.getHeight();
+	this->fps = vrp.getFps();
 	this->period = 10;
 	this->writer = nullptr;
 

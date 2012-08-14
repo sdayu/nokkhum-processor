@@ -43,7 +43,7 @@ JsonParser::~JsonParser() {
 	// TODO Auto-generated destructor stub
 }
 
-AttributeMap* JsonParser::parse(std::string json) {
+std::shared_ptr<AttributeMap> JsonParser::parse(std::string json) {
 
 	Json::Value value;
     Json::Reader read;
@@ -57,8 +57,8 @@ AttributeMap* JsonParser::parse(std::string json) {
 
 	Json::Value obj = value;
 
-	AttributeMap *property_map = new AttributeMap();
-	Attribute *property = nullptr;
+	std::shared_ptr<AttributeMap> property_map = std::make_shared<AttributeMap>();
+	std::shared_ptr<Attribute> property = nullptr;
 
 //	LOG(DEBUG) << "JSON :" << json;
 //	LOG(DEBUG) << "parse camera :" << Json::write(value);
@@ -67,7 +67,7 @@ AttributeMap* JsonParser::parse(std::string json) {
 	  // first insert function version (single parameter):
 	(*property_map)["camera"] = property;
 //	LOG(DEBUG) << "parse processor";
-	ImageProcessorAttribute* ipp = new ImageProcessorAttribute();
+	std::shared_ptr<ImageProcessorAttribute> ipp = std::make_shared<ImageProcessorAttribute>();
 
 	parseImageProcessor( obj["processors"], ipp);
 	(*property_map)["processors"] = ipp;
@@ -77,7 +77,7 @@ AttributeMap* JsonParser::parse(std::string json) {
 	return property_map;
 }
 
-CameraAttribute* JsonParser::parseCamera(const Json::Value camera_obj) {
+std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camera_obj) {
 //	LOG(INFO) << "parse camera 0.0";
 	int width = 0;
 	int height = 0;
@@ -99,16 +99,16 @@ CameraAttribute* JsonParser::parseCamera(const Json::Value camera_obj) {
 
 //	std::cout << "Camera Name: " << name << std::endl;
 
-	CameraAttribute *cp = new CameraAttribute(name, model, url, width, height, fps, username, password);
+	std::shared_ptr<CameraAttribute> cp = std::make_shared<CameraAttribute>(name, model, url, width, height, fps, username, password);
 	return cp;
 }
 
 
 void JsonParser::parseImageProcessor(
 		const Json::Value image_processor_array,
-		ImageProcessorAttribute* ipp) {
+		std::shared_ptr<ImageProcessorAttribute> ipp) {
 
-	ImageProcessorAttribute* tmp = nullptr;
+	std::shared_ptr<ImageProcessorAttribute> tmp = nullptr;
 
 	for (unsigned int i = 0; i < image_processor_array.size();
 			i++) {
@@ -135,7 +135,7 @@ void JsonParser::parseImageProcessor(
 	//return image_processors;
 }
 
-ImageProcessorAttribute* JsonParser::parseVideoRecorder(
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
@@ -152,7 +152,7 @@ ImageProcessorAttribute* JsonParser::parseVideoRecorder(
 
 	//std::cout << "Processor name : " << name << std::endl;
 
-	VideoRecorderAttribute* vrp = nullptr;
+	std::shared_ptr<VideoRecorderAttribute> vrp = nullptr;
 
 	if(image_processor_obj.isMember("record_motion") && image_processor_obj.isMember("maximum_wait_motion")){
 		bool record_motion = image_processor_obj.isMember("record_motion");
@@ -160,14 +160,14 @@ ImageProcessorAttribute* JsonParser::parseVideoRecorder(
 		name = "Video Motion Recorder";
 
 		if(record_motion){
-			vrp = new VideoRecorderAttribute(name, directory, width, height, fps, record_motion, maximum_wait_motion);
+			std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion, maximum_wait_motion);
 		}
 		else{
-			vrp = new VideoRecorderAttribute(name, directory, width, height, fps);
+			std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
 		}
 	}
 	else{
-		vrp = new VideoRecorderAttribute(name, directory, width, height, fps);
+		std::shared_ptr<ImageProcessorAttribute> vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
 	}
 
 	if (image_processor_obj.isMember("processors")){
@@ -177,7 +177,7 @@ ImageProcessorAttribute* JsonParser::parseVideoRecorder(
 	return vrp;
 }
 
-ImageProcessorAttribute* JsonParser::parseImageRecorder(
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
@@ -192,7 +192,7 @@ ImageProcessorAttribute* JsonParser::parseImageRecorder(
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	ImageRecorderAttribute *irp = new ImageRecorderAttribute(name, directory, width, height);
+	std::shared_ptr<ImageProcessorAttribute> irp = std::make_shared<ImageRecorderAttribute>(name, directory, width, height);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], irp );
 	}
@@ -200,7 +200,7 @@ ImageProcessorAttribute* JsonParser::parseImageRecorder(
 	return irp;
 }
 
-ImageProcessorAttribute* JsonParser::parseMotionDetector(
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
@@ -213,7 +213,7 @@ ImageProcessorAttribute* JsonParser::parseMotionDetector(
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	MotionDetectorAttribute* mdp = new MotionDetectorAttribute(name, resolution, interval);
+	std::shared_ptr<ImageProcessorAttribute> mdp = std::make_shared<MotionDetectorAttribute>(name, resolution, interval);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], mdp );
 	}
@@ -221,7 +221,7 @@ ImageProcessorAttribute* JsonParser::parseMotionDetector(
 	return mdp;
 }
 
-ImageProcessorAttribute* JsonParser::parseFaceDetector(
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceDetector(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
@@ -232,7 +232,7 @@ ImageProcessorAttribute* JsonParser::parseFaceDetector(
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	FaceDetectorAttribute* fdp = new FaceDetectorAttribute(name, interval);
+	std::shared_ptr<ImageProcessorAttribute> fdp = std::make_shared<FaceDetectorAttribute>(name, interval);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], fdp );
 	}

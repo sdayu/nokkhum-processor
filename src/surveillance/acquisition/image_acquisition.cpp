@@ -75,7 +75,7 @@ void ImageAcquisition::stop() {
 	this->running = false;
 }
 
-CvMatQueue* ImageAcquisition::getNewOutputImageQueue() {
+std::shared_ptr<CvMatQueue> ImageAcquisition::getNewOutputImageQueue() {
 	return this->multiple_queue.getNew();
 }
 

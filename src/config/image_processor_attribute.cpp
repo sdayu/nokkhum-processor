@@ -20,12 +20,6 @@ ImageProcessorAttribute::ImageProcessorAttribute() {
 }
 
 ImageProcessorAttribute::~ImageProcessorAttribute() {
-	for(std::vector<ImageProcessorAttribute*>::size_type i = 0;
-			i < image_processor_attribute_vector.size();
-			++i){
-		delete image_processor_attribute_vector[i];
-		image_processor_attribute_vector[i] = nullptr;
-	}
 
 //	std::cout<<"destroy: "<<name<<std::endl;
 }
@@ -34,7 +28,7 @@ std::string ImageProcessorAttribute::getName() const {
 	return name;
 }
 
-std::vector<ImageProcessorAttribute*> ImageProcessorAttribute::getImageProcessorAttributeVector() const {
+std::vector< std::shared_ptr<ImageProcessorAttribute> > ImageProcessorAttribute::getImageProcessorAttributeVector() const {
 	return image_processor_attribute_vector;
 }
 
@@ -43,7 +37,7 @@ void ImageProcessorAttribute::setName(std::string name) {
 }
 
 void ImageProcessorAttribute::addImageProcessorAttribute(
-		ImageProcessorAttribute *imageProcessorAttribute) {
+		std::shared_ptr<ImageProcessorAttribute> imageProcessorAttribute) {
 	this->image_processor_attribute_vector.push_back(imageProcessorAttribute);
 }
 

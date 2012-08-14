@@ -8,6 +8,8 @@
 #ifndef NOKKHUM_IMAGE_PROCESSOR_HPP_
 #define NOKKHUM_IMAGE_PROCESSOR_HPP_
 
+#include <memory>
+
 #include "../job.hpp"
 
 #include <opencv2/core/core.hpp>
@@ -23,7 +25,7 @@ public:
 	ImageProcessor(std::string name, CvMatQueue &input_image_queue);
 	virtual ~ImageProcessor();
 
-	CvMatQueue* getNewOutputImageQueue();
+	std::shared_ptr<CvMatQueue> getNewOutputImageQueue();
 
 protected:
 	CvMatQueue &input_image_queue;

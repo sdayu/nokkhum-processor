@@ -25,9 +25,9 @@ FaceDetector::FaceDetector(CvMatQueue &input_image_queue) :
 }
 
 FaceDetector::FaceDetector(CvMatQueue & input_image_queue,
-		FaceDetectorAttribute *fdp) :
+		FaceDetectorAttribute &fdp) :
 		ImageProcessor("Face Detection", input_image_queue) {
-	this->interval = fdp->getInterval();
+	this->interval = fdp.getInterval();
 
 }
 

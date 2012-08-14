@@ -9,6 +9,7 @@
 #define NOKKHUM_MULTIPLE_QUEUE_HPP_
 
 #include <vector>
+#include <memory>
 
 #include <opencv2/core/core.hpp>
 #include "cv_mat_queue.hpp"
@@ -21,14 +22,14 @@ public:
 	MultipleMatQueue();
 	virtual ~MultipleMatQueue();
 
-	CvMatQueue* get(int index);
+	std::shared_ptr<CvMatQueue> get(int index);
 	unsigned int getSize();
 
-	CvMatQueue* getNew();
+	std::shared_ptr<CvMatQueue> getNew();
 	void deleteQueue(int index);
 
 	private:
-		std::vector<CvMatQueue*> cvmat_queue_container;
+		std::vector< std::shared_ptr<CvMatQueue> > cvmat_queue_container;
 };
 
 }

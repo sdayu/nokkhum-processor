@@ -16,8 +16,8 @@
 namespace nokkhum {
 
 VideoMotionRecorder::VideoMotionRecorder(CvMatQueue & input_image_queue,
-		VideoRecorderAttribute *vrp) : VideoRecorder(input_image_queue, vrp) {
-	this->maximum_wait_motion = vrp->getMaximumWaitMotion();
+		VideoRecorderAttribute &vrp) : VideoRecorder(input_image_queue, vrp) {
+	this->maximum_wait_motion = vrp.getMaximumWaitMotion();
 
 }
 

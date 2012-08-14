@@ -19,9 +19,9 @@ CameraFactory::~CameraFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-nokkhum::Camera *CameraFactory::getCamera(nokkhum::CameraAttribute *cameraAttribute) {
+std::shared_ptr<nokkhum::Camera> CameraFactory::getCamera(std::shared_ptr<nokkhum::CameraAttribute> cameraAttribute) {
 	LOG(INFO) << "Build camera name: " << cameraAttribute->getName() << " url: " << cameraAttribute->getUrl();
-	return new nokkhum::CvIpCamera(cameraAttribute->getWidth(), cameraAttribute->getHeight(),
+	return std::make_shared<nokkhum::CvIpCamera> (cameraAttribute->getWidth(), cameraAttribute->getHeight(),
 			cameraAttribute->getFps(), cameraAttribute->getUrl(), cameraAttribute->getUsername(),
 			cameraAttribute->getPassword());
 }

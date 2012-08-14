@@ -39,15 +39,15 @@ public:
 	void stop();
 
 private:
-	CameraAttribute *camera_attribute;
-	ImageProcessorAttribute *image_processor_attribute;
+	std::shared_ptr<CameraAttribute> camera_attribute;
+	std::shared_ptr<ImageProcessorAttribute> image_processor_attribute;
 
-	nokkhum::Camera *camera;
-	std::vector<ImageProcessor*> image_processor_pool;
+	std::shared_ptr<nokkhum::Camera> camera;
+	std::vector< std::shared_ptr<ImageProcessor> > image_processor_pool;
 
-	ImageAcquisition *image_acquisition;
+	std::shared_ptr<ImageAcquisition> image_acquisition;
 
-	std::vector<std::thread*> thread_pool;
+	std::vector< std::shared_ptr<std::thread> > thread_pool;
 	std::thread acquisiting;
 
 };

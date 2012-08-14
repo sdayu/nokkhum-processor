@@ -50,7 +50,7 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 
 	CameraFactory cf;
 	this->camera = cf.getCamera(camera_attribute);
-	this->image_acquisition = new ImageAcquisition(*camera,
+	this->image_acquisition = std::make_shared<ImageAcquisition>(*camera,
 			image_processor_attribute->getImageProcessorAttributeVector().size());
 
 	ImageProcessorFactory ipf;
@@ -61,21 +61,7 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 }
 
 VideoSurveillance::~VideoSurveillance() {
-
 	//std::cerr << "delete camera" <<std::endl;
-
-	//delete camera;
-	if(camera){
-		delete camera;
-		camera = nullptr;
-	}
-
-	// delete image_acquisition;
-	if(image_acquisition){
-		delete image_acquisition;
-		image_acquisition = nullptr;
-	}
-
 	LOG(INFO) << "VideoSurveillance Terminate";
 	//std::cerr << "End Terminate VideoSurveillance :" << getName() << std::endl;
 }
@@ -84,7 +70,7 @@ VideoSurveillance::~VideoSurveillance() {
 void VideoSurveillance::start() {
 	acquisiting = thread(std::ref(*this->image_acquisition));
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
-		thread *working = new thread(std::ref(*image_processor_pool[i]));
+		std::shared_ptr<thread> working = std::make_shared<thread>(std::ref(*image_processor_pool[i]));
 		thread_pool.push_back(working);
 	}
 
@@ -104,12 +90,8 @@ void VideoSurveillance::stop() {
 		image_processor_pool[i]->stop();
 		thread_pool[i]->join();
 
-		delete thread_pool[i];
-		delete image_processor_pool[i];
-
-		thread_pool[i] = nullptr;
-		image_processor_pool[i] = nullptr;
 	}
+	image_processor_pool.clear();
 //	std::cerr << "end" << std::endl;
 }
 

@@ -20,13 +20,13 @@ public:
 	Configuration();
 	Configuration(std::string json);
 	virtual ~Configuration();
-	CameraAttribute *getCameraAttribute() const;
-	ImageProcessorAttribute *getImageProcessorAttribute() const;
+	std::shared_ptr<CameraAttribute> getCameraAttribute() const;
+	std::shared_ptr<ImageProcessorAttribute> getImageProcessorAttribute() const;
 	std::string getAttributes() const;
 
 private:
-	CameraAttribute *camera_attribute;
-	ImageProcessorAttribute *image_processor_attribute;
+	std::shared_ptr<CameraAttribute> camera_attribute;
+	std::shared_ptr<ImageProcessorAttribute> image_processor_attribute;
 
 	std::string attributes;
 

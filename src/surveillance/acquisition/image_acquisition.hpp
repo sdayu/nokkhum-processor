@@ -13,6 +13,7 @@
 #include <chrono>
 #include <thread>
 #include <stdexcept>
+#include <memory>
 
 #include <opencv2/core/core.hpp>
 
@@ -33,7 +34,7 @@ public:
 	bool running;
 	void stop();
 
-	CvMatQueue *getNewOutputImageQueue();
+	std::shared_ptr<CvMatQueue> getNewOutputImageQueue();
 	nokkhum::MultipleMatQueue *getOutputImageQueue();
 
 private:

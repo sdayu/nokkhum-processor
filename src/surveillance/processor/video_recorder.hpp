@@ -47,8 +47,8 @@ private:
 
 class VideoRecorder : public nokkhum::ImageProcessor {
 public:
-	VideoRecorder(CvMatQueue& input_image_queue);
-	VideoRecorder(CvMatQueue& input_image_queue, VideoRecorderAttribute* vrp);
+	VideoRecorder(CvMatQueue &input_image_queue);
+	VideoRecorder(CvMatQueue &input_image_queue, VideoRecorderAttribute &vrp);
 	virtual ~VideoRecorder();
 
 	void start();

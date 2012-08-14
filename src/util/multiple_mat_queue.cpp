@@ -6,6 +6,7 @@
  */
 
 #include "multiple_mat_queue.hpp"
+#include <memory>
 
 namespace nokkhum {
 
@@ -15,21 +16,15 @@ MultipleMatQueue::MultipleMatQueue() {
 
 MultipleMatQueue::MultipleMatQueue(int size) {
 	for (auto i = 0; i < size; ++i) {
-		cvmat_queue_container.push_back(new CvMatQueue());
+		cvmat_queue_container.push_back(std::make_shared<CvMatQueue>());
 	}
 }
 
 MultipleMatQueue::~MultipleMatQueue() {
-	CvMatQueue *tmp = nullptr;
-	while (!cvmat_queue_container.empty()) {
-			tmp = cvmat_queue_container.back();
-			cvmat_queue_container.pop_back();
-			delete tmp;
-			tmp = nullptr;
-		}
+	cvmat_queue_container.clear();
 }
 
-CvMatQueue* MultipleMatQueue::get(int index) {
+std::shared_ptr<CvMatQueue> MultipleMatQueue::get(int index) {
 	return cvmat_queue_container[index];
 }
 
@@ -37,8 +32,8 @@ unsigned int MultipleMatQueue::getSize() {
 	return cvmat_queue_container.size();
 }
 
-CvMatQueue* MultipleMatQueue::getNew() {
-	CvMatQueue *newCvMatQueue = new CvMatQueue();
+std::shared_ptr<CvMatQueue> MultipleMatQueue::getNew() {
+	std::shared_ptr<CvMatQueue> newCvMatQueue = std::make_shared<CvMatQueue>();
 	cvmat_queue_container.push_back(newCvMatQueue);
 
 	return newCvMatQueue;

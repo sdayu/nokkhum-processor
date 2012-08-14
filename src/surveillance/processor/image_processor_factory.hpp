@@ -9,6 +9,7 @@
 #define NOKKHUM_IMAGE_PROCESSOR_FACTORY_HPP_
 
 #include <vector>
+#include <memory>
 
 #include "image_processor.hpp"
 #include "../../config/image_processor_attribute.hpp"
@@ -21,10 +22,10 @@ public:
 	ImageProcessorFactory();
 	virtual ~ImageProcessorFactory();
 
-	ImageProcessor* getImageProcessor(ImageProcessorAttribute* ipp, CvMatQueue* cv_mat_queue = nullptr);
-	std::vector<ImageProcessor*> getImageProcessorPool(ImageProcessorAttribute* ipp, MultipleMatQueue &mmq);
+	std::shared_ptr<ImageProcessor> getImageProcessor(std::shared_ptr<ImageProcessorAttribute> ipp, CvMatQueue &cv_mat_queue);
+	std::vector< std::shared_ptr<ImageProcessor> > getImageProcessorPool(std::shared_ptr<ImageProcessorAttribute> ipp, MultipleMatQueue &mmq);
 
-	void getImageProcessorFromVector(std::vector<ImageProcessor*> &image_processor_pool, std::vector<ImageProcessorAttribute*> &ippv, ImageProcessor *parent_image_processor);
+	void getImageProcessorFromVector(std::vector< std::shared_ptr<ImageProcessor> > &image_processor_pool, std::vector< std::shared_ptr<ImageProcessorAttribute> > &ippv, std::shared_ptr<ImageProcessor> parent_image_processor);
 };
 
 } /* namespace nokkhum */

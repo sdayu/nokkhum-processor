@@ -21,18 +21,16 @@ Configuration::Configuration(std::string json) {
 	this->attributes = json;
 	JsonParser jp;
 //	LOG(INFO) << "Start JSON Parser 2";
-	AttributeMap* property_map = jp.parse(json);
+	std::shared_ptr<AttributeMap> property_map = jp.parse(json);
 //	LOG(INFO) << "end JSON Parser";
-	this->camera_attribute = (CameraAttribute*) ((*property_map)["camera"]);
-	this->image_processor_attribute =
-			(ImageProcessorAttribute*) ((*property_map)["processors"]);
-	delete property_map;
-	property_map = nullptr;
+	this->camera_attribute =  std::static_pointer_cast<CameraAttribute>( (*property_map)["camera"] );
+	this->image_processor_attribute = std::static_pointer_cast<ImageProcessorAttribute>( (*property_map)["processors"] );
+
 	//	std::cout<<"============== configuration =============="<<std::endl;
 	//	std::cout<<"camera name:"<< this->camera_attribute->getName() <<std::endl;
 	//	std::cout<<"Image Processor name:"<<this->image_processor_attribute->getName()<<std::endl;
 	//	std::cout<<"Image Processor size:"<<this->image_processor_attribute->getImageProcessorAttributeVector().size()<<std::endl;
-	std::vector<ImageProcessorAttribute*> ipp =
+	std::vector< std::shared_ptr<ImageProcessorAttribute> > ipp =
 			this->image_processor_attribute->getImageProcessorAttributeVector();
 	//	for (std::vector<ImageProcessorAttribute*>::size_type i = 0; i < ipp.size(); ++i){
 	//		std::cout << "processor name: " << ipp[i]->getName() << std::endl;
@@ -40,17 +38,14 @@ Configuration::Configuration(std::string json) {
 }
 
 Configuration::~Configuration() {
-	delete this->camera_attribute;
-	delete this->image_processor_attribute;
-	this->camera_attribute = nullptr;
-	this->image_processor_attribute = nullptr;
+
 }
 
-CameraAttribute *Configuration::getCameraAttribute() const {
+std::shared_ptr<CameraAttribute> Configuration::getCameraAttribute() const {
 	return camera_attribute;
 }
 
-ImageProcessorAttribute *Configuration::getImageProcessorAttribute() const {
+std::shared_ptr<ImageProcessorAttribute> Configuration::getImageProcessorAttribute() const {
 	return image_processor_attribute;
 }
 

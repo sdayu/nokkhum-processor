@@ -34,40 +34,40 @@ ImageProcessorFactory::~ImageProcessorFactory() {
 	// TODO Auto-generated destructor stub
 }
 
-ImageProcessor *ImageProcessorFactory::getImageProcessor(
-		ImageProcessorAttribute *ipp, CvMatQueue* cv_mat_queue) {
+std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
+		std::shared_ptr<ImageProcessorAttribute> ipp, CvMatQueue &cv_mat_queue) {
 	if (ipp->getName() == "Motion Detector") {
-		MotionDetectorAttribute *mdp = dynamic_cast<MotionDetectorAttribute*>(ipp);
-		MotionDetector *md = new MotionDetector(*cv_mat_queue, mdp);
+		std::shared_ptr<MotionDetectorAttribute> mdp = std::static_pointer_cast<MotionDetectorAttribute>(ipp);
+		std::shared_ptr<MotionDetector> md = std::make_shared<MotionDetector>(cv_mat_queue, *mdp);
 		return md;
 
 	} else if (ipp->getName() == "Face Detector") {
-		FaceDetectorAttribute *fdp = dynamic_cast<FaceDetectorAttribute*>(ipp);
-		FaceDetector *fd = new FaceDetector(*cv_mat_queue, fdp);
+		std::shared_ptr<FaceDetectorAttribute> fdp = std::static_pointer_cast<FaceDetectorAttribute>(ipp);
+		std::shared_ptr<FaceDetector> fd = std::make_shared<FaceDetector>(cv_mat_queue, *fdp);
 		return fd;
 
 	} else if (ipp->getName() == "Video Recorder") {
-		VideoRecorderAttribute *vrp = dynamic_cast<VideoRecorderAttribute*>(ipp);
-		VideoRecorder *vr = new VideoRecorder(*cv_mat_queue, vrp);
+		std::shared_ptr<VideoRecorderAttribute> vrp = std::static_pointer_cast<VideoRecorderAttribute>(ipp);
+		std::shared_ptr<VideoRecorder> vr = std::make_shared<VideoRecorder>(cv_mat_queue, *vrp);
 		return vr;
 
 	} else if (ipp->getName() == "Video Motion Recorder") {
-		VideoRecorderAttribute *vrp = dynamic_cast<VideoRecorderAttribute*>(ipp);
-		VideoMotionRecorder *vmr = new VideoMotionRecorder(*cv_mat_queue, vrp);
+		std::shared_ptr<VideoRecorderAttribute> vrp = std::static_pointer_cast<VideoRecorderAttribute>(ipp);
+		std::shared_ptr<VideoMotionRecorder> vmr = std::make_shared<VideoMotionRecorder>(cv_mat_queue, *vrp);
 		return vmr;
 
 	} else if (ipp->getName() == "Image Recorder") {
-		ImageRecorderAttribute *irp = dynamic_cast<ImageRecorderAttribute*>(ipp);
-		ImageRecorder *ir = new ImageRecorder(*cv_mat_queue, irp);
+		std::shared_ptr<ImageRecorderAttribute> irp = std::static_pointer_cast<ImageRecorderAttribute>(ipp);
+		std::shared_ptr<ImageRecorder> ir = std::make_shared<ImageRecorder>(cv_mat_queue, *irp);
 		return ir;
 	}
 
 	return nullptr;
 }
 
-std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
-		ImageProcessorAttribute *ipp, MultipleMatQueue &mmq) {
-	ImageProcessor *tmp = nullptr;
+std::vector< std::shared_ptr<ImageProcessor> > ImageProcessorFactory::getImageProcessorPool(
+		std::shared_ptr<ImageProcessorAttribute> ipp, MultipleMatQueue &mmq) {
+	std::shared_ptr<ImageProcessor> tmp = nullptr;
 
 //	std::cout
 //			<< "-------------------------- Start Image Processor Attribute ------------------------------------"
@@ -75,7 +75,7 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 //
 //	std::cout << "name: " << ipp->getName() << std::endl;
 //	std::cout << "mmq size: " << mmq.getSize() << std::endl;
-	std::vector<ImageProcessor*> image_processor_pool;
+	std::vector< std::shared_ptr<ImageProcessor> > image_processor_pool;
 
 	CvMatQueue cv_mat_queue;
 	if (ipp->getName() != "default") {
@@ -84,16 +84,16 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 
 	auto ippv = ipp->getImageProcessorAttributeVector();
 
-	for (std::vector<ImageProcessorAttribute*>::size_type i = 0; i < ippv.size();
+	for (std::vector< std::shared_ptr<ImageProcessor> >::size_type i = 0; i < ippv.size();
 			i++) {
 //		std::cout << "Build processor name V1: " << ippv[i]->getName()
 //				<< std::endl;
 
-		CvMatQueue *cv_mat_queue = mmq.get(i);
+		std::shared_ptr<CvMatQueue> cv_mat_queue = mmq.get(i);
 
 //		std::cout << "get queue " << std::endl;
 
-		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
+		tmp = this->getImageProcessor(ippv[i], *cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorAttributeVector().size();
@@ -127,19 +127,19 @@ std::vector<ImageProcessor*> ImageProcessorFactory::getImageProcessorPool(
 }
 
 void ImageProcessorFactory::getImageProcessorFromVector(
-		std::vector<ImageProcessor*> & image_processor_pool,
-		std::vector<ImageProcessorAttribute*> & ippv,
-		ImageProcessor *parent_image_processor) {
+		std::vector< std::shared_ptr<ImageProcessor> > & image_processor_pool,
+		std::vector< std::shared_ptr<ImageProcessorAttribute> > & ippv,
+		std::shared_ptr<ImageProcessor> parent_image_processor) {
 
-	ImageProcessor *tmp = nullptr;
-	for (std::vector<ImageProcessorAttribute*>::size_type i = 0; i < ippv.size();
+	std::shared_ptr<ImageProcessor> tmp = nullptr;
+	for (std::vector< std::shared_ptr<ImageProcessorAttribute> >::size_type i = 0; i < ippv.size();
 			i++) {
 //		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 //				<< std::endl;
 
-		CvMatQueue *cv_mat_queue =
+		std::shared_ptr<CvMatQueue> cv_mat_queue =
 				parent_image_processor->getNewOutputImageQueue();
-		tmp = this->getImageProcessor(ippv[i], cv_mat_queue);
+		tmp = this->getImageProcessor(ippv[i], *cv_mat_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorAttributeVector().size();

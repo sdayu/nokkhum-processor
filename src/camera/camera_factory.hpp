@@ -11,6 +11,7 @@
 #include "camera.hpp"
 #include "cv_ip_camera.hpp"
 #include "../config/camera_attribute.hpp"
+#include <memory>
 
 namespace nokkhum {
 
@@ -18,7 +19,7 @@ class CameraFactory {
 public:
 	CameraFactory();
 	virtual ~CameraFactory();
-	nokkhum::Camera* getCamera(nokkhum::CameraAttribute*);
+	std::shared_ptr<nokkhum::Camera> getCamera(std::shared_ptr<nokkhum::CameraAttribute>);
 };
 
 }

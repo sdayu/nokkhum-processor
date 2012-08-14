@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "attribute.hpp"
 
@@ -25,12 +26,12 @@ public:
     std::string getName() const;
     void setName(std::string name);
 
-    std::vector<ImageProcessorAttribute*> getImageProcessorAttributeVector() const;
+    std::vector< std::shared_ptr<ImageProcessorAttribute> > getImageProcessorAttributeVector() const;
 
-    void addImageProcessorAttribute(ImageProcessorAttribute *imageProcessorAttribute);
+    void addImageProcessorAttribute(std::shared_ptr<ImageProcessorAttribute> imageProcessorAttribute);
 private:
     std::string name;
-    std::vector<ImageProcessorAttribute*> image_processor_attribute_vector;
+    std::vector< std::shared_ptr<ImageProcessorAttribute> > image_processor_attribute_vector;
 };
 
 } /* namespace nokkhum */

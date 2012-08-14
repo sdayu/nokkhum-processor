@@ -14,7 +14,7 @@ namespace nokkhum {
 
 class VideoMotionRecorder: public nokkhum::VideoRecorder {
 public:
-	VideoMotionRecorder(CvMatQueue & input_image_queue, VideoRecorderAttribute *vrp);
+	VideoMotionRecorder(CvMatQueue & input_image_queue, VideoRecorderAttribute &vrp);
 	virtual ~VideoMotionRecorder();
 
 	void startRecord();

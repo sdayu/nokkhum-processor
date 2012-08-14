@@ -18,7 +18,7 @@ namespace nokkhum {
 class ImageRecorder: public nokkhum::ImageProcessor {
 public:
 	ImageRecorder(CvMatQueue &input_image_queue);
-	ImageRecorder(CvMatQueue &input_image_queue, ImageRecorderAttribute *irp);
+	ImageRecorder(CvMatQueue &input_image_queue, ImageRecorderAttribute &irp);
 	virtual ~ImageRecorder();
 
 	void start();
