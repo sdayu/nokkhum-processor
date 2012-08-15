@@ -70,7 +70,7 @@ void SurveillanceManager::processCommand() {
 			} catch (std::exception e) {
 				result_json["result"]=e.what();
 				LOG(ERROR) << e.what();
-				result_json["result"] += "stop because cannot start capture or configuration wrong";
+				result_json["result"] = "stop because cannot start capture or configuration wrong";
 				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				break;
@@ -79,7 +79,7 @@ void SurveillanceManager::processCommand() {
 			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 		} else if (cp.getCommand() == "get_attributes") {
-			result_json["result"]=this->conf->getAttributes();
+			result_json["result"]=this->conf.getAttributes();
 			std::cout << writer.write(result_json);
 			LOG(INFO) << writer.write(result_json);
 		} else if (cp.getCommand() == "get_name") {
@@ -104,16 +104,14 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 	LOG(INFO) << "Start construct VideoSurveillance for camera id: "
 			<< this->name;
 	// need to check configuration is available
-	vs = nokkhum::VideoSurveillance(conf);
-	vs.start();
+	vs = std::make_shared<nokkhum::VideoSurveillance>(conf);
+	vs->start();
 	LOG(INFO) << "SurveillanceManager start: " << this->name;
 }
 
 void SurveillanceManager::stopSurveillanceApplication() {
 	LOG(INFO) << "Try to stop VS";
-	if (vs){
-		vs->stop();
-	}
+	vs->stop();
 	LOG(INFO) << "Stop, Bye";
 }
 

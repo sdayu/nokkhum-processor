@@ -22,7 +22,7 @@ public:
 	void startSurveillanceApplication(std::string config);
 	void stopSurveillanceApplication();
 private:
-	nokkhum::VideoSurveillance vs;
+	std::shared_ptr<nokkhum::VideoSurveillance> vs;
 	nokkhum::Configuration conf;
 
 	std::string name;
