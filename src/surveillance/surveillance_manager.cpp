@@ -104,14 +104,14 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 	LOG(INFO) << "Start construct VideoSurveillance for camera id: "
 			<< this->name;
 	// need to check configuration is available
-	vs = std::make_shared<nokkhum::VideoSurveillance>(conf);
-	vs->start();
+	vs = nokkhum::VideoSurveillance(conf);
+	vs.start();
 	LOG(INFO) << "SurveillanceManager start: " << this->name;
 }
 
 void SurveillanceManager::stopSurveillanceApplication() {
 	LOG(INFO) << "Try to stop VS";
-	vs->stop();
+	vs.stop();
 	LOG(INFO) << "Stop, Bye";
 }
 

@@ -15,7 +15,6 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
-using std::thread;
 using std::queue;
 using std::string;
 
@@ -68,9 +67,9 @@ VideoSurveillance::~VideoSurveillance() {
 
 // This member function start video surveillance process
 void VideoSurveillance::start() {
-	acquisiting = thread(std::ref(*this->image_acquisition));
+	acquisiting = std::make_shared<std::thread>(std::ref(*this->image_acquisition));
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
-		std::shared_ptr<thread> working = std::make_shared<thread>(std::ref(*image_processor_pool[i]));
+		std::shared_ptr<std::thread> working = std::make_shared<std::thread>(std::ref(*image_processor_pool[i]));
 		thread_pool.push_back(working);
 	}
 
@@ -83,7 +82,7 @@ void VideoSurveillance::stop() {
 	LOG(INFO) << "VideoSurveillance stop";
 
 	this->image_acquisition->stop();
-	acquisiting.join();
+	acquisiting->join();
 
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
 
@@ -92,6 +91,7 @@ void VideoSurveillance::stop() {
 
 	}
 	image_processor_pool.clear();
+	thread_pool.clear();
 //	std::cerr << "end" << std::endl;
 }
 

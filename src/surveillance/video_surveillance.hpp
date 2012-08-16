@@ -11,6 +11,7 @@
 #include <queue>
 #include <vector>
 #include <thread>
+#include <memory>
 
 #include <opencv2/core/core.hpp>
 
@@ -48,7 +49,7 @@ private:
 	std::shared_ptr<ImageAcquisition> image_acquisition;
 
 	std::vector< std::shared_ptr<std::thread> > thread_pool;
-	std::thread acquisiting;
+	std::shared_ptr<std::thread> acquisiting;
 
 };
 
