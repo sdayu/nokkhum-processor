@@ -15,23 +15,23 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include "../../util/cv_mat_queue.hpp"
-#include "../../util/multiple_mat_queue.hpp"
+#include "../../util/image_queue.hpp"
+#include "../../util/multiple_image_queue.hpp"
 
 namespace nokkhum {
 
 class ImageProcessor: public nokkhum::Job {
 public:
-	ImageProcessor(std::string name, CvMatQueue &input_image_queue);
+	ImageProcessor(std::string name, ImageQueue &input_image_queue);
 	virtual ~ImageProcessor();
 
-	std::shared_ptr<CvMatQueue> getNewOutputImageQueue();
+	std::shared_ptr<ImageQueue> getNewOutputImageQueue();
 
 protected:
-	CvMatQueue &input_image_queue;
+	ImageQueue &input_image_queue;
 	//CvMatQueue *output_image_queue;
 
-	MultipleMatQueue output_image_queue;
+	MultipleImageQueue output_image_queue;
 
 
 	bool write_to_output_queue;

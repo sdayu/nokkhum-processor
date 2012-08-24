@@ -18,7 +18,7 @@
 #include <opencv2/core/core.hpp>
 
 #include "../../camera/camera.hpp"
-#include "../../util/multiple_mat_queue.hpp"
+#include "../../util/multiple_image_queue.hpp"
 
 #include "../job.hpp"
 
@@ -34,11 +34,11 @@ public:
 	bool running;
 	void stop();
 
-	std::shared_ptr<CvMatQueue> getNewOutputImageQueue();
-	nokkhum::MultipleMatQueue *getOutputImageQueue();
+	std::shared_ptr<ImageQueue> getNewOutputImageQueue();
+	nokkhum::MultipleImageQueue *getOutputImageQueue();
 
 private:
-	nokkhum::MultipleMatQueue multiple_queue;
+	nokkhum::MultipleImageQueue multiple_queue;
 	nokkhum::Camera &camera;
 
 };

@@ -5,7 +5,7 @@
  *      Author: boatkrap
  */
 
-#include "cv_mat_queue.hpp"
+#include "image_queue.hpp"
 
 #include <iostream>
 
@@ -16,21 +16,21 @@
 
 namespace nokkhum {
 
-CvMatQueue::CvMatQueue() {
+ImageQueue::ImageQueue() {
 	// TODO Auto-generated constructor stub
 //	std::cout<<"construct "<<" this->"<<this <<std::endl;
 
 }
 
-CvMatQueue::~CvMatQueue() {
+ImageQueue::~ImageQueue() {
 	// TODO Auto-generated destructor stub
 }
 
-void CvMatQueue::push(cv::Mat mat) {
+void ImageQueue::push(nokkhum::Image mat) {
 
 
 	queue_mutex.lock();
-	cv_mat_queue.push(mat);
+	image_queue.push(mat);
 	queue_mutex.unlock();
 
 	if (this->size() > 300 ){
@@ -54,20 +54,20 @@ void CvMatQueue::push(cv::Mat mat) {
 
 }
 
-cv::Mat CvMatQueue::pop() {
+nokkhum::Image ImageQueue::pop() {
 	queue_mutex.lock();
-	cv::Mat mat = cv_mat_queue.front().clone();
-	cv_mat_queue.pop();
+	nokkhum::Image mat = image_queue.front();
+	image_queue.pop();
 	queue_mutex.unlock();
 	return mat;
 }
 
-bool CvMatQueue::empty() {
-	return cv_mat_queue.empty();
+bool ImageQueue::empty() {
+	return image_queue.empty();
 }
 
-unsigned int CvMatQueue::size() {
-	return cv_mat_queue.size();
+unsigned int ImageQueue::size() {
+	return image_queue.size();
 }
 
 }

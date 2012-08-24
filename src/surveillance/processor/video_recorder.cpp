@@ -28,7 +28,7 @@
 
 namespace nokkhum {
 
-VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
+VideoRecorder::VideoRecorder(ImageQueue& input_image_queue) :
 		ImageProcessor("VDO Recorder", input_image_queue) {
 	this->running = false;
 	this->writer = nullptr;
@@ -38,7 +38,7 @@ VideoRecorder::VideoRecorder(CvMatQueue& input_image_queue) :
 	// std::cout << "Construct video recorder without property" << std::endl;
 }
 
-VideoRecorder::VideoRecorder(CvMatQueue & input_image_queue,
+VideoRecorder::VideoRecorder(ImageQueue & input_image_queue,
 		VideoRecorderAttribute &vrp) :
 		ImageProcessor(vrp.getName(), input_image_queue) {
 	this->running = false;
@@ -194,7 +194,7 @@ void VideoRecorder::startRecord() {
 		}
 //		std::cout << "write to file " << this->filename << std::endl;
 
-		frame = input_image_queue.pop();
+		frame = input_image_queue.pop().get();
 
 		//		cv::imshow("video", frame);
 		writer_mutex.lock();

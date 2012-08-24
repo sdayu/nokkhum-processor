@@ -15,7 +15,7 @@
 
 namespace nokkhum {
 
-VideoMotionRecorder::VideoMotionRecorder(CvMatQueue & input_image_queue,
+VideoMotionRecorder::VideoMotionRecorder(ImageQueue & input_image_queue,
 		VideoRecorderAttribute &vrp) : VideoRecorder(input_image_queue, vrp) {
 	this->maximum_wait_motion = vrp.getMaximumWaitMotion();
 
@@ -60,7 +60,7 @@ void VideoMotionRecorder::startRecord() {
 		}
 		// LOG(INFO)<<"write "<<std::endl;
 
-		frame = input_image_queue.pop();
+		frame = input_image_queue.pop().get();
 
 		writer_mutex.lock();
 		// LOG(INFO)<<"write to: "<<filename<<std::endl;

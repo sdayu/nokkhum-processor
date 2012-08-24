@@ -27,7 +27,7 @@ using std::string;
 #include "processor/image_processor_factory.hpp"
 
 #include "../video/cv_video_writer.hpp"
-#include "../util/multiple_mat_queue.hpp"
+#include "../util/multiple_image_queue.hpp"
 
 #include "processor/motion_detector.hpp"
 #include "processor/face_detector.hpp"

@@ -9,7 +9,7 @@
 
 namespace nokkhum {
 
-ImageProcessor::ImageProcessor(std::string name, CvMatQueue &input_image_queue) :
+ImageProcessor::ImageProcessor(std::string name, ImageQueue &input_image_queue) :
 		Job(name), input_image_queue(input_image_queue) {
 	this->write_to_output_queue = false;
 }
@@ -18,7 +18,7 @@ ImageProcessor::~ImageProcessor() {
 // TODO Auto-generated destructor stub
 }
 
-std::shared_ptr<CvMatQueue> ImageProcessor::getNewOutputImageQueue() {
+std::shared_ptr<ImageQueue> ImageProcessor::getNewOutputImageQueue() {
 	return this->output_image_queue.getNew();
 }
 

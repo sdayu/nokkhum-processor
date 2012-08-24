@@ -35,30 +35,30 @@ ImageProcessorFactory::~ImageProcessorFactory() {
 }
 
 std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
-		std::shared_ptr<ImageProcessorAttribute> ipp, CvMatQueue &cv_mat_queue) {
+		std::shared_ptr<ImageProcessorAttribute> ipp, ImageQueue &image_queue) {
 	if (ipp->getName() == "Motion Detector") {
 		std::shared_ptr<MotionDetectorAttribute> mdp = std::static_pointer_cast<MotionDetectorAttribute>(ipp);
-		std::shared_ptr<MotionDetector> md = std::make_shared<MotionDetector>(cv_mat_queue, *mdp);
+		std::shared_ptr<MotionDetector> md = std::make_shared<MotionDetector>(image_queue, *mdp);
 		return md;
 
 	} else if (ipp->getName() == "Face Detector") {
 		std::shared_ptr<FaceDetectorAttribute> fdp = std::static_pointer_cast<FaceDetectorAttribute>(ipp);
-		std::shared_ptr<FaceDetector> fd = std::make_shared<FaceDetector>(cv_mat_queue, *fdp);
+		std::shared_ptr<FaceDetector> fd = std::make_shared<FaceDetector>(image_queue, *fdp);
 		return fd;
 
 	} else if (ipp->getName() == "Video Recorder") {
 		std::shared_ptr<VideoRecorderAttribute> vrp = std::static_pointer_cast<VideoRecorderAttribute>(ipp);
-		std::shared_ptr<VideoRecorder> vr = std::make_shared<VideoRecorder>(cv_mat_queue, *vrp);
+		std::shared_ptr<VideoRecorder> vr = std::make_shared<VideoRecorder>(image_queue, *vrp);
 		return vr;
 
 	} else if (ipp->getName() == "Video Motion Recorder") {
 		std::shared_ptr<VideoRecorderAttribute> vrp = std::static_pointer_cast<VideoRecorderAttribute>(ipp);
-		std::shared_ptr<VideoMotionRecorder> vmr = std::make_shared<VideoMotionRecorder>(cv_mat_queue, *vrp);
+		std::shared_ptr<VideoMotionRecorder> vmr = std::make_shared<VideoMotionRecorder>(image_queue, *vrp);
 		return vmr;
 
 	} else if (ipp->getName() == "Image Recorder") {
 		std::shared_ptr<ImageRecorderAttribute> irp = std::static_pointer_cast<ImageRecorderAttribute>(ipp);
-		std::shared_ptr<ImageRecorder> ir = std::make_shared<ImageRecorder>(cv_mat_queue, *irp);
+		std::shared_ptr<ImageRecorder> ir = std::make_shared<ImageRecorder>(image_queue, *irp);
 		return ir;
 	}
 
@@ -66,7 +66,7 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 }
 
 std::vector< std::shared_ptr<ImageProcessor> > ImageProcessorFactory::getImageProcessorPool(
-		std::shared_ptr<ImageProcessorAttribute> ipp, MultipleMatQueue &mmq) {
+		std::shared_ptr<ImageProcessorAttribute> ipp, MultipleImageQueue &mmq) {
 	std::shared_ptr<ImageProcessor> tmp = nullptr;
 
 //	std::cout
@@ -77,7 +77,7 @@ std::vector< std::shared_ptr<ImageProcessor> > ImageProcessorFactory::getImagePr
 //	std::cout << "mmq size: " << mmq.getSize() << std::endl;
 	std::vector< std::shared_ptr<ImageProcessor> > image_processor_pool;
 
-	CvMatQueue cv_mat_queue;
+	ImageQueue image_queue;
 	if (ipp->getName() != "default") {
 
 	}
@@ -89,11 +89,11 @@ std::vector< std::shared_ptr<ImageProcessor> > ImageProcessorFactory::getImagePr
 //		std::cout << "Build processor name V1: " << ippv[i]->getName()
 //				<< std::endl;
 
-		std::shared_ptr<CvMatQueue> cv_mat_queue = mmq.get(i);
+		std::shared_ptr<ImageQueue> image_queue = mmq.get(i);
 
 //		std::cout << "get queue " << std::endl;
 
-		tmp = this->getImageProcessor(ippv[i], *cv_mat_queue);
+		tmp = this->getImageProcessor(ippv[i], *image_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorAttributeVector().size();
@@ -137,9 +137,9 @@ void ImageProcessorFactory::getImageProcessorFromVector(
 //		std::cout << "Build processor name recursive: " << ippv[i]->getName()
 //				<< std::endl;
 
-		std::shared_ptr<CvMatQueue> cv_mat_queue =
+		std::shared_ptr<ImageQueue> image_queue =
 				parent_image_processor->getNewOutputImageQueue();
-		tmp = this->getImageProcessor(ippv[i], *cv_mat_queue);
+		tmp = this->getImageProcessor(ippv[i], *image_queue);
 		image_processor_pool.push_back(tmp);
 
 		int size = ippv[i]->getImageProcessorAttributeVector().size();

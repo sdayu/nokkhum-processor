@@ -75,11 +75,11 @@ void ImageAcquisition::stop() {
 	this->running = false;
 }
 
-std::shared_ptr<CvMatQueue> ImageAcquisition::getNewOutputImageQueue() {
+std::shared_ptr<ImageQueue> ImageAcquisition::getNewOutputImageQueue() {
 	return this->multiple_queue.getNew();
 }
 
-nokkhum::MultipleMatQueue *ImageAcquisition::getOutputImageQueue() {
+nokkhum::MultipleImageQueue *ImageAcquisition::getOutputImageQueue() {
 	return &this->multiple_queue;
 }
 

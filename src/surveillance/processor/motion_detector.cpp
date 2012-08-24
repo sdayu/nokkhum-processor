@@ -21,13 +21,13 @@
 
 namespace nokkhum {
 
-MotionDetector::MotionDetector(CvMatQueue &input_image_queue) :
+MotionDetector::MotionDetector(ImageQueue &input_image_queue) :
 	ImageProcessor("Motion Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
 
-MotionDetector::MotionDetector(CvMatQueue &input_image_queue, MotionDetectorAttribute &mdp) :
+MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttribute &mdp) :
 	ImageProcessor("Motion Detection", input_image_queue) {
 	this->interval = mdp.getInterval();
 	this->resolution = mdp.getResolution();
@@ -63,7 +63,7 @@ void MotionDetector::start() {
 			continue;
 		}
 
-		frame = input_image_queue.pop();
+		frame = input_image_queue.pop().get();
 		tmp_mat.push_back(frame);
 
 		if(++image_count < this->interval){

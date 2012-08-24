@@ -18,13 +18,13 @@
 
 namespace nokkhum {
 
-FaceDetector::FaceDetector(CvMatQueue &input_image_queue) :
+FaceDetector::FaceDetector(ImageQueue &input_image_queue) :
 		ImageProcessor("Face Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
 
 }
 
-FaceDetector::FaceDetector(CvMatQueue & input_image_queue,
+FaceDetector::FaceDetector(ImageQueue & input_image_queue,
 		FaceDetectorAttribute &fdp) :
 		ImageProcessor("Face Detection", input_image_queue) {
 	this->interval = fdp.getInterval();
@@ -70,7 +70,7 @@ void FaceDetector::start() {
 
 //		std::cout<< "wait: "<<image_count<<std::endl;
 
-		frame = input_image_queue.pop();
+		frame = input_image_queue.pop().get();
 
 		if (++image_count < this->interval) {
 			continue;

@@ -21,12 +21,12 @@
 
 namespace nokkhum {
 
-ImageRecorder::ImageRecorder(CvMatQueue &input_image_queue) :
+ImageRecorder::ImageRecorder(ImageQueue &input_image_queue) :
 		ImageProcessor("Image Recorder", input_image_queue), width(320), height(240), directory("/tmp") {
 
 }
 
-ImageRecorder::ImageRecorder(CvMatQueue & input_image_queue,
+ImageRecorder::ImageRecorder(ImageQueue & input_image_queue,
 		ImageRecorderAttribute &irp)  :
 		ImageProcessor("Image Recorder", input_image_queue){
 	this->width = irp.getWidth();
@@ -49,7 +49,7 @@ void ImageRecorder::start() {
 			continue;
 		}
 
-		frame = input_image_queue.pop();
+		frame = input_image_queue.pop().get();
 
 
 		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
