@@ -104,7 +104,7 @@ void MotionDetector::start() {
 //				LOG(INFO) << "Have motion: " << std::dec << tmp_mat.size() ;
 //				std::cout<<"temporary queue size: "<< std::dec << tmp_mat.size()<<std::endl;
 				for(unsigned long i = 0; i<tmp_mat.size();++i){
-					cv::Mat tmp_frame = tmp_mat[i];
+					nokkhum::Image tmp_frame(tmp_mat[i]);
 					for(unsigned long j = 0; j<output_image_queue.getSize();++j){
 //						std::cout<<"push frame: "<<i<<" to queue: "<<j<<std::endl;
 						output_image_queue.get(j)->push(tmp_frame);

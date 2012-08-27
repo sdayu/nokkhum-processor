@@ -21,6 +21,7 @@ public:
 	Image();
 	Image(cv::Mat image);
 	virtual ~Image();
+
 	Image& operator >> (cv::Mat& image);
 	Image& operator << (cv::Mat& image);
 

@@ -79,12 +79,12 @@ void FaceDetector::start() {
 		}
 
 //		std::cout<< "detect face"<<std::endl;
-
+		nokkhum::Image face_image(frame);
 		bool result = detectAndDraw(frame, cascade, nestedCascade, scale);
 		if (result){
 			for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
 //				std::cout<<"push face detect"<<std::endl;
-				output_image_queue.get(i)->push(frame);
+				output_image_queue.get(i)->push(face_image);
 			}
 		}
 

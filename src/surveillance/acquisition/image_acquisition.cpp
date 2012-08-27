@@ -6,6 +6,7 @@
  */
 
 #include "image_acquisition.hpp"
+#include "../../image/image.hpp"
 #include <iostream>
 #include <thread>
 #include <glog/logging.h>
@@ -57,9 +58,12 @@ void ImageAcquisition::start() {
 				}
 			}
 		}
+
 		copy_image = image.clone();
+		nokkhum::Image the_image(copy_image);
+
 		for (unsigned int  i = 0; i < multiple_queue.getSize(); ++i) {
-			multiple_queue.get(i)->push(copy_image);
+			multiple_queue.get(i)->push(the_image);
 		}
 		++counter;
 	}
