@@ -32,7 +32,7 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttr
 	this->interval = mdp.getInterval();
 	this->resolution = mdp.getResolution();
 
-	this->drop_motion = 5;
+	this->drop_motion = 10;
 
 }
 
@@ -50,11 +50,13 @@ void MotionDetector::start() {
 //	motion_time = boost::posix_time::microsec_clock::local_time();
 
 	int motion_count = 0;
-	int step = 40; // before step = 15
+	int step = 30; // before step = 15
 
 	int image_count = 0;
 
-	std::vector<cv::Mat> tmp_mat;
+	std::vector<nokkhum::Image> tmp_image;
+	nokkhum::Image image;
+	bool motion_sequence = false;
 
 	while (running) {
 
@@ -63,8 +65,8 @@ void MotionDetector::start() {
 			continue;
 		}
 
-		frame = input_image_queue.pop().get();
-		tmp_mat.push_back(frame);
+		image = input_image_queue.pop();
+		tmp_image.push_back(image);
 
 		if(++image_count < this->interval){
 //			std::cout<<image_count<<" continue ..."<<std::endl;
@@ -78,13 +80,14 @@ void MotionDetector::start() {
 
 		motion_count = 0;
 
+		frame = image.get();
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
 			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
 				1, 1.2, 0);
-			//cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
-			//drawOptFlowMap(flow, cflow, step+1, 1.5, CV_RGB(0, 255, 0));
+//			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
+//			drawOptFlowMap(flow, frame, step+1, 1.5, CV_RGB(0, 255, 0));
 
 //			for (int y = 0; y < cflow.rows; y += step+1){
 //				for (int x = 0; x < cflow.cols; x += step+1) {
@@ -100,18 +103,22 @@ void MotionDetector::start() {
 
 			if(motion_count > 3){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
+//				std::cerr << "motion count: " << motion_count <<" sq: "<<motion_sequence << std::endl;
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-//				LOG(INFO) << "Have motion: " << std::dec << tmp_mat.size() ;
-//				std::cout<<"temporary queue size: "<< std::dec << tmp_mat.size()<<std::endl;
-				for(unsigned long i = 0; i<tmp_mat.size();++i){
-					nokkhum::Image tmp_frame(tmp_mat[i]);
-					for(unsigned long j = 0; j<output_image_queue.getSize();++j){
-//						std::cout<<"push frame: "<<i<<" to queue: "<<j<<std::endl;
-						output_image_queue.get(j)->push(tmp_frame);
-					}
+//				LOG(INFO) << "Have motion: " << std::dec << tmp_image.size() ;
+//				std::cout<<"temporary queue size: "<< std::dec << tmp_image.size()<<std::endl;
+
+				if (!motion_sequence){
+					tmp_image[0].setMotionStatus(nokkhum::MotionStatus::BeginMotion);
+					motion_sequence = true;
+//					std::cerr << "start motion: " << motion_sequence << std::endl;
 				}
-				tmp_mat.clear();
-//				std::cout<<"affter clear: "<<tmp_mat.size()<<std::endl;
+
+				for(unsigned long i = 0; i<tmp_image.size();++i){
+					this->push_to_output_image_queue(tmp_image[i]);
+				}
+				tmp_image.clear();
+//				std::cout<<"affter clear: "<<tmp_image.size()<<std::endl;
 				motion_time = boost::posix_time::microsec_clock::local_time();
 			}
 			else{
@@ -120,21 +127,24 @@ void MotionDetector::start() {
 
 				// LOG(INFO) << "motion diff time: " << td.total_seconds();
 				if(td.total_seconds() >= this->drop_motion){
-//					LOG(INFO) << "Drop frame : " << std::dec << tmp_mat.size() << "time: "<< td.total_seconds();
-//					std::cout<<"drop frame:"<<tmp_mat.size()<<std::endl;
-					tmp_mat.clear();
+//					LOG(INFO) << "Drop frame : " << std::dec << tmp_image.size() << "time: "<< td.total_seconds();
+//					std::cout<<"drop frame:"<<tmp_image.size()<<std::endl;
+					if (motion_sequence){
+						tmp_image[0].setMotionStatus(nokkhum::MotionStatus::EndMotion);
+						motion_sequence = false;
+						this->push_to_output_image_queue(tmp_image[0]);
+						std::cerr << "end motion: " << motion_sequence << std::endl;
+					}
+//					std::cerr << "drop image: " << tmp_image.size() << std::endl;
+					tmp_image.clear();
 
 				}
 				else{
-					for(unsigned long i = 0; i<tmp_mat.size();++i){
-						cv::Mat tmp_frame = tmp_mat[i];
-						for(unsigned long j = 0; j<output_image_queue.getSize();++j){
-							// LOG(INFO) << "push frame with out motion: " <<i<< " to queue: " <<j<<std::endl;
-							output_image_queue.get(j)->push(tmp_frame);
-						}
+					for(unsigned long i = 0; i<tmp_image.size();++i){
+						this->push_to_output_image_queue(tmp_image[i]);
 					}
-//					LOG(INFO) << "write with out motion: "<<tmp_mat.size();
-					tmp_mat.clear();
+//					LOG(INFO) << "write with out motion: "<<tmp_image.size();
+					tmp_image.clear();
 
 				}
 //				std::cout<<"motion time : "<<boost::posix_time::to_simple_string(motion_time)<<std::endl;
@@ -164,11 +174,7 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 		}
 	}
 
-//	std::cout << "motion count : "<< motionCount<<std::endl;
-//	if(motionCount > 2){
-//		std::cout<<"It has motion"<<std::endl;
-//		cv::circle(cflowmap, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-//	}
+
 }
 
 }

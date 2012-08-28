@@ -22,4 +22,10 @@ std::shared_ptr<ImageQueue> ImageProcessor::getNewOutputImageQueue() {
 	return this->output_image_queue.getNew();
 }
 
+void ImageProcessor::push_to_output_image_queue(nokkhum::Image image){
+	for(unsigned long i = 0; i < output_image_queue.getSize(); ++i){
+		output_image_queue.get(i)->push(image);
+	}
+}
+
 }

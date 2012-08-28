@@ -13,10 +13,18 @@
 
 namespace nokkhum {
 
+enum MotionStatus {
+	Undefine,
+	BeginMotion,
+	EndMotion,
+};
+
 class Image {
 private:
 	cv::Mat image;
 	std::chrono::time_point<std::chrono::system_clock> date;
+
+	MotionStatus motion_status = Undefine;
 public:
 	Image();
 	Image(cv::Mat image);
@@ -26,6 +34,10 @@ public:
 	Image& operator << (cv::Mat& image);
 
 	cv::Mat get();
+	cv::Mat clone();
+
+	void setMotionStatus(MotionStatus);
+	MotionStatus getMotionStatus();
 
 };
 

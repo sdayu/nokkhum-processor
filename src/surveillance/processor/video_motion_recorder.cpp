@@ -28,45 +28,56 @@ VideoMotionRecorder::~VideoMotionRecorder() {
 void VideoMotionRecorder::startRecord() {
 
 	cv::Mat frame;
-	boost::posix_time::ptime current_time, start_time;
+	nokkhum::Image image;
+	//boost::posix_time::ptime current_time, start_time;
 
 	while (running) {
 		// LOG(INFO)<<"start "<<std::endl;
 
-		start_time = boost::posix_time::microsec_clock::local_time();
+		//start_time = boost::posix_time::microsec_clock::local_time();
 
 		while(input_image_queue.empty()) {
 			usleep(1000);
 
 			// LOG(INFO)<<"Empty "<<std::endl;
-			if(writer){
-				current_time = boost::posix_time::microsec_clock::local_time();
-				boost::posix_time::time_duration td = current_time - start_time;
-				if((unsigned int)td.total_seconds() >= this->maximum_wait_motion){
-					stopTimer();
-					stopRecord();
-					LOG(INFO) << "stop timer: "<<td<<std::endl;
-				}
-			}
+//			if(writer){
+//				current_time = boost::posix_time::microsec_clock::local_time();
+//				boost::posix_time::time_duration td = current_time - start_time;
+//				if((unsigned int)td.total_seconds() >= this->maximum_wait_motion){
+//					stopTimer();
+//					stopRecord();
+//					LOG(INFO) << "stop timer: "<<td<<std::endl;
+//				}
+//			}
 
 			if(!running)
 				return;
 		}
 
-		if(!isWriterAvailable()){
+		image = input_image_queue.pop();
+		frame = image.get();
+
+		if(!isWriterAvailable() or image.getMotionStatus() == nokkhum::MotionStatus::BeginMotion){
 //			LOG(INFO) << "get new writer --> "<<input_image_queue.size()<<std::endl;
 			this->getNewVideoWriter();
 			startTimer();
 		}
 		// LOG(INFO)<<"write "<<std::endl;
 
-		frame = input_image_queue.pop().get();
+
 
 		writer_mutex.lock();
 		// LOG(INFO)<<"write to: "<<filename<<std::endl;
 		*writer << frame;
 		writer_mutex.unlock();
 		// LOG(INFO)<<"end "<<std::endl;
+
+		if(image.getMotionStatus() == nokkhum::MotionStatus::EndMotion){
+			stopTimer();
+			stopRecord();
+//			LOG(INFO) << "stop timer: "<<td<<std::endl;
+		}
+
 
 	}
 

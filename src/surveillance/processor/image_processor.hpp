@@ -35,6 +35,8 @@ protected:
 
 
 	bool write_to_output_queue;
+
+	void push_to_output_image_queue(nokkhum::Image);
 };
 
 }

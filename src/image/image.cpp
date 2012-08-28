@@ -38,4 +38,17 @@ cv::Mat Image::get(){
 	return this->image;
 }
 
+cv::Mat Image::clone(){
+	return this->image.clone();
+}
+
+
+void Image::setMotionStatus(MotionStatus motion_status){
+	this->motion_status = motion_status;
+}
+
+MotionStatus Image::getMotionStatus(){
+	return this->motion_status;
+}
+
 } /* namespace nokkhum */
