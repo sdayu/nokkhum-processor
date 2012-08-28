@@ -133,7 +133,7 @@ void MotionDetector::start() {
 						tmp_image[0].setMotionStatus(nokkhum::MotionStatus::EndMotion);
 						motion_sequence = false;
 						this->push_to_output_image_queue(tmp_image[0]);
-						std::cerr << "end motion: " << motion_sequence << std::endl;
+						//std::cerr << "end motion: " << motion_sequence << std::endl;
 					}
 //					std::cerr << "drop image: " << tmp_image.size() << std::endl;
 					tmp_image.clear();
