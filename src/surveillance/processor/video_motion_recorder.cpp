@@ -37,7 +37,7 @@ void VideoMotionRecorder::startRecord() {
 		//start_time = boost::posix_time::microsec_clock::local_time();
 
 		while(input_image_queue.empty()) {
-			usleep(1000);
+			std::this_thread::sleep_for( std::chrono::microseconds( 1000 ) );
 
 			// LOG(INFO)<<"Empty "<<std::endl;
 //			if(writer){

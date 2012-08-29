@@ -44,7 +44,7 @@ void ImageRecorder::start() {
 //		std::cout<<"wait to save image"<<std::endl;
 
 		if (input_image_queue.empty()) {
-			usleep(1000);
+			std::this_thread::sleep_for( std::chrono::microseconds( 1000 ) );
 			//std::cout<<"sleep img"<<std::endl;
 			continue;
 		}

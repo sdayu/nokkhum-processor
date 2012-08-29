@@ -9,6 +9,7 @@
 #define NOKKHUM_IMAGE_PROCESSOR_HPP_
 
 #include <memory>
+#include <thread>
 
 #include "../job.hpp"
 

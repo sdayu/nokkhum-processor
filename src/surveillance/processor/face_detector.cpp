@@ -65,7 +65,7 @@ void FaceDetector::start() {
 	while (running) {
 
 		if (input_image_queue.empty()) {
-			usleep(1000);
+			std::this_thread::sleep_for( std::chrono::microseconds( 1000 ) );
 			continue;
 		}
 
