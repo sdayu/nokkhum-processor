@@ -81,8 +81,10 @@ void VideoSurveillance::stop() {
 //	std::cerr << "start terminate vs" << std::endl;
 	LOG(INFO) << "VideoSurveillance stop";
 
-	this->image_acquisition->stop();
-	acquisiting->join();
+	if (this->image_acquisition){
+		this->image_acquisition->stop();
+		acquisiting->join();
+	}
 
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
 
