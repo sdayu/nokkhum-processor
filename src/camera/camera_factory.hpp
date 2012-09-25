@@ -12,6 +12,8 @@
 #include "cv_ip_camera.hpp"
 #include "../config/camera_attribute.hpp"
 #include <memory>
+#include <chrono>
+#include <thread>
 
 namespace nokkhum {
 
@@ -22,6 +24,22 @@ public:
 	std::shared_ptr<nokkhum::Camera> getCamera(std::shared_ptr<nokkhum::CameraAttribute>);
 };
 
-}
+class CameraStartTimer {
+public:
+	CameraStartTimer(unsigned long millisecond);
+	virtual ~CameraStartTimer();
 
+	void start();
+	void stop();
+
+
+private:
+	bool runnable;
+	std::chrono::milliseconds sleep_duration;
+	std::thread timer;
+
+	void run();
+};
+
+}
 #endif /* NOKKHUM_CAMERA_FACTORY_HPP_ */

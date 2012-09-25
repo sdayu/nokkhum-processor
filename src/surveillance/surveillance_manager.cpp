@@ -65,12 +65,13 @@ void SurveillanceManager::processCommand() {
 			LOG(INFO) << writer.write(result_json);
 			break;
 		} else if (cp.getCommand() == "start") {
+
 			try {
 				this->startSurveillanceApplication(cp.getCameraAttribute());
-			} catch (std::exception e) {
-				result_json["result"]=e.what();
+			} catch (std::exception &e) {
 				LOG(ERROR) << e.what();
-				result_json["result"] = "stop because cannot start capture or configuration wrong";
+				result_json["result"]=e.what();
+				result_json["result"] = result_json["result"].asString() + "\nstop because cannot start capture or configuration wrong";
 				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				break;
