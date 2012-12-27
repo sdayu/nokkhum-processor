@@ -24,6 +24,7 @@
 #include "../surveillance/processor/motion_detector.hpp"
 #include "../surveillance/processor/image_recorder.hpp"
 #include "../surveillance/processor/video_recorder.hpp"
+#include "../surveillance/processor/multimedia_recorder.hpp"
 
 
 #include "camera_attribute.hpp"
@@ -33,6 +34,8 @@
 #include "image_processor_attribute.hpp"
 #include "video_recorder_attribute.hpp"
 #include "image_recorder_attribute.hpp"
+#include "image_recorder_attribute.hpp"
+#include "multimedia_recorder_attribute.hpp"
 
 namespace nokkhum {
 
@@ -126,6 +129,8 @@ void JsonParser::parseImageProcessor(
 			tmp = parseVideoRecorder(obj);
 		} else if (processor_name == "Image Recorder") {
 			tmp = parseImageRecorder(obj);
+		} else if (processor_name == "Multimedia Recorder") {
+			tmp = parseMultimediaRecorder(obj);
 		}
 
 		ipp->addImageProcessorAttribute(tmp);
@@ -175,6 +180,36 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 	}
 
 	return vrp;
+}
+
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
+		const Json::Value image_processor_obj) {
+
+	std::string name;
+	std::string directory;
+	std::string url;
+	int fps;
+	int width;
+	int height;
+
+	name = image_processor_obj["name"].asString();
+	directory = image_processor_obj["directory"].asString();
+	url=image_processor_obj["url"].asString();
+	fps = image_processor_obj["fps"].asInt();
+	width = image_processor_obj["width"].asInt();
+	height = image_processor_obj["height"].asInt();
+
+	// std::cout << "Processor name : " << name << std::endl;
+
+	std::shared_ptr<MultimediaRecorderAttribute> mrp = nullptr;
+
+	mrp = std::make_shared<MultimediaRecorderAttribute>(name, directory, url, width, height, fps);
+
+	if (image_processor_obj.isMember("processors")){
+		parseImageProcessor( image_processor_obj["processors"], mrp );
+	}
+
+	return mrp;
 }
 
 std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(

@@ -11,6 +11,7 @@
 #include "../../config/face_detector_attribute.hpp"
 #include "../../config/video_recorder_attribute.hpp"
 #include "../../config/image_recorder_attribute.hpp"
+#include "../../config/multimedia_recorder_attribute.hpp"
 
 #include "face_detector.hpp"
 #include "motion_detector.hpp"
@@ -18,6 +19,8 @@
 #include "video_recorder.hpp"
 #include "image_recorder.hpp"
 #include "video_motion_recorder.hpp"
+#include "multimedia_recorder.hpp"
+
 
 #include <iostream>
 #include <vector>
@@ -60,6 +63,10 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<ImageRecorderAttribute> irp = std::static_pointer_cast<ImageRecorderAttribute>(ipp);
 		std::shared_ptr<ImageRecorder> ir = std::make_shared<ImageRecorder>(image_queue, *irp);
 		return ir;
+	} else if (ipp->getName() == "Multimedia Recorder") {
+		std::shared_ptr<MultimediaRecorderAttribute> mrp = std::static_pointer_cast<MultimediaRecorderAttribute>(ipp);
+		std::shared_ptr<MultimediaRecorder> mr = std::make_shared<MultimediaRecorder>(image_queue, *mrp);
+		return mr;
 	}
 
 	return nullptr;

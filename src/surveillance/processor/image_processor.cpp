@@ -6,7 +6,6 @@
  */
 
 #include "image_processor.hpp"
-
 namespace nokkhum {
 
 ImageProcessor::ImageProcessor(std::string name, ImageQueue &input_image_queue) :

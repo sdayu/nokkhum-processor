@@ -51,6 +51,8 @@ private:
 	std::vector< std::shared_ptr<std::thread> > thread_pool;
 	std::shared_ptr<std::thread> acquisiting;
 
+	bool is_multimedia_recorder;
+
 };
 
 }

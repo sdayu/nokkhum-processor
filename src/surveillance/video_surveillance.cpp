@@ -47,15 +47,36 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 	camera_attribute = conf.getCameraAttribute();
 	image_processor_attribute = conf.getImageProcessorAttribute();
 
-	CameraFactory cf;
-	this->camera = cf.getCamera(camera_attribute);
-	this->image_acquisition = std::make_shared<ImageAcquisition>(*camera,
-			image_processor_attribute->getImageProcessorAttributeVector().size());
+	auto tmp_ipa = image_processor_attribute->getImageProcessorAttributeVector();
+
+	// TODO: make easy check multimedia recorder is available, need complex processor check again
+	is_multimedia_recorder = false;
+	for(auto &it : tmp_ipa){
+		if(it->getName() == "Multimedia Recorder")
+			is_multimedia_recorder = true;
+	}
+
+	if(!is_multimedia_recorder){
+		std::cout << "in constructure " << std::endl;
+		CameraFactory cf;
+		this->camera = cf.getCamera(camera_attribute);
+		this->image_acquisition = std::make_shared<ImageAcquisition>(*camera,
+				image_processor_attribute->getImageProcessorAttributeVector().size());
+	}
 
 	ImageProcessorFactory ipf;
+
+	if(!is_multimedia_recorder){
 	this->image_processor_pool = ipf.getImageProcessorPool(
 			image_processor_attribute,
 			*this->image_acquisition->getOutputImageQueue());
+	}
+	else{
+		MultipleImageQueue miq(1);
+		this->image_processor_pool = ipf.getImageProcessorPool(
+					image_processor_attribute,
+					miq);
+	}
 
 }
 
@@ -67,7 +88,10 @@ VideoSurveillance::~VideoSurveillance() {
 
 // This member function start video surveillance process
 void VideoSurveillance::start() {
-	acquisiting = std::make_shared<std::thread>(std::ref(*this->image_acquisition));
+	if(!this->is_multimedia_recorder){
+		acquisiting = std::make_shared<std::thread>(std::ref(*this->image_acquisition));
+	}
+
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {
 		std::shared_ptr<std::thread> working = std::make_shared<std::thread>(std::ref(*image_processor_pool[i]));
 		thread_pool.push_back(working);
