@@ -57,7 +57,7 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 	}
 
 	if(!is_multimedia_recorder){
-		std::cout << "in constructure " << std::endl;
+		//std::cout << "in constructure " << std::endl;
 		CameraFactory cf;
 		this->camera = cf.getCamera(camera_attribute);
 		this->image_acquisition = std::make_shared<ImageAcquisition>(*camera,

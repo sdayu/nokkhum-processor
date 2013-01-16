@@ -29,6 +29,7 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue) :
 
 MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttribute &mdp) :
 	ImageProcessor("Motion Detection", input_image_queue) {
+	//std::cout << "hello optical flow constructor :(" << std::endl;
 	this->interval = mdp.getInterval();
 	this->resolution = mdp.getResolution();
 
@@ -50,7 +51,7 @@ void MotionDetector::start() {
 //	motion_time = boost::posix_time::microsec_clock::local_time();
 
 	int motion_count = 0;
-	int step = 30; // before step = 15
+	//int step = 30; // before step = 15
 
 	int image_count = 0;
 
@@ -84,22 +85,7 @@ void MotionDetector::start() {
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
-			cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
-				1, 1.2, 0);
-//			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
-//			drawOptFlowMap(flow, frame, step+1, 1.5, CV_RGB(0, 255, 0));
-
-//			for (int y = 0; y < cflow.rows; y += step+1){
-//				for (int x = 0; x < cflow.cols; x += step+1) {
-			for (int y = 0; y < flow.rows; y += step + 1) {
-				for (int x = 0; x < flow.cols; x += step + 1) {
-					const cv::Point2f& fxy = flow.at<cv::Point2f> (y, x);
-
-					if(cvRound(fxy.x) != 0 && cvRound(fxy.y)!= 0){
-						motion_count++;
-					}
-				}
-			}
+			motion_count = detectMotion(prevgray, gray);
 
 			if(motion_count > 3){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
@@ -177,4 +163,27 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 
 }
 
+int MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
+	//std::cout << "hello optical flow :(" << std::endl;
+	int motion_count = 0;
+	int step = 30;
+	cv::Mat flow;
+	cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
+					1, 1.2, 0);
+	//			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
+	//			drawOptFlowMap(flow, frame, step+1, 1.5, CV_RGB(0, 255, 0));
+
+	//			for (int y = 0; y < cflow.rows; y += step+1){
+	//				for (int x = 0; x < cflow.cols; x += step+1) {
+				for (int y = 0; y < flow.rows; y += step + 1) {
+					for (int x = 0; x < flow.cols; x += step + 1) {
+						const cv::Point2f& fxy = flow.at<cv::Point2f> (y, x);
+
+						if(cvRound(fxy.x) != 0 && cvRound(fxy.y)!= 0){
+							motion_count++;
+						}
+					}
+				}
+	return motion_count;
+}
 }

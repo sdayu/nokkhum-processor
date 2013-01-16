@@ -25,6 +25,7 @@
 #include "../surveillance/processor/image_recorder.hpp"
 #include "../surveillance/processor/video_recorder.hpp"
 #include "../surveillance/processor/multimedia_recorder.hpp"
+#include "../surveillance/processor/motion_detector_background_sub.hpp"
 
 
 #include "camera_attribute.hpp"
@@ -239,16 +240,18 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
+	std::string motion_analysis;
 	int interval = 0;
 	int resolution = 100;
 
 	name = image_processor_obj["name"].asString();
 	interval = image_processor_obj["interval"].asInt();
 	resolution = image_processor_obj["resolution"].asInt();
+	motion_analysis = image_processor_obj["motion_analysis_method"].asString();
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	std::shared_ptr<ImageProcessorAttribute> mdp = std::make_shared<MotionDetectorAttribute>(name, resolution, interval);
+	std::shared_ptr<ImageProcessorAttribute> mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], mdp );
 	}

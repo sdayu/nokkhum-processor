@@ -15,7 +15,6 @@
 #include <sstream>
 #include <ctime>
 #include <string>
-#include <thread>
 #include <boost/filesystem.hpp>
 #include "image_processor.hpp"
 #include "../../config/multimedia_recorder_attribute.hpp"
@@ -40,9 +39,12 @@ private:
 	unsigned int width;
 	unsigned int height;
 	unsigned int fps;
+	int record_hour;
+	int record_minute;
+	int record_sec;
 	void getVideo();
 	void getAudio();
-	void getOutput();
+	void getOutput(std::string output);
 
 
 

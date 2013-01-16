@@ -9,9 +9,10 @@
 
 namespace nokkhum {
 
-MotionDetectorAttribute::MotionDetectorAttribute(std::string name, int resolution,
-		int interval) :
-		ImageProcessorAttribute(name), resolution(resolution), interval(interval) {
+MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
+		int resolution, int interval) :
+		ImageProcessorAttribute(name), resolution(resolution), interval(interval),
+		motion_analysis_method(motion_analysis_method){
 
 }
 
@@ -21,6 +22,10 @@ MotionDetectorAttribute::~MotionDetectorAttribute() {
 
 int MotionDetectorAttribute::getInterval() const {
 	return interval;
+}
+
+std::string MotionDetectorAttribute::getMotionAnalysis() const {
+	return motion_analysis_method;
 }
 
 int MotionDetectorAttribute::getResolution() const {

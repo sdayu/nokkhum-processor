@@ -21,6 +21,7 @@ CommandParser::~CommandParser() {
 bool CommandParser::paseCommand(std::string json) {
     Json::Reader read;
 	bool result = read.parse(json, value);
+	//std::cout << "result = " << result << std::endl;
 	return result;
 
 }

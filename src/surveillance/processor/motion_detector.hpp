@@ -27,7 +27,8 @@ public:
 private:
 	void drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap, int step,
 			                    double scale, const cv::Scalar& color);
-
+	virtual int detectMotion(cv::Mat prevgray, cv::Mat gray);
+protected:
     int interval;
     int resolution;
     int drop_motion;

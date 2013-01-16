@@ -9,6 +9,7 @@
 #define NOKKHUM_COMMAND_PARSER_HPP_
 
 #include <string>
+#include <iostream>
 #include <map>
 #include <jsoncpp/json/reader.h>
 

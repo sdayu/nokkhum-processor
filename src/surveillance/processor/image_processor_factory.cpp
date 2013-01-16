@@ -20,6 +20,7 @@
 #include "image_recorder.hpp"
 #include "video_motion_recorder.hpp"
 #include "multimedia_recorder.hpp"
+#include "motion_detector_background_sub.hpp"
 
 
 #include <iostream>
@@ -40,8 +41,13 @@ ImageProcessorFactory::~ImageProcessorFactory() {
 std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<ImageProcessorAttribute> ipp, ImageQueue &image_queue) {
 	if (ipp->getName() == "Motion Detector") {
+		std::shared_ptr<MotionDetector> md;
 		std::shared_ptr<MotionDetectorAttribute> mdp = std::static_pointer_cast<MotionDetectorAttribute>(ipp);
-		std::shared_ptr<MotionDetector> md = std::make_shared<MotionDetector>(image_queue, *mdp);
+		if(mdp->getMotionAnalysis() == "Optical Flow"){
+			md = std::make_shared<MotionDetector>(image_queue, *mdp);
+		}else{
+			md = std::make_shared<BackgroundMotionDetector>(image_queue, *mdp);
+		}
 		return md;
 
 	} else if (ipp->getName() == "Face Detector") {

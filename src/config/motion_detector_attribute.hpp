@@ -15,15 +15,18 @@ namespace nokkhum {
 
 class MotionDetectorAttribute: public nokkhum::ImageProcessorAttribute {
 public:
-	MotionDetectorAttribute(std::string name, int resolution, int interval);
+	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, int resolution, int interval);
 	virtual ~MotionDetectorAttribute();
     int getInterval() const;
     int getResolution() const;
     void setInterval(int interval);
     void setResolution(int resolution);
+    std::string getMotionAnalysis() const;
+
 private:
     int resolution;
     int interval;
+    std::string motion_analysis_method;
 };
 
 } /* namespace nokkhum */
