@@ -29,9 +29,11 @@ private:
 			                    double scale, const cv::Scalar& color);
 	virtual int detectMotion(cv::Mat prevgray, cv::Mat gray);
 protected:
+	bool enable_area_of_interest;
     int interval;
     int resolution;
     int drop_motion;
+    point pointStart,pointEnd;
 };
 
 }

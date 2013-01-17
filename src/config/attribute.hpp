@@ -16,5 +16,11 @@ public:
 	virtual ~Attribute();
 };
 
+typedef struct p{
+	int x;
+	int y;
+} point;
+
+
 } /* namespace nokkhum */
 #endif /* NOKKHUM_ATTRIBUTE_HPP_ */

@@ -241,17 +241,35 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 
 	std::string name;
 	std::string motion_analysis;
+	bool enable_area_of_interest;
+	point p1,p2;
+	std::shared_ptr<ImageProcessorAttribute> mdp;
 	int interval = 0;
 	int resolution = 100;
 
 	name = image_processor_obj["name"].asString();
 	interval = image_processor_obj["interval"].asInt();
 	resolution = image_processor_obj["resolution"].asInt();
-	motion_analysis = image_processor_obj["motion_analysis_method"].asString();
+	//motion_analysis = image_processor_obj["motion_analysis_method"].asString();
+	if (image_processor_obj.isMember("motion_analysis_method")){
+		motion_analysis = image_processor_obj["motion_analysis_method"].asString();
+	}else{
+		motion_analysis = "Optical Flow";
+	}
 
+	if (image_processor_obj.isMember("region_of_interest")){
+			enable_area_of_interest = true;
+			p1.x = image_processor_obj["region_of_interest"]["point1"]["x"].asInt();
+			p1.y = image_processor_obj["region_of_interest"]["point1"]["y"].asInt();
+			p2.x = image_processor_obj["region_of_interest"]["point2"]["x"].asInt();
+			p2.y = image_processor_obj["region_of_interest"]["point2"]["y"].asInt();
+			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval, enable_area_of_interest, p1, p2);
+		}
+	else{
 	// std::cout << "Processor name : " << name << std::endl;
+		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval);
+	}
 
-	std::shared_ptr<ImageProcessorAttribute> mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], mdp );
 	}

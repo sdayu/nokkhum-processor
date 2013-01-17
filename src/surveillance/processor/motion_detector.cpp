@@ -32,8 +32,10 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttr
 	//std::cout << "hello optical flow constructor :(" << std::endl;
 	this->interval = mdp.getInterval();
 	this->resolution = mdp.getResolution();
-
+	this->enable_area_of_interest = mdp.getEnableAreaOfInterest();
 	this->drop_motion = 10;
+	this->pointStart = mdp.getStartPoint();
+	this->pointEnd = mdp.getEndPoint();
 
 }
 
@@ -42,8 +44,10 @@ MotionDetector::~MotionDetector() {
 }
 
 void MotionDetector::start() {
+	std::cout << "enable area of interest : " << this->enable_area_of_interest << std::endl;
+
 //	std::cout<<"Motion detector start"<<std::endl;
-//	cv::namedWindow("Motion Detection", 1);
+	//cv::namedWindow("Motion Detection", 1);
 
 	cv::Mat prevgray, gray, flow, cflow, frame;
 
@@ -82,6 +86,12 @@ void MotionDetector::start() {
 		motion_count = 0;
 
 		frame = image.get();
+		cv::imshow("Original", frame);
+		if(this->enable_area_of_interest){
+			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
+		}
+		cv::imshow("Frame", frame);
+		if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
