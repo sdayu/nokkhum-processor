@@ -71,6 +71,11 @@ void MotionDetector::start() {
 		}
 
 		image = input_image_queue.pop();
+
+		frame = image.get();
+		if(this->enable_area_of_interest)
+			cv::rectangle(frame ,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
+
 		tmp_image.push_back(image);
 
 		if(++image_count < this->interval){
@@ -83,12 +88,13 @@ void MotionDetector::start() {
 			image_count=0; //reset image count
 		}
 
-		frame = image.get();
+
+		//cv::rectangle(frame,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
 		cv::imshow("Original", frame);
 		if(this->enable_area_of_interest){
 			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
 		}
-		cv::imshow("Frame", frame);
+		//cv::imshow("Frame", frame);
 		if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
@@ -145,7 +151,8 @@ void MotionDetector::start() {
 //				std::cout<<"current time: "<<boost::posix_time::to_simple_string(current_time)<<std::endl;
 //				std::cout<<"diff time   : "<<td<<std::endl;
 			}
-
+			//if(motion_count){
+	//
 //			cv::imshow("Motion Detection", cflow);
 		}
 
@@ -167,6 +174,7 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 			cv::circle(cflowmap, cv::Point(x, y), 2, color, -1);
 		}
 	}
+
 
 }
 
