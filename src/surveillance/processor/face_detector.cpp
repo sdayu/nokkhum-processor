@@ -84,15 +84,16 @@ void FaceDetector::start() {
 		if (result){
 			for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
 //				std::cout<<"push face detect"<<std::endl;
-				output_image_queue.get(i)->push(image);
+				//output_image_queue.get(i)->push(image);
+				output_image_queue.get(i)->push(frame);
 			}
 		}
 
 
 //		cv::imshow("Face Detection", frame);
-
-		if (cv::waitKey(30) > 0)
-			break;
+//
+//		if (cv::waitKey(30) > 0)
+//			break;
 
 	}
 }
