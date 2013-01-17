@@ -12,6 +12,7 @@
 #include <iostream>
 #include <map>
 #include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
 
 namespace nokkhum {
 

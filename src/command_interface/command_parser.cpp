@@ -31,7 +31,8 @@ std::string CommandParser::getCommand() {
 }
 
 std::string CommandParser::getCameraAttribute() {
-	return value["attributes"].asString();
+	Json::FastWriter writer;
+	return writer.write(value["attributes"]);
 }
 
 } /* namespace nokkhum */

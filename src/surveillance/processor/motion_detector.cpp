@@ -44,7 +44,7 @@ MotionDetector::~MotionDetector() {
 }
 
 void MotionDetector::start() {
-	std::cout << "enable area of interest : " << this->enable_area_of_interest << std::endl;
+	//std::cout << "enable area of interest : " << this->enable_area_of_interest << std::endl;
 
 //	std::cout<<"Motion detector start"<<std::endl;
 	//cv::namedWindow("Motion Detection", 1);
@@ -84,12 +84,12 @@ void MotionDetector::start() {
 		}
 
 		frame = image.get();
-		cv::imshow("Original", frame);
+//		cv::imshow("Original", frame);
 		if(this->enable_area_of_interest){
 			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
 		}
-		cv::imshow("Frame", frame);
-		if(cv::waitKey(30)>=0) break;
+//		cv::imshow("Frame", frame);
+//		if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
