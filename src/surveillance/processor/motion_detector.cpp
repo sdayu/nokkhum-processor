@@ -54,7 +54,7 @@ void MotionDetector::start() {
 	boost::posix_time::ptime current_time, motion_time;
 //	motion_time = boost::posix_time::microsec_clock::local_time();
 
-	int motion_count = 0;
+	bool motion_count = false;
 	//int step = 30; // before step = 15
 
 	int image_count = 0;
@@ -83,8 +83,6 @@ void MotionDetector::start() {
 			image_count=0; //reset image count
 		}
 
-		motion_count = 0;
-
 		frame = image.get();
 		cv::imshow("Original", frame);
 		if(this->enable_area_of_interest){
@@ -97,7 +95,7 @@ void MotionDetector::start() {
 		if (prevgray.data) {
 			motion_count = detectMotion(prevgray, gray);
 
-			if(motion_count > 3){
+			if(motion_count){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 //				std::cerr << "motion count: " << motion_count <<" sq: "<<motion_sequence << std::endl;
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
@@ -170,11 +168,10 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 		}
 	}
 
-
 }
 
-int MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
-	//std::cout << "hello optical flow :(" << std::endl;
+bool MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
+	// std::cout << "hello optical flow :(" << std::endl;
 	int motion_count = 0;
 	int step = 30;
 	cv::Mat flow;
@@ -194,6 +191,11 @@ int MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
 						}
 					}
 				}
-	return motion_count;
+
+	if (motion_count > 3)
+		return true;
+	else
+		return false;
+
 }
 }

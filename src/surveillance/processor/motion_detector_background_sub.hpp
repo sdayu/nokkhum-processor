@@ -16,7 +16,7 @@ public:
 	//void start();
 private:
 	cv::Mat BackgroundSubtraction(cv::Mat background, cv::Mat current);
-	int detectMotion(cv::Mat background, cv::Mat current);
+	bool detectMotion(cv::Mat background, cv::Mat current);
 };
 
 }
