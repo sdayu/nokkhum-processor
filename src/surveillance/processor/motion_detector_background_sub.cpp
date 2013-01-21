@@ -32,7 +32,11 @@ bool BackgroundMotionDetector::detectMotion(cv::Mat background, cv::Mat current)
     //cv::cvtColor(background, background_bw, CV_RGB2GRAY);
     //cv::cvtColor(current, current_bw, CV_RGB2GRAY);
     diff = cv::abs(current - background);
-    cv::threshold(diff,thresh,50,255,CV_THRESH_BINARY);
+    //cv::threshold(diff,thresh,50,255,CV_THRESH_BINARY);
+    double thres = (1 - this->sensitive/100.0)*220.0;
+    //std::cout << "thres = " << thres << std::endl;
+    cv::threshold(diff,thresh,thres,255,CV_THRESH_BINARY);
+
 
     int motion_count = cv::countNonZero(thresh);
 

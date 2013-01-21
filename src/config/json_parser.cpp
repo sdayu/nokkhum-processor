@@ -245,11 +245,11 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 	point p1,p2;
 	std::shared_ptr<ImageProcessorAttribute> mdp;
 	int interval = 0;
-	int resolution = 100;
+	double sensitive = 100;
 
 	name = image_processor_obj["name"].asString();
 	interval = image_processor_obj["interval"].asInt();
-	resolution = image_processor_obj["resolution"].asInt();
+	sensitive = image_processor_obj["sensitive"].asDouble();
 	//motion_analysis = image_processor_obj["motion_analysis_method"].asString();
 	if (image_processor_obj.isMember("motion_analysis_method")){
 		motion_analysis = image_processor_obj["motion_analysis_method"].asString();
@@ -263,11 +263,11 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 			p1.y = image_processor_obj["region_of_interest"]["point1"]["y"].asInt();
 			p2.x = image_processor_obj["region_of_interest"]["point2"]["x"].asInt();
 			p2.y = image_processor_obj["region_of_interest"]["point2"]["y"].asInt();
-			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval, enable_area_of_interest, p1, p2);
+			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval, enable_area_of_interest, p1, p2);
 		}
 	else{
 	// std::cout << "Processor name : " << name << std::endl;
-		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, resolution, interval);
+		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval);
 	}
 
 	if (image_processor_obj.isMember("processors")){

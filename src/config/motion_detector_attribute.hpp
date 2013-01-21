@@ -15,20 +15,20 @@ namespace nokkhum {
 
 class MotionDetectorAttribute: public nokkhum::ImageProcessorAttribute {
 public:
-	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, int resolution, int interval);
-	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, int resolution, int interval, bool enable_area_of_interest, point p1, point p2);
+	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, double sensitive, int interval);
+	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, double sensitive, int interval, bool enable_area_of_interest, point p1, point p2);
 	virtual ~MotionDetectorAttribute();
     int getInterval() const;
-    int getResolution() const;
+    int getSensitive() const;
     void setInterval(int interval);
-    void setResolution(int resolution);
+    void setSensitive(double sensitive);
     point getStartPoint() const;
     point getEndPoint() const;
     std::string getMotionAnalysis() const;
     bool getEnableAreaOfInterest() const;
 
 private:
-    int resolution;
+    double sensitive;
     int interval;
     std::string motion_analysis_method;
     point p1,p2;

@@ -31,7 +31,8 @@ private:
 protected:
 	bool enable_area_of_interest;
     int interval;
-    int resolution;
+    int width;
+    double sensitive;
     int drop_motion;
     point pointStart,pointEnd;
 };

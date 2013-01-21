@@ -10,15 +10,15 @@
 namespace nokkhum {
 
 MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
-		int resolution, int interval) :
-		ImageProcessorAttribute(name), resolution(resolution), interval(interval),
+		double sensitive, int interval) :
+		ImageProcessorAttribute(name), sensitive(sensitive), interval(interval),
 		motion_analysis_method(motion_analysis_method){
 			enable_area_of_interest = false;
 }
 
 MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
-		int resolution, int interval, bool enable_area_of_interest,  point p1, point p2) :
-		ImageProcessorAttribute(name), resolution(resolution), interval(interval),
+		double sensitive, int interval, bool enable_area_of_interest,  point p1, point p2) :
+		ImageProcessorAttribute(name), sensitive(sensitive), interval(interval),
 		motion_analysis_method(motion_analysis_method), enable_area_of_interest(enable_area_of_interest), p1(p1), p2(p2){
 
 }
@@ -39,8 +39,8 @@ std::string MotionDetectorAttribute::getMotionAnalysis() const {
 	return motion_analysis_method;
 }
 
-int MotionDetectorAttribute::getResolution() const {
-	return resolution;
+int MotionDetectorAttribute::getSensitive() const {
+	return sensitive;
 }
 
 point MotionDetectorAttribute::getStartPoint() const{
@@ -54,8 +54,8 @@ void MotionDetectorAttribute::setInterval(int interval) {
 	this->interval = interval;
 }
 
-void MotionDetectorAttribute::setResolution(int resolution) {
-	this->resolution = resolution;
+void MotionDetectorAttribute::setSensitive(double sensitive) {
+	this->sensitive = sensitive;
 }
 
 } /* namespace nokkhum */

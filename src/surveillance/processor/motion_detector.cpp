@@ -31,11 +31,12 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttr
 	ImageProcessor("Motion Detection", input_image_queue) {
 	//std::cout << "hello optical flow constructor :(" << std::endl;
 	this->interval = mdp.getInterval();
-	this->resolution = mdp.getResolution();
+	this->sensitive = mdp.getSensitive();
 	this->enable_area_of_interest = mdp.getEnableAreaOfInterest();
 	this->drop_motion = 10;
 	this->pointStart = mdp.getStartPoint();
 	this->pointEnd = mdp.getEndPoint();
+	//this->width = mdp.get;
 
 }
 
@@ -44,7 +45,7 @@ MotionDetector::~MotionDetector() {
 }
 
 void MotionDetector::start() {
-	std::cout << "enable area of interest : " << this->enable_area_of_interest << std::endl;
+	//std::cout << "enable area of interest : " << this->enable_area_of_interest << std::endl;
 
 //	std::cout<<"Motion detector start"<<std::endl;
 	//cv::namedWindow("Motion Detection", 1);
@@ -90,12 +91,13 @@ void MotionDetector::start() {
 
 
 		//cv::rectangle(frame,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
-		cv::imshow("Original", frame);
+		//cv::imshow("Original", frame);
+		this->width = frame.cols;
 		if(this->enable_area_of_interest){
 			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
 		}
 		//cv::imshow("Frame", frame);
-		if(cv::waitKey(30)>=0) break;
+		//if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
@@ -181,12 +183,16 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 bool MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
 	// std::cout << "hello optical flow :(" << std::endl;
 	int motion_count = 0;
-	int step = 30;
+	//int step = 30;
+	//double step = 585*(1-(this->sensitive/100.0)) + 15;
+	double step = (this->width-15)*(1-(this->sensitive/100.0)) + 15;
+	//std::cout << "width = " << this->width << std::endl;
 	cv::Mat flow;
 	cv::calcOpticalFlowFarneback(prevgray, gray, flow, 0.5, 1, step, 1,
 					1, 1.2, 0);
-	//			cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
-	//			drawOptFlowMap(flow, frame, step+1, 1.5, CV_RGB(0, 255, 0));
+	//std::cout << "step = " << step << std::endl;
+				//cv::cvtColor(prevgray, cflow, CV_GRAY2BGR);
+				//drawOptFlowMap(flow, frame, step+1, 1.5, CV_RGB(0, 255, 0));
 
 	//			for (int y = 0; y < cflow.rows; y += step+1){
 	//				for (int x = 0; x < cflow.cols; x += step+1) {
@@ -200,7 +206,7 @@ bool MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){
 					}
 				}
 
-	if (motion_count > 3)
+	if (motion_count > 0)
 		return true;
 	else
 		return false;
