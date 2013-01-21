@@ -28,7 +28,7 @@ public:
 	JsonParser();
 	virtual ~JsonParser();
 
-	std::shared_ptr<AttributeMap> parse(std::string file_name);
+	std::shared_ptr<AttributeMap> parse(std::string json);
 
 	std::shared_ptr<CameraAttribute> parseCamera(const Json::Value camera_obj);
 	void parseImageProcessor(const Json::Value image_processor_array, std::shared_ptr<ImageProcessorAttribute> ipp);
