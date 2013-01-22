@@ -48,12 +48,12 @@ void Notification::start() {
 			continue;
 		}
 		frame = input_image_queue.pop().get();
-		if(tm->tm_min % 5 == 0 && !check){
+//		if(tm->tm_min % 5 == 0 && !check){
 			this->warning();
-			check = 1;
-		} else if(tm->tm_min % 5 != 0){
-			check = 0;
-		}
+//			check = 1;
+//		} else if(tm->tm_min % 5 != 0){
+//			check = 0;
+//		}
 	}
 }
 void Notification::warning() {
@@ -62,7 +62,7 @@ void Notification::warning() {
 	event["method"] = "notify";
 	event["camera_id"] = this->camera_id;
 	event["description"] = this->description;
-	std::cout << writer.write(event);
+	std::cout << writer.write(event) << std::flush;
 }
 } /* namespace nokkhum */
 
