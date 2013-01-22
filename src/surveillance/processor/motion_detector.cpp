@@ -177,7 +177,6 @@ void MotionDetector::drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap,
 		}
 	}
 
-
 }
 
 bool MotionDetector::detectMotion(cv::Mat prevgray, cv::Mat gray){

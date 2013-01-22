@@ -24,6 +24,7 @@ public:
 	bool paseCommand(std::string json);
 	std::string getCommand();
 	std::string getCameraAttribute();
+	int getCameraId();
 
 private:
 	Json::Value value;

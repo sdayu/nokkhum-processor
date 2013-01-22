@@ -51,7 +51,9 @@ void SurveillanceManager::processCommand() {
 				std::cout << writer.write(result_json);
 				LOG(INFO) << writer.write(result_json);
 				continue;
-			}
+			}/*else{
+				std::cout << "camera id : " << cp.getCameraId() << std::endl;
+			}*/
 		} catch (std::exception e) {
 			LOG(ERROR) << "camera id: " << this->name
 					<< " get command error " << e.what();

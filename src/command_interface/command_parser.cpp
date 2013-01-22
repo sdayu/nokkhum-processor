@@ -34,5 +34,7 @@ std::string CommandParser::getCameraAttribute() {
 	Json::FastWriter writer;
 	return writer.write(value["attributes"]);
 }
-
+int CommandParser::getCameraId(){
+	return value["attributes"]["camera"]["id"].asInt();
+}
 } /* namespace nokkhum */

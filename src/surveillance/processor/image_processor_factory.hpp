@@ -13,19 +13,23 @@
 
 #include "image_processor.hpp"
 #include "../../config/image_processor_attribute.hpp"
+#include "../../config/camera_attribute.hpp"
 #include "../../util/image_queue.hpp"
 
 namespace nokkhum {
 
 class ImageProcessorFactory {
 public:
-	ImageProcessorFactory();
+	ImageProcessorFactory(std::shared_ptr<CameraAttribute> camera_attribute);
 	virtual ~ImageProcessorFactory();
 
 	std::shared_ptr<ImageProcessor> getImageProcessor(std::shared_ptr<ImageProcessorAttribute> ipp, ImageQueue &cv_mat_queue);
 	std::vector< std::shared_ptr<ImageProcessor> > getImageProcessorPool(std::shared_ptr<ImageProcessorAttribute> ipp, MultipleImageQueue &mmq);
 
 	void getImageProcessorFromVector(std::vector< std::shared_ptr<ImageProcessor> > &image_processor_pool, std::vector< std::shared_ptr<ImageProcessorAttribute> > &ippv, std::shared_ptr<ImageProcessor> parent_image_processor);
+
+private:
+	std::shared_ptr<CameraAttribute> camera_attribute;
 };
 
 } /* namespace nokkhum */

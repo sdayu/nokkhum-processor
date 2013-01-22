@@ -16,12 +16,13 @@ namespace nokkhum {
 
 class CameraAttribute : public Attribute {
 public:
-	CameraAttribute(std::string name, std::string model, std::string url, int width, int hight, int fps, std::string username, std::string password);
+	CameraAttribute(std::string name, std::string model, std::string url, int width, int hight, int fps, std::string username, std::string password, int id);
 	virtual ~CameraAttribute();
 
     int getFps() const;
     int getHeight() const;
     int getWidth() const;
+    int getId() const;
     std::string getModel() const;
     std::string getName() const;
     std::string getUrl() const;
@@ -44,6 +45,7 @@ private:
 	int width;
 	int height;
 	int fps;
+	int id;
 	std::string username;
 	std::string password;
 };

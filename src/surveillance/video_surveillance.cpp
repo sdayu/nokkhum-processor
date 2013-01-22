@@ -64,7 +64,7 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 				image_processor_attribute->getImageProcessorAttributeVector().size());
 	}
 
-	ImageProcessorFactory ipf;
+	ImageProcessorFactory ipf(camera_attribute);
 
 	if(!is_multimedia_recorder){
 	this->image_processor_pool = ipf.getImageProcessorPool(

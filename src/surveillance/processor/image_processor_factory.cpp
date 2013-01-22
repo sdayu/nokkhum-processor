@@ -21,6 +21,8 @@
 #include "video_motion_recorder.hpp"
 #include "multimedia_recorder.hpp"
 #include "motion_detector_background_sub.hpp"
+#include "../notification/notification.hpp"
+#include "../notification/notification.cpp"
 
 
 #include <iostream>
@@ -29,7 +31,7 @@
 
 namespace nokkhum {
 
-ImageProcessorFactory::ImageProcessorFactory() {
+ImageProcessorFactory::ImageProcessorFactory(std::shared_ptr<CameraAttribute> camera_attribute) : camera_attribute(camera_attribute){
 	// TODO Auto-generated constructor stub
 
 }
@@ -73,6 +75,9 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<MultimediaRecorderAttribute> mrp = std::static_pointer_cast<MultimediaRecorderAttribute>(ipp);
 		std::shared_ptr<MultimediaRecorder> mr = std::make_shared<MultimediaRecorder>(image_queue, *mrp);
 		return mr;
+	} else if(ipp->getName() == "Notification"){
+		std::shared_ptr<Notification> nf = std::make_shared<Notification>(image_queue, camera_attribute->getId(), "");
+		return nf;
 	}
 
 	return nullptr;
