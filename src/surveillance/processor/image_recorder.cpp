@@ -23,6 +23,7 @@ namespace nokkhum {
 
 ImageRecorder::ImageRecorder(ImageQueue &input_image_queue) :
 		ImageProcessor("Image Recorder", input_image_queue), width(320), height(240), directory("/tmp") {
+	this->interval = 1;
 
 }
 
