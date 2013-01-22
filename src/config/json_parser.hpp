@@ -40,6 +40,8 @@ private:
 	std::shared_ptr<ImageProcessorAttribute> parseImageRecorder(const Json::Value image_processor_obj);
 	std::shared_ptr<ImageProcessorAttribute> parseMotionDetector(const Json::Value image_processor_obj);
 	std::shared_ptr<ImageProcessorAttribute> parseFaceDetector(const Json::Value image_processor_obj);
+	std::shared_ptr<ImageProcessorAttribute> parseNotification(const Json::Value image_processor_obj);
+
 
 };
 

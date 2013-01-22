@@ -10,6 +10,7 @@
 
 #include <string>
 #include "../processor/image_processor.hpp"
+#include "../../config/notification_attribute.hpp"
 
 namespace nokkhum{
 
@@ -18,10 +19,10 @@ private:
 	int camera_id;
 	std::string description;
 public:
-	Notification(ImageQueue &input_image_queue, int camera_id, std::string description);
+	Notification(ImageQueue &input_image_queue, NotificationAttribute &nfp, int camera_id);
 	virtual ~Notification();
 	void start();
-	//void warn();
+	void warning();
 };
 
 } /* namespace nokkhum */

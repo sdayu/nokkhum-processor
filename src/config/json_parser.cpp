@@ -26,6 +26,7 @@
 #include "../surveillance/processor/video_recorder.hpp"
 #include "../surveillance/processor/multimedia_recorder.hpp"
 #include "../surveillance/processor/motion_detector_background_sub.hpp"
+#include "../surveillance/notification/notification.hpp"
 
 
 #include "camera_attribute.hpp"
@@ -37,6 +38,7 @@
 #include "image_recorder_attribute.hpp"
 #include "image_recorder_attribute.hpp"
 #include "multimedia_recorder_attribute.hpp"
+#include "notification_attribute.hpp"
 
 namespace nokkhum {
 
@@ -134,6 +136,8 @@ void JsonParser::parseImageProcessor(
 			tmp = parseImageRecorder(obj);
 		} else if (processor_name == "Multimedia Recorder") {
 			tmp = parseMultimediaRecorder(obj);
+		} else if (processor_name == "Notification") {
+			tmp = parseNotification(obj);
 		}
 
 		ipp->addImageProcessorAttribute(tmp);
@@ -300,6 +304,20 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceDetector(
 	}
 
 	return fdp;
+}
+
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseNotification(
+		const Json::Value image_processor_obj) {
+
+	std::string name;
+
+	name = image_processor_obj["name"].asString();
+
+	// std::cout << "Processor name : " << name << std::endl;
+
+	std::shared_ptr<NotificationAttribute> nfp = std::make_shared<NotificationAttribute>(name);
+
+	return nfp;
 }
 
 /*const Json::Value& JsonParser::
