@@ -222,15 +222,19 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(
 	std::string directory;
 	int width;
 	int height;
+	unsigned int interval = 1;
 
 	name = image_processor_obj["name"].asString();
 	directory = image_processor_obj["directory"].asString();
 	width = image_processor_obj["width"].asInt();
 	height = image_processor_obj["height"].asInt();
+	if (image_processor_obj.isMember("interval")){
+		interval = image_processor_obj["interval"].asInt();
+	}
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	std::shared_ptr<ImageProcessorAttribute> irp = std::make_shared<ImageRecorderAttribute>(name, directory, width, height);
+	std::shared_ptr<ImageProcessorAttribute> irp = std::make_shared<ImageRecorderAttribute>(name, directory, width, height, interval);
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], irp );
 	}

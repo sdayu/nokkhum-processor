@@ -31,7 +31,7 @@ private:
     double sensitive;
     int interval;
     std::string motion_analysis_method;
-    point p1,p2;
+    point p1, p2;
     bool enable_area_of_interest;
 };
 

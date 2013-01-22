@@ -32,6 +32,7 @@ ImageRecorder::ImageRecorder(ImageQueue & input_image_queue,
 	this->width = irp.getWidth();
 	this->height = irp.getHeight();
 	this->directory = irp.getDirectory();
+	this->interval = irp.getInterval();
 }
 
 ImageRecorder::~ImageRecorder() {
@@ -40,6 +41,8 @@ ImageRecorder::~ImageRecorder() {
 
 void ImageRecorder::start() {
 	cv::Mat frame;
+
+	unsigned int counter = 0;
 	while (running) {
 //		std::cout<<"wait to save image"<<std::endl;
 
@@ -48,9 +51,15 @@ void ImageRecorder::start() {
 			//std::cout<<"sleep img"<<std::endl;
 			continue;
 		}
-
 		frame = input_image_queue.pop().get();
 
+
+		if(++counter < this->interval){
+			continue;
+		}
+		else{
+			counter = 0;
+		}
 
 		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
