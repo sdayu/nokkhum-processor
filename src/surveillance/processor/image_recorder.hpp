@@ -27,6 +27,7 @@ private:
 	unsigned int width;
 	unsigned int height;
 	std::string directory;
+	int interval;
 };
 
 } /* namespace nokkhum */
