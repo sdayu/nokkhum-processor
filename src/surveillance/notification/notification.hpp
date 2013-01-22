@@ -9,6 +9,7 @@
 #define NOKKHUM_NOTIFICATION_HPP_
 
 #include <string>
+#include <chrono>
 #include "../processor/image_processor.hpp"
 #include "../../config/notification_attribute.hpp"
 

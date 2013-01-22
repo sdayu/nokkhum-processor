@@ -75,7 +75,7 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<MultimediaRecorder> mr = std::make_shared<MultimediaRecorder>(image_queue, *mrp);
 		return mr;
 	} else if(ipp->getName() == "Notification"){
-		std::cout << "notification :P" << std::endl;
+		//std::cout << "notification :P" << std::endl;
 		std::shared_ptr<NotificationAttribute> nfp = std::static_pointer_cast<NotificationAttribute>(ipp);
 		std::shared_ptr<Notification> nf = std::make_shared<Notification>(image_queue, *nfp, camera_attribute->getId());
 		return nf;
