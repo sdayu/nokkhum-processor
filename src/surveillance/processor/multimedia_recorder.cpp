@@ -36,7 +36,7 @@ void MultimediaRecorder::startRecord() {
 
 	while (this->running) {
 		//TODO create directory
-		boost::filesystem::create_directories(this->directory);
+		boost::filesystem::create_directories(this->directory + "/multimedia/");
 
 		//TODO create output_name
 		std::ostringstream oss;
@@ -98,7 +98,7 @@ void MultimediaRecorder::getVideo() {
 			+ std::to_string(this->record_hour) + ":"
 			+ std::to_string(this->record_minute) + ":"
 			+ std::to_string(this->record_sec) + " -vcodec libtheora -r "
-			+ std::to_string(this->fps) + " " + this->directory + "/__"
+			+ std::to_string(this->fps) + " " + this->directory + "/multimedia/__"
 			+ this->output_name + "-video.ogv 2> /dev/null";
 	system(command.c_str());
 }
@@ -106,19 +106,19 @@ void MultimediaRecorder::getAudio() {
 	command = "ffmpeg -i " + this->url + "/audio.cgi -t "
 			+ std::to_string(this->record_hour) + ":"
 			+ std::to_string(this->record_minute) + ":"
-			+ std::to_string(this->record_sec) + " " + this->directory + "/__"
+			+ std::to_string(this->record_sec) + " " + this->directory + "/multimedia/__"
 			+ this->output_name + "-audio.ogg 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getOutput(std::string output) {
 	command = "ffmpeg -i " + this->directory + "/__" + output + "-video.ogv -i "
 			+ this->directory + "/__" + output + "-audio.ogg -r "
-			+ std::to_string(this->fps) + " " + this->directory + "/" + output
+			+ std::to_string(this->fps) + " " + this->directory + "/multimedia/" + output
 			+ ".ogv 2> /dev/null";
 	system(command.c_str());
 	//system("ffmpeg -i video.ogv -i audio.ogg -r 15 output.ogv");
-	command = "rm " + this->directory + "/__" + output + "-video.ogv "
-			+ this->directory + "/__" + output + "-audio.ogg";
+	command = "rm " + this->directory + "/multimedia/__" + output + "-video.ogv "
+			+ this->directory + "/multimedia/__" + output + "-audio.ogg";
 	system(command.c_str());
 	//command = "mv " + this->directory + "/" + this->output_name + "__output.ogv " + this->directory + "/" + this->output_name + ".ogv";
 	//system(command.c_str());
