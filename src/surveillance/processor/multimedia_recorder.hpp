@@ -18,6 +18,7 @@
 #include <boost/filesystem.hpp>
 #include "image_processor.hpp"
 #include "../../config/multimedia_recorder_attribute.hpp"
+#include "../../util/directory_manager.hpp"
 
 namespace nokkhum {
 
@@ -33,6 +34,7 @@ public:
 
 private:
 	std::string directory;
+	std::string dt;
 	std::string url;
 	std::string command;
 	std::string output_name;

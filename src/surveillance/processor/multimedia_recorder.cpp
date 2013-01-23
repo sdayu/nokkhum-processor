@@ -35,8 +35,16 @@ void MultimediaRecorder::startRecord() {
 	std::vector<std::thread> thread_vector;
 
 	while (this->running) {
+		std::string dt;
+		nokkhum::DirectoryManager dm (this->directory, "multimedia");
+							if(! dm.checkAndCreate()){
+								continue;
+							}
+								this->dt = dm.getDirectoryName();
+
 		//TODO create directory
-		boost::filesystem::create_directories(this->directory + "/multimedia/");
+		//boost::filesystem::create_directories(this->directory + "/multimedia/");
+		//boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
 		//TODO create output_name
 		std::ostringstream oss;
@@ -60,8 +68,8 @@ void MultimediaRecorder::startRecord() {
 
 		this->output_name = oss.str();
 
-		command = "cd " + this->directory;
-		system(command.c_str());
+		//command = "cd " + this->directory;
+		//system(command.c_str());
 
 		std::thread audio(&MultimediaRecorder::getAudio, this);
 		std::thread video(&MultimediaRecorder::getVideo, this);
@@ -98,7 +106,7 @@ void MultimediaRecorder::getVideo() {
 			+ std::to_string(this->record_hour) + ":"
 			+ std::to_string(this->record_minute) + ":"
 			+ std::to_string(this->record_sec) + " -vcodec libtheora -r "
-			+ std::to_string(this->fps) + " " + this->directory + "/multimedia/__"
+			+ std::to_string(this->fps) + " " + this->dt + "/__"
 			+ this->output_name + "-video.ogv 2> /dev/null";
 	system(command.c_str());
 }
@@ -106,19 +114,19 @@ void MultimediaRecorder::getAudio() {
 	command = "ffmpeg -i " + this->url + "/audio.cgi -t "
 			+ std::to_string(this->record_hour) + ":"
 			+ std::to_string(this->record_minute) + ":"
-			+ std::to_string(this->record_sec) + " " + this->directory + "/multimedia/__"
+			+ std::to_string(this->record_sec) + " " + this->dt + "/__"
 			+ this->output_name + "-audio.ogg 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getOutput(std::string output) {
-	command = "ffmpeg -i " + this->directory + "/__" + output + "-video.ogv -i "
-			+ this->directory + "/__" + output + "-audio.ogg -r "
-			+ std::to_string(this->fps) + " " + this->directory + "/multimedia/" + output
+	command = "ffmpeg -i " + this->dt + "/__" + output + "-video.ogv -i "
+			+ this->dt + "/__" + output + "-audio.ogg -r "
+			+ std::to_string(this->fps) + " " + this->dt+ "/" + output
 			+ ".ogv 2> /dev/null";
 	system(command.c_str());
 	//system("ffmpeg -i video.ogv -i audio.ogg -r 15 output.ogv");
-	command = "rm " + this->directory + "/multimedia/__" + output + "-video.ogv "
-			+ this->directory + "/multimedia/__" + output + "-audio.ogg";
+	command = "rm " + this->dt + "/__" + output + "-video.ogv "
+			+ this->dt + "/__" + output + "-audio.ogg";
 	system(command.c_str());
 	//command = "mv " + this->directory + "/" + this->output_name + "__output.ogv " + this->directory + "/" + this->output_name + ".ogv";
 	//system(command.c_str());
