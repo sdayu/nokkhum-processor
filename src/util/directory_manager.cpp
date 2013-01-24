@@ -29,6 +29,8 @@ DirectoryManager::DirectoryManager(std::string root_directory, std::string type)
 				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes();
 	} else if (type == "video") {
 		oss << "/" << "video";
+	} else if (type == "multimedia") {
+		oss << "/" << "multimedia";
 	} else {
 		oss << "/" << "unknow_type";
 	}
@@ -49,6 +51,8 @@ DirectoryManager::DirectoryManager(std::string root_directory, std::string type,
 					<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes();
 		} else if (type == "video") {
 			oss << "/" << "video";
+		} else if (type == "multimedia") {
+			oss << "/" << "multimedia";
 		} else {
 			oss << "/" << "unknow_type";
 		}
