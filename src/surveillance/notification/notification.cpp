@@ -9,6 +9,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "../../command_interface/program_reporter.hpp"
 //#include <command_interface/command_parser.hpp>
 //#include <command_interface/command_parser.cpp>
 
@@ -57,12 +58,11 @@ void Notification::start() {
 	}
 }
 void Notification::warning() {
-	Json::Value event;
-	Json::FastWriter writer;
-	event["method"] = "notify";
-	event["camera_id"] = this->camera_id;
-	event["description"] = this->description;
-	std::cout << writer.write(event) << std::flush;
+	Json::Value message;
+	message["method"] = "notify";
+	message["camera_id"] = this->camera_id;
+	message["description"] = this->description;
+	nokkhum::ProgramReporter().report(message);
 }
 } /* namespace nokkhum */
 

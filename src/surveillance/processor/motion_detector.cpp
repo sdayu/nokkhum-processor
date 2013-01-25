@@ -24,6 +24,10 @@ namespace nokkhum {
 MotionDetector::MotionDetector(ImageQueue &input_image_queue) :
 	ImageProcessor("Motion Detection", input_image_queue) {
 	// TODO Auto-generated constructor stub
+	this->interval = 1;
+	this->sensitive = 100;
+	this->enable_area_of_interest = false;
+	this->drop_motion = 10;
 
 }
 
