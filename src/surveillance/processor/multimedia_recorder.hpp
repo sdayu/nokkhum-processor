@@ -47,6 +47,7 @@ private:
 	void getVideo();
 	void getAudio();
 	void getOutput(std::string output);
+	std::string setString(int num);
 
 
 

@@ -24,7 +24,7 @@ MultimediaRecorder::MultimediaRecorder(ImageQueue &input_image_queue,
 	this->fps = mrp.getFps();
 	this->record_hour = 0;
 	this->record_minute = 0;
-	this->record_sec = 10;
+	this->record_sec = 30;
 	//this->period = 10;
 }
 MultimediaRecorder::~MultimediaRecorder() {
@@ -35,12 +35,12 @@ void MultimediaRecorder::startRecord() {
 	std::vector<std::thread> thread_vector;
 
 	while (this->running) {
-		std::string dt;
+
 		nokkhum::DirectoryManager dm (this->directory, "multimedia");
 							if(! dm.checkAndCreate()){
 								continue;
 							}
-								this->dt = dm.getDirectoryName();
+		this->dt = dm.getDirectoryName();
 
 		//TODO create directory
 		//boost::filesystem::create_directories(this->directory + "/multimedia/");
@@ -102,27 +102,29 @@ void MultimediaRecorder::getVideo() {
 	//system("ffmpeg -r 15 -i http://admin:123zxc@172.30.235.183/video/mjpg.cgi?.mjpg  -s 640x480 -t 00:00:10 -vcodec libtheora -r 15 video.ogv");
 	command = "ffmpeg -r " + std::to_string(this->fps) + " -i " + this->url
 			+ "/video/mjpg.cgi?.mjpg -s " + std::to_string(this->width) + "x"
-			+ std::to_string(this->height) + " -t "
-			+ std::to_string(this->record_hour) + ":"
-			+ std::to_string(this->record_minute) + ":"
-			+ std::to_string(this->record_sec) + " -vcodec libtheora -r "
-			+ std::to_string(this->fps) + " " + this->dt + "/__"
+			+ this->setString(this->height) + " -t "
+			+ this->setString(this->record_hour) + ":"
+			+ this->setString(this->record_minute) + ":"
+			+ this->setString(this->record_sec) + " -vcodec libtheora -r "
+			+ this->setString(this->fps) + " " + this->dt + "/__"
 			+ this->output_name + "-video.ogv 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getAudio() {
 	command = "ffmpeg -i " + this->url + "/audio.cgi -t "
-			+ std::to_string(this->record_hour) + ":"
-			+ std::to_string(this->record_minute) + ":"
-			+ std::to_string(this->record_sec) + " " + this->dt + "/__"
+			+ this->setString(this->record_hour) + ":"
+			+ this->setString(this->record_minute) + ":"
+			+ this->setString(this->record_sec) + " " + this->dt + "/__"
 			+ this->output_name + "-audio.ogg 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getOutput(std::string output) {
 	command = "ffmpeg -i " + this->dt + "/__" + output + "-video.ogv -i "
 			+ this->dt + "/__" + output + "-audio.ogg -r "
-			+ std::to_string(this->fps) + " " + this->dt+ "/" + output
+			+ std::to_string(this->fps) + " " + this->dt+ "/__" + output
 			+ ".ogv 2> /dev/null";
+	system(command.c_str());
+	command = "mv " + this->dt + "/__" + output + ".ogv " + this->dt + "/" + output + ".ogv";
 	system(command.c_str());
 	//system("ffmpeg -i video.ogv -i audio.ogg -r 15 output.ogv");
 	command = "rm " + this->dt + "/__" + output + "-video.ogv "
@@ -138,6 +140,11 @@ void MultimediaRecorder::start() {
 
 void MultimediaRecorder::stop() {
 	Job::stop();
+}
+
+std::string MultimediaRecorder::setString(int num){
+	if(num < 10) return "0" + std::to_string(num);
+	return std::to_string(num);
 }
 
 }
