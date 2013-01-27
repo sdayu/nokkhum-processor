@@ -14,6 +14,8 @@
 #include <thread>
 #include <chrono>
 
+#include "../command_interface/program_reporter.hpp"
+
 namespace nokkhum {
 
 ImageQueue::ImageQueue() {
@@ -38,6 +40,10 @@ void ImageQueue::push(nokkhum::Image mat) {
 			this->drop = false;
 			LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue drop";
 			this->pop();
+			Json::Value message;
+			message["method"] = "drop_motion";
+			message["description"] = "queue drop motion";
+			nokkhum::ProgramReporter().report(message);
 		}
 		else{
 			this->drop = true;

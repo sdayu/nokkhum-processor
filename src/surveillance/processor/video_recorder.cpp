@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <sstream>
 #include <ctime>
+#include <chrono>
 #include <exception>
 
 #include <opencv2/highgui/highgui.hpp>
@@ -19,8 +20,6 @@
 #include "../../video/cv_video_writer.hpp"
 
 #include "../../util/directory_manager.hpp"
-
-#include <sys/time.h>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
@@ -328,14 +327,14 @@ void RecordTimer::start() {
 		return;
 	}
 	running = true;//	LOG(INFO) << "Clock end";
-	timer_thred = boost::thread(&RecordTimer::clock, this);
+	timer_thred = std::thread(&RecordTimer::clock, this);
 	// LOG(INFO) << "end start Clock";
 }
 
 void RecordTimer::stop() {
 //	LOG(INFO) << "stop Clock";
 	running = false;
-	timer_thred.interrupt();
+//	timer_thred.interrupt();
 
 	if (!this->timer_thred.joinable())
 		this->timer_thred.join();
@@ -343,43 +342,37 @@ void RecordTimer::stop() {
 }
 
 void RecordTimer::clock() {
-	// LOG(INFO) << "new Clock :"<<this<<" name: "<<video_recorder->getName()<<" thread id: "<<std::this_thread::get_id();
-	while (running) {
-//		LOG(INFO) << "Clock working: " << this << " name: "
-//				<< video_recorder->getName();
-		boost::posix_time::ptime start_time =
-				boost::posix_time::microsec_clock::local_time();
 
-//		LOG(INFO) << "Clock working: "<<start_time.time_of_day().minutes()<<" : "<<this->period;
-		if (start_time.time_of_day().minutes() % this->period == 0) {
-//			LOG(INFO) << "Clock get new writer";
+	while (running) {
+
+		auto start_time = std::chrono::system_clock::now();
+		auto start_time_t = std::chrono::system_clock::to_time_t(start_time);
+		auto start_time_tm = std::localtime(&start_time_t);
+
+		if (start_time_tm->tm_min % this->period == 0) {
 			video_recorder->getNewVideoWriter();
 		}
-//		else if (!video_recorder->isWriterAvailable()){
-//			video_recorder->getNewVideoWriter();
-//		}
 
-		boost::posix_time::ptime current_time =
-				boost::posix_time::microsec_clock::local_time();
+		auto sleep_time = start_time.time_since_epoch() + std::chrono::minutes(this->period);
 
-		int sleep_time = (this->period
-				- ((this->period + current_time.time_of_day().minutes())
-						% this->period)) * 60;
-
-		sleep_time = sleep_time - current_time.time_of_day().seconds();
-
-		if (sleep_time <= 180) {
-			// LOG(INFO) << "Clock sleep more time "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
-			sleep_time += (this->period * 60);
+		if (sleep_time % std::chrono::minutes(this->period) > std::chrono::minutes(0)){
+			sleep_time -= sleep_time % std::chrono::minutes(this->period);
 		}
 
-		// std::cout << "sleep ---> " << sleep_time << std::endl;
-		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
-		boost::posix_time::time_duration sleep_time_d =
-				boost::posix_time::seconds(sleep_time);
-//		LOG(INFO) << video_recorder->getName() << " sleep time: "<<sleep_time_d;
-		boost::this_thread::sleep(sleep_time_d);
+		if (sleep_time < std::chrono::seconds(180)) {
+			sleep_time += std::chrono::minutes(this->period);
+		}
 
+		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
+		while (running){
+			std::this_thread::sleep_for(std::chrono::seconds(10));
+			auto current_time = std::chrono::system_clock::now();
+			auto diftime = current_time - start_time;
+			if (diftime >= sleep_time){
+				break;
+			}
+
+		}
 	}
 //	LOG(INFO) << "Clock end";
 }
