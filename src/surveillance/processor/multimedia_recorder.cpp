@@ -121,7 +121,7 @@ void MultimediaRecorder::getAudio() {
 void MultimediaRecorder::getOutput(std::string output) {
 	command = "ffmpeg -i " + this->dt + "/__" + output + "-video.ogv -i "
 			+ this->dt + "/__" + output + "-audio.ogg -r "
-			+ std::to_string(this->fps) + " " + this->dt+ "/__" + output
+			+ std::to_string(this->fps) + "  -vcodec libtheora " + this->dt+ "/__" + output
 			+ ".ogv 2> /dev/null";
 	system(command.c_str());
 	command = "mv " + this->dt + "/__" + output + ".ogv " + this->dt + "/" + output + ".ogv";
