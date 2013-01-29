@@ -105,9 +105,9 @@ void MultimediaRecorder::getVideo() {
 			+ this->setString(this->height) + " -t "
 			+ this->setString(this->record_hour) + ":"
 			+ this->setString(this->record_minute) + ":"
-			+ this->setString(this->record_sec) + " -vcodec libtheora -r "
+			+ this->setString(this->record_sec) + " -r "
 			+ this->setString(this->fps) + " " + this->dt + "/__"
-			+ this->output_name + "-video.ogv 2> /dev/null";
+			+ this->output_name + "-video.webm 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getAudio() {
@@ -115,20 +115,20 @@ void MultimediaRecorder::getAudio() {
 			+ this->setString(this->record_hour) + ":"
 			+ this->setString(this->record_minute) + ":"
 			+ this->setString(this->record_sec) + " " + this->dt + "/__"
-			+ this->output_name + "-audio.ogg 2> /dev/null";
+			+ this->output_name + "-audio.webm 2> /dev/null";
 	system(command.c_str());
 }
 void MultimediaRecorder::getOutput(std::string output) {
-	command = "ffmpeg -i " + this->dt + "/__" + output + "-video.ogv -i "
-			+ this->dt + "/__" + output + "-audio.ogg -r "
-			+ std::to_string(this->fps) + "  -vcodec libtheora " + this->dt+ "/__" + output
-			+ ".ogv 2> /dev/null";
+	command = "ffmpeg -i " + this->dt + "/__" + output + "-video.webm -i "
+			+ this->dt + "/__" + output + "-audio.webm -r "
+			+ std::to_string(this->fps) + " " + this->dt+ "/__" + output
+			+ ".webm 2> /dev/null";
 	system(command.c_str());
-	command = "mv " + this->dt + "/__" + output + ".ogv " + this->dt + "/" + output + ".ogv";
+	command = "mv " + this->dt + "/__" + output + ".webm " + this->dt + "/" + output + ".webm";
 	system(command.c_str());
 	//system("ffmpeg -i video.ogv -i audio.ogg -r 15 output.ogv");
-	command = "rm " + this->dt + "/__" + output + "-video.ogv "
-			+ this->dt + "/__" + output + "-audio.ogg";
+	command = "rm " + this->dt + "/__" + output + "-video.webm "
+			+ this->dt + "/__" + output + "-audio.webm";
 	system(command.c_str());
 	//command = "mv " + this->directory + "/" + this->output_name + "__output.ogv " + this->directory + "/" + this->output_name + ".ogv";
 	//system(command.c_str());
