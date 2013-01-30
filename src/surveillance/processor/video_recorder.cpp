@@ -225,6 +225,7 @@ void VideoRecorder::stopRecord(){
 				if (old_name[i] == '-') {
 						old_name[i] = ' ';
 				}
+
 				if (old_name[i] == '_') {
 						old_name[i] = ' ';
 				}
@@ -314,8 +315,15 @@ RecordTimer& RecordTimer::operator =(const RecordTimer& rt) {
 
 RecordTimer::~RecordTimer() {
 //	LOG(INFO) << "begin teminate timmer id: "<<this;
-	if (!this->timer_thred.joinable())
-		this->timer_thred.join();
+
+	if (! this->timer_thred.joinable()){
+		try{
+			this->timer_thred.join();
+		}
+		catch (std::exception e){
+			LOG(INFO) << "Terminate Record Timer thread fail ";
+		}
+	}
 
 //	LOG(INFO) << "teminate timmer id: "<<this;
 }
