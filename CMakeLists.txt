@@ -15,11 +15,11 @@ configure_file (
 
 # define library usage
 find_package(PkgConfig)
-pkg_check_modules(OPENCV REQUIRED "opencv >= 2.3")
+pkg_check_modules(OPENCV REQUIRED "opencv >= 2.4")
 pkg_check_modules(LIBGLOG REQUIRED "libglog >= 0.3")
 pkg_check_modules(LIBJSONCPP REQUIRED "jsoncpp")
 
-set (BOOST_LIBRARIES "-lboost_thread -lboost_filesystem -lboost_system -lboost_date_time -lboost_program_options")
+set (BOOST_LIBRARIES "-lboost_filesystem -lboost_system -lboost_date_time -lboost_program_options")
 set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d")
 set (JSONCPP_LIBRARIES "-ljsoncpp")
 

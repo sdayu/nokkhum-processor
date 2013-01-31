@@ -254,12 +254,12 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 	bool enable_area_of_interest;
 	point p1,p2;
 	std::shared_ptr<ImageProcessorAttribute> mdp;
-	int interval = 0;
+	int interval = 1;
 	double sensitive = 100;
 
 	name = image_processor_obj["name"].asString();
-	interval = image_processor_obj["interval"].asInt();
-	sensitive = image_processor_obj["sensitive"].asDouble();
+	interval = image_processor_obj.get("interval", 1).asInt();
+	sensitive = image_processor_obj.get("sensitive", 100).asDouble();
 	//motion_analysis = image_processor_obj["motion_analysis_method"].asString();
 	if (image_processor_obj.isMember("motion_analysis_method")){
 		motion_analysis = image_processor_obj["motion_analysis_method"].asString();

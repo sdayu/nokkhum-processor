@@ -51,10 +51,9 @@ VideoRecorder::VideoRecorder(ImageQueue & input_image_queue,
 }
 
 VideoRecorder::~VideoRecorder() {
+	this->timer.stop();
 	delete this->writer;
 	this->writer = nullptr;
-	this->timer.stop();
-
 }
 
 void VideoRecorder::start() {
@@ -67,6 +66,7 @@ void VideoRecorder::stop() {
 	Job::stop();
 	this->stopTimer();
 	this->stopRecord();
+
 }
 
 void VideoRecorder::getNewVideoWriter() {
@@ -316,13 +316,8 @@ RecordTimer& RecordTimer::operator =(const RecordTimer& rt) {
 RecordTimer::~RecordTimer() {
 //	LOG(INFO) << "begin teminate timmer id: "<<this;
 
-	if (! this->timer_thred.joinable()){
-		try{
-			this->timer_thred.join();
-		}
-		catch (std::exception e){
-			LOG(INFO) << "Terminate Record Timer thread fail ";
-		}
+	if (this->timer_thred.joinable()){
+		this->timer_thred.join();
 	}
 
 //	LOG(INFO) << "teminate timmer id: "<<this;
@@ -343,9 +338,10 @@ void RecordTimer::stop() {
 //	LOG(INFO) << "stop Clock";
 	running = false;
 //	timer_thred.interrupt();
-
-	if (!this->timer_thred.joinable())
+	if (this->timer_thred.joinable()){
 		this->timer_thred.join();
+	}
+
 //	LOG(INFO) << "end stop Clock";
 }
 
@@ -362,21 +358,27 @@ void RecordTimer::clock() {
 		}
 
 		auto sleep_time = start_time.time_since_epoch() + std::chrono::minutes(this->period);
+		auto time_fraction = sleep_time % std::chrono::minutes(this->period);
 
-		if (sleep_time % std::chrono::minutes(this->period) > std::chrono::minutes(0)){
-			sleep_time -= sleep_time % std::chrono::minutes(this->period);
+		// std::cout<<"time_fraction: "<< std::chrono::duration_cast<std::chrono::seconds> (time_fraction).count() << "s" << std::endl;
+		if (time_fraction > std::chrono::seconds(0)){
+			sleep_time -= time_fraction;
 		}
 
+		sleep_time -= start_time.time_since_epoch();
 		if (sleep_time < std::chrono::seconds(180)) {
 			sleep_time += std::chrono::minutes(this->period);
 		}
 
 		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
+		// std::cout<<"sleep_time: "<< std::chrono::duration_cast<std::chrono::seconds> (sleep_time).count() << "s" << std::endl;
+		std::this_thread::sleep_for(sleep_time%std::chrono::seconds(10));
 		while (running){
 			std::this_thread::sleep_for(std::chrono::seconds(10));
 			auto current_time = std::chrono::system_clock::now();
-			auto diftime = current_time - start_time;
-			if (diftime >= sleep_time){
+			auto diff_time = current_time - start_time;
+			// std::cout<<"diff_time: "<< std::chrono::duration_cast<std::chrono::seconds> (diff_time).count() << "s" << std::endl;
+			if (diff_time >= sleep_time){
 				break;
 			}
 

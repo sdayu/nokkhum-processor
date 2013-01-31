@@ -59,7 +59,7 @@ void MotionDetector::start() {
 	boost::posix_time::ptime current_time, motion_time;
 //	motion_time = boost::posix_time::microsec_clock::local_time();
 
-	bool motion_count = false;
+	bool is_motion = false;
 	//int step = 30; // before step = 15
 
 	int image_count = 0;
@@ -105,11 +105,11 @@ void MotionDetector::start() {
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {
-			motion_count = detectMotion(prevgray, gray);
+			is_motion = detectMotion(prevgray, gray);
 
-			if(motion_count){
+			if(is_motion){
 //				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
-//				std::cerr << "motion count: " << motion_count <<" sq: "<<motion_sequence << std::endl;
+//				std::cerr << "motion count: " << is_motion <<" sq: "<<motion_sequence << std::endl;
 				cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 //				LOG(INFO) << "Have motion: " << std::dec << tmp_image.size() ;
 //				std::cout<<"temporary queue size: "<< std::dec << tmp_image.size()<<std::endl;
@@ -157,7 +157,7 @@ void MotionDetector::start() {
 //				std::cout<<"current time: "<<boost::posix_time::to_simple_string(current_time)<<std::endl;
 //				std::cout<<"diff time   : "<<td<<std::endl;
 			}
-			//if(motion_count){
+			//if(is_motion){
 	//
 //			cv::imshow("Motion Detection", cflow);
 		}
