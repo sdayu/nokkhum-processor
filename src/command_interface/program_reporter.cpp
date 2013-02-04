@@ -21,7 +21,7 @@ ProgramReporter::~ProgramReporter() {
 }
 
 void ProgramReporter::report(Json::Value value) {
-	std::cout << writer.write(value) << std::flush;
+	std::cerr << writer.write(value) << std::flush;
 }
 
 } /* namespace nokkhum */
