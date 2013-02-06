@@ -15,6 +15,7 @@
 #include <chrono>
 
 #include "../command_interface/program_reporter.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 namespace nokkhum {
 
@@ -43,6 +44,9 @@ void ImageQueue::push(nokkhum::Image mat) {
 			Json::Value message;
 			message["method"] = "drop_motion";
 			message["description"] = "queue drop motion";
+
+			boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+			message["date"]			= boost::posix_time::to_iso_extended_string(current_time);
 			nokkhum::ProgramReporter().report(message);
 		}
 		else{

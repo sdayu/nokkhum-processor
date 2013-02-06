@@ -89,7 +89,9 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 	int height = 0;
 	int fps = 0;
 	int id = 0;
-	std::string url;
+	std::string video_url;
+	std::string audio_url;
+	std::string image_url;
 	std::string name;
 	std::string model;
 	std::string username;
@@ -99,7 +101,9 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 	height = camera_obj["height"].asInt();
 	fps = camera_obj["fps"].asInt();
 	id = camera_obj["id"].asInt();
-	url = camera_obj["url"].asString();
+	video_url = camera_obj["video_url"].asString();
+	audio_url = camera_obj["audio_url"].asString();
+	image_url = camera_obj["image_url"].asString();
 	name = camera_obj["name"].asString();
 	model = camera_obj["model"].asString();
 	username = camera_obj["username"].asString();
@@ -107,7 +111,9 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 
 //	std::cout << "Camera Name: " << name << std::endl;
 
-	std::shared_ptr<CameraAttribute> cp = std::make_shared<CameraAttribute>(name, model, url, width, height, fps, username, password, id);
+	std::shared_ptr<CameraAttribute> cp = std::make_shared<CameraAttribute>(name, model,
+			video_url, audio_url, image_url,
+			width, height, fps, username, password, id);
 	return cp;
 }
 

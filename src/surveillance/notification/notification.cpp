@@ -9,9 +9,8 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include "boost/date_time/posix_time/posix_time.hpp"
 #include "../../command_interface/program_reporter.hpp"
-//#include <command_interface/command_parser.hpp>
-//#include <command_interface/command_parser.cpp>
 
 #include "notification.hpp"
 
@@ -59,9 +58,12 @@ void Notification::start() {
 }
 void Notification::warning() {
 	Json::Value message;
-	message["method"] = "notify";
-	message["camera_id"] = this->camera_id;
-	message["description"] = this->description;
+	message["method"] 		= "notify";
+	message["camera_id"] 	= this->camera_id;
+	message["description"] 	= this->description;
+
+	boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+	message["date"]			= boost::posix_time::to_iso_extended_string(current_time);
 	nokkhum::ProgramReporter().report(message);
 }
 } /* namespace nokkhum */

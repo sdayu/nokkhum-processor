@@ -346,6 +346,7 @@ void RecordTimer::stop() {
 }
 
 void RecordTimer::clock() {
+	const int TIME_TO_SLEEP = 5;
 
 	while (running) {
 
@@ -372,9 +373,9 @@ void RecordTimer::clock() {
 
 		// LOG(INFO) << "Clock sleep "<<sleep_time<<"s" <<" id: "<<this<<" name: "<<video_recorder->getName();
 		// std::cout<<"sleep_time: "<< std::chrono::duration_cast<std::chrono::seconds> (sleep_time).count() << "s" << std::endl;
-		std::this_thread::sleep_for(sleep_time%std::chrono::seconds(10));
+		std::this_thread::sleep_for(sleep_time%std::chrono::seconds(TIME_TO_SLEEP));
 		while (running){
-			std::this_thread::sleep_for(std::chrono::seconds(10));
+			std::this_thread::sleep_for(std::chrono::seconds(TIME_TO_SLEEP));
 			auto current_time = std::chrono::system_clock::now();
 			auto diff_time = current_time - start_time;
 			// std::cout<<"diff_time: "<< std::chrono::duration_cast<std::chrono::seconds> (diff_time).count() << "s" << std::endl;
