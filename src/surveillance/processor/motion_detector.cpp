@@ -27,7 +27,7 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue) :
 	this->interval = 1;
 	this->sensitive = 100;
 	this->enable_area_of_interest = false;
-	this->drop_motion = 10;
+	this->wait_motion_time = 10;
 
 }
 
@@ -37,7 +37,7 @@ MotionDetector::MotionDetector(ImageQueue &input_image_queue, MotionDetectorAttr
 	this->interval = mdp.getInterval();
 	this->sensitive = mdp.getSensitive();
 	this->enable_area_of_interest = mdp.getEnableAreaOfInterest();
-	this->drop_motion = 10;
+	this->wait_motion_time = mdp.getWaitMotionTime();
 	this->pointStart = mdp.getStartPoint();
 	this->pointEnd = mdp.getEndPoint();
 	//this->width = mdp.get;
@@ -132,7 +132,7 @@ void MotionDetector::start() {
 				boost::posix_time::time_duration td = current_time - motion_time;
 
 				// LOG(INFO) << "motion diff time: " << td.total_seconds();
-				if(td.total_seconds() >= this->drop_motion){
+				if(td.total_seconds() >= this->wait_motion_time){
 //					LOG(INFO) << "Drop frame : " << std::dec << tmp_image.size() << "time: "<< td.total_seconds();
 //					std::cout<<"drop frame:"<<tmp_image.size()<<std::endl;
 					if (motion_sequence){
