@@ -71,10 +71,6 @@ void ImageAcquisition::start() {
 	monitor.join();
 }
 
-void ImageAcquisition::operator()() {
-	this->start();
-}
-
 void ImageAcquisition::stop() {
 	this->running = false;
 }

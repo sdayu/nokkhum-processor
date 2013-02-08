@@ -30,7 +30,6 @@ public:
 	virtual ~ImageAcquisition();
 
 	void start();
-	void operator()();
 	bool running;
 	void stop();
 

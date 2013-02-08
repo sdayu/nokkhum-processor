@@ -172,13 +172,12 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 
 	std::shared_ptr<VideoRecorderAttribute> vrp = nullptr;
 
-	if(image_processor_obj.isMember("record_motion") && image_processor_obj.isMember("maximum_wait_motion")){
+	if(image_processor_obj.isMember("record_motion")){
 		bool record_motion = image_processor_obj.isMember("record_motion");
-		int maximum_wait_motion = image_processor_obj["maximum_wait_motion"].asInt();
 		name = "Video Motion Recorder";
 
 		if(record_motion){
-			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion, maximum_wait_motion);
+			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion);
 		}
 		else{
 			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);

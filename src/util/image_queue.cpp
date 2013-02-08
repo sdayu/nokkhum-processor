@@ -48,6 +48,7 @@ void ImageQueue::push(nokkhum::Image mat) {
 			boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 			message["date"]			= boost::posix_time::to_iso_extended_string(current_time);
 			nokkhum::ProgramReporter().report(message);
+
 		}
 		else{
 			this->drop = true;
@@ -60,7 +61,9 @@ void ImageQueue::push(nokkhum::Image mat) {
 		std::this_thread::sleep_for( duration );
 	}
 
-
+	if (this->size() > 500 ){
+		throw std::runtime_error("Queue not consume");
+	}
 
 }
 
