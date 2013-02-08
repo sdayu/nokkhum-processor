@@ -15,7 +15,9 @@ namespace nokkhum {
 
 class MotionDetectorAttribute: public nokkhum::ImageProcessorAttribute {
 public:
-	MotionDetectorAttribute(std::string name, std::string motion_analysis_method, double sensitive, int interval);
+	MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
+			double sensitive, int interval,
+			int wait_motion_time);
 	MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
 			double sensitive, int interval,
 			int wait_motion_time,

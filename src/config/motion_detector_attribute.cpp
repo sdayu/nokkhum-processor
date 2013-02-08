@@ -10,9 +10,9 @@
 namespace nokkhum {
 
 MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
-		double sensitive, int interval) :
+		double sensitive, int interval, int wait_motion_time) :
 		ImageProcessorAttribute(name), sensitive(sensitive), interval(interval),
-		motion_analysis_method(motion_analysis_method){
+		motion_analysis_method(motion_analysis_method), wait_motion_time(wait_motion_time){
 			enable_area_of_interest = false;
 }
 

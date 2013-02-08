@@ -286,7 +286,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 		}
 	else{
 	// std::cout << "Processor name : " << name << std::endl;
-		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval);
+		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval, wait_motion_time);
 	}
 
 	if (image_processor_obj.isMember("processors")){

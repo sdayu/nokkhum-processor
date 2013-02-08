@@ -137,7 +137,7 @@ void VideoRecorder::getNewVideoWriter() {
 //		LOG(INFO) << "cur time " << current_time;
 //		LOG(INFO) << "old time " << old_time;
 //		LOG(INFO) << "td.total_seconds() " << td.total_seconds();
-		if (this->writer != nullptr && td.total_seconds() < 1) {
+		if (this->writer != nullptr && td.total_seconds() < 2) {
 //			LOG(INFO) << "less than 3 ";
 			return;
 		}

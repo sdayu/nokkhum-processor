@@ -1,6 +1,6 @@
 This project is a part of Nokkhum Video Surveillance as a Service. 
 
-This program has been written by C++11, using libraries following::
+This program has been written by C++11, using libraries following:
 
 - boost-date-time
 - boost-filesystem
