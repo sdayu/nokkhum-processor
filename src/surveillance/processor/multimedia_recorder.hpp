@@ -15,6 +15,7 @@
 #include <sstream>
 #include <ctime>
 #include <string>
+#include <set>
 #include <boost/filesystem.hpp>
 #include "image_processor.hpp"
 #include "../../config/multimedia_recorder_attribute.hpp"
@@ -35,7 +36,8 @@ public:
 private:
 	std::string directory;
 	std::string dt;
-	std::string url;
+	std::string video_url;
+	std::string audio_url;
 	std::string command;
 	std::string output_name;
 	unsigned int width;
@@ -48,6 +50,7 @@ private:
 	void getAudio();
 	void getOutput(std::string output);
 	std::string setString(int num);
+	std::set<int> process;
 
 
 

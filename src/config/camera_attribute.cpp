@@ -47,11 +47,11 @@ std::string CameraAttribute::getVideoUrl() const {
 }
 
 std::string CameraAttribute::getAudioUrl() const {
-	return video_url;
+	return audio_url;
 }
 
 std::string CameraAttribute::getImageUrl() const {
-	return video_url;
+	return image_url;
 }
 
 

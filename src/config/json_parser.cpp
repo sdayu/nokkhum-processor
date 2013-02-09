@@ -200,14 +200,13 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
 
 	std::string name;
 	std::string directory;
-	std::string url;
 	int fps;
 	int width;
 	int height;
 
 	name = image_processor_obj["name"].asString();
 	directory = image_processor_obj["directory"].asString();
-	url=image_processor_obj["url"].asString();
+	//url=image_processor_obj["url"].asString();
 	fps = image_processor_obj["fps"].asInt();
 	width = image_processor_obj["width"].asInt();
 	height = image_processor_obj["height"].asInt();
@@ -216,7 +215,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
 
 	std::shared_ptr<MultimediaRecorderAttribute> mrp = nullptr;
 
-	mrp = std::make_shared<MultimediaRecorderAttribute>(name, directory, url, width, height, fps);
+	mrp = std::make_shared<MultimediaRecorderAttribute>(name, directory, width, height, fps);
 
 	if (image_processor_obj.isMember("processors")){
 		parseImageProcessor( image_processor_obj["processors"], mrp );

@@ -22,13 +22,14 @@ pkg_check_modules(LIBJSONCPP REQUIRED "jsoncpp")
 set (BOOST_LIBRARIES "-lboost_filesystem -lboost_system -lboost_date_time -lboost_program_options")
 set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d")
 set (JSONCPP_LIBRARIES "-ljsoncpp")
-
+set (POKO_LIBRARIES "-lPocoFoundation")
 
 link_libraries(
 	${OPENCV_LIBRARIES}
 	${BOOST_LIBRARIES}
 	${LIBGLOG_LIBRARIES}
 	${JSONCPP_LIBRARIES}
+    ${POKO_LIBRARIES}
 )
  
 file(GLOB_RECURSE nokkhum_processor_CXX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.cpp")

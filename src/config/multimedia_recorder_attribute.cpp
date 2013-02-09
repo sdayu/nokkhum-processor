@@ -10,8 +10,8 @@
 namespace nokkhum {
 
 MultimediaRecorderAttribute::MultimediaRecorderAttribute(std::string name,
-		std::string directory, std::string url, int width, int height, int fps) :
-		RecorderAttribute(name, directory, width, height), url(url), fps(fps) {
+		std::string directory, int width, int height, int fps) :
+		RecorderAttribute(name, directory, width, height), fps(fps) {
 	// TODO Auto-generated constructor stub
 }
 
@@ -27,12 +27,20 @@ void MultimediaRecorderAttribute::setFps(int fps) {
 	this->fps = fps;
 }
 
-std::string MultimediaRecorderAttribute::getUrl() const {
-	return url;
+const std::string& MultimediaRecorderAttribute::getAudioUrl() const {
+	return audio_url;
 }
 
-void MultimediaRecorderAttribute::setUrl(std::string url) {
-	this->url = url;
+void MultimediaRecorderAttribute::setAudioUrl(const std::string& audio_url) {
+	this->audio_url = audio_url;
+}
+
+const std::string& MultimediaRecorderAttribute::getVideoUrl() const {
+	return video_url;
+}
+
+void MultimediaRecorderAttribute::setVideoUrl(const std::string& video_url) {
+	this->video_url = video_url;
 }
 
 } /* namespace nokkhum */
