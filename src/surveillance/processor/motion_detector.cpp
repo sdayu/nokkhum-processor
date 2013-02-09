@@ -95,14 +95,14 @@ void MotionDetector::start() {
 		}
 
 
-		//cv::rectangle(frame,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
-		//cv::imshow("Original", frame);
+		cv::rectangle(frame,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
+		cv::imshow("Original", frame);
 		this->width = frame.cols;
 		if(this->enable_area_of_interest){
 			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
 		}
 		//cv::imshow("Frame", frame);
-		//if(cv::waitKey(30)>=0) break;
+		if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
 		if (prevgray.data) {

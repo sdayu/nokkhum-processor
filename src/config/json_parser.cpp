@@ -279,6 +279,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 			p1.y = image_processor_obj["region_of_interest"]["point1"]["y"].asInt();
 			p2.x = image_processor_obj["region_of_interest"]["point2"]["x"].asInt();
 			p2.y = image_processor_obj["region_of_interest"]["point2"]["y"].asInt();
+			if(p1.x + p1.y + p2.x + p2.y == 0) enable_area_of_interest = false;
 			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis,
 					sensitive, interval, wait_motion_time, enable_area_of_interest, p1, p2);
 		}
