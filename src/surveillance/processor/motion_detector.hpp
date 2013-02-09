@@ -33,7 +33,7 @@ protected:
     int interval;
     int width;
     double sensitive;
-    int drop_motion;
+    int wait_motion_time;
     point pointStart,pointEnd;
 };
 

@@ -20,7 +20,6 @@ public:
 	void startRecord();
 
 private:
-	unsigned int maximum_wait_motion;
 };
 
 } /* namespace nokkhum */

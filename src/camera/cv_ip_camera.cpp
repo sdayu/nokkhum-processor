@@ -21,6 +21,7 @@ namespace nokkhum
     :IpCamera(width, height, fps, url, username, password)
     {
 		capture = cv::VideoCapture(url);
+		capture.set(CV_CAP_PROP_FPS, fps);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
 //        cout<< "url: "<<url<<endl;

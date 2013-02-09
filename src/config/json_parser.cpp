@@ -172,13 +172,12 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 
 	std::shared_ptr<VideoRecorderAttribute> vrp = nullptr;
 
-	if(image_processor_obj.isMember("record_motion") && image_processor_obj.isMember("maximum_wait_motion")){
+	if(image_processor_obj.isMember("record_motion")){
 		bool record_motion = image_processor_obj.isMember("record_motion");
-		int maximum_wait_motion = image_processor_obj["maximum_wait_motion"].asInt();
 		name = "Video Motion Recorder";
 
 		if(record_motion){
-			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion, maximum_wait_motion);
+			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps, record_motion);
 		}
 		else{
 			vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
@@ -256,6 +255,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 
 	std::string name;
 	std::string motion_analysis;
+	int wait_motion_time;
 	bool enable_area_of_interest;
 	point p1,p2;
 	std::shared_ptr<ImageProcessorAttribute> mdp;
@@ -264,6 +264,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 
 	name = image_processor_obj["name"].asString();
 	interval = image_processor_obj.get("interval", 1).asInt();
+	wait_motion_time = image_processor_obj.get("wait_motion_time", 10).asInt();
 	sensitive = image_processor_obj.get("sensitive", 100).asDouble();
 	//motion_analysis = image_processor_obj["motion_analysis_method"].asString();
 	if (image_processor_obj.isMember("motion_analysis_method")){
@@ -278,11 +279,12 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 			p1.y = image_processor_obj["region_of_interest"]["point1"]["y"].asInt();
 			p2.x = image_processor_obj["region_of_interest"]["point2"]["x"].asInt();
 			p2.y = image_processor_obj["region_of_interest"]["point2"]["y"].asInt();
-			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval, enable_area_of_interest, p1, p2);
+			mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis,
+					sensitive, interval, wait_motion_time, enable_area_of_interest, p1, p2);
 		}
 	else{
 	// std::cout << "Processor name : " << name << std::endl;
-		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval);
+		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval, wait_motion_time);
 	}
 
 	if (image_processor_obj.isMember("processors")){

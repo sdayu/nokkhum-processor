@@ -10,6 +10,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <iostream>
+#include <exception>
 
 #include <glog/logging.h>
 
@@ -17,7 +18,6 @@ namespace nokkhum {
 
 VideoMotionRecorder::VideoMotionRecorder(ImageQueue & input_image_queue,
 		VideoRecorderAttribute &vrp) : VideoRecorder(input_image_queue, vrp) {
-	this->maximum_wait_motion = vrp.getMaximumWaitMotion();
 
 }
 

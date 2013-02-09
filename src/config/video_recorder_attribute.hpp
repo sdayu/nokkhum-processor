@@ -19,16 +19,14 @@ public:
 	VideoRecorderAttribute(std::string name, std::string directory, int width,
 			int height, int fps);
 	VideoRecorderAttribute(std::string name, std::string directory, int width,
-			int height, int fps, bool record_motion, int maximum_wait_motion);
+			int height, int fps, bool record_motion);
 	virtual ~VideoRecorderAttribute();
 	int getFps() const;
 	void setFps(int fps);
-	int getMaximumWaitMotion() const;
 	bool isRecordMotion() const;
 
 private:
 	int fps;
-	int maximum_wait_motion;
 	bool record_motion;
 };
 

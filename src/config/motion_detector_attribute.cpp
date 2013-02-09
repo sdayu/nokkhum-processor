@@ -10,15 +10,17 @@
 namespace nokkhum {
 
 MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
-		double sensitive, int interval) :
+		double sensitive, int interval, int wait_motion_time) :
 		ImageProcessorAttribute(name), sensitive(sensitive), interval(interval),
-		motion_analysis_method(motion_analysis_method){
+		motion_analysis_method(motion_analysis_method), wait_motion_time(wait_motion_time){
 			enable_area_of_interest = false;
 }
 
 MotionDetectorAttribute::MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
-		double sensitive, int interval, bool enable_area_of_interest,  point p1, point p2) :
+		double sensitive, int interval, int(wait_motion_time),
+		bool enable_area_of_interest,  point p1, point p2) :
 		ImageProcessorAttribute(name), sensitive(sensitive), interval(interval),
+		wait_motion_time(wait_motion_time),
 		motion_analysis_method(motion_analysis_method), enable_area_of_interest(enable_area_of_interest), p1(p1), p2(p2){
 
 }
@@ -56,6 +58,14 @@ void MotionDetectorAttribute::setInterval(int interval) {
 
 void MotionDetectorAttribute::setSensitive(double sensitive) {
 	this->sensitive = sensitive;
+}
+
+int MotionDetectorAttribute::getWaitMotionTime() const{
+	return this->wait_motion_time;
+}
+
+void MotionDetectorAttribute::setWaitMotionTime(int seconds){
+	this->wait_motion_time = seconds;
 }
 
 } /* namespace nokkhum */

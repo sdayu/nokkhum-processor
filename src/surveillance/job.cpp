@@ -36,7 +36,15 @@ void Job::operator ()() {
 	this->running = true;
 //	std::cout<<"Call start with operator () status: "<< this->running <<" this-> "<<this<<std::endl;
 	LOG(INFO) << "Job Start name: " << name << " thread id: " << std::this_thread::get_id();
-	start();
+	try{
+		start();
+	}
+	catch(std::exception &e) {
+		std::cerr << "error: "<< name <<e.what()<<std::endl;
+		LOG(INFO) << "error: "<< name <<e.what()<<std::endl;
+
+	}
+
 }
 
 std::string Job::getName() const {

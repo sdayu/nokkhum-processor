@@ -10,6 +10,7 @@
 
 #include <queue>
 #include <mutex>
+#include <chrono>
 #include "../image/image.hpp"
 
 namespace nokkhum {
@@ -27,6 +28,7 @@ public:
 private:
 	std::queue<nokkhum::Image> image_queue;
 	std::mutex queue_mutex;
+	std::chrono::system_clock::time_point drop_time;
 };
 
 }
