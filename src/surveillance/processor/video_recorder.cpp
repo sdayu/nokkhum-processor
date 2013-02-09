@@ -109,8 +109,6 @@ void VideoRecorder::getNewVideoWriter() {
 //			return;
 //		}
 
-	// begin to start new record
-	writer_mutex.lock();
 	// std::cout<< std::this_thread::get_id() <<"-->: "<<this->filename.length() <<std::endl;
 
 	if (this->filename.length() > 0) {
@@ -142,7 +140,7 @@ void VideoRecorder::getNewVideoWriter() {
 //		LOG(INFO) << "old time " << old_time;
 //		LOG(INFO) << "td.total_seconds() " << td.total_seconds();
 //		std::cout<< "td.total_seconds() " << td.total_seconds()<<std::endl;
-		if (this->writer != nullptr && td.total_seconds() < 2) {
+		if (this->writer != nullptr && td.total_seconds() < 1) {
 //			LOG(INFO) << "less than 3 ";
 			return;
 		}
@@ -151,6 +149,8 @@ void VideoRecorder::getNewVideoWriter() {
 	// stop current record before start new record
 	this->stopRecord();
 
+	// begin to start new record
+	writer_mutex.lock();
 	while (this->writer == nullptr) {
 		this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(),
 				this->width, this->height, this->fps);
