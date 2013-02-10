@@ -79,6 +79,10 @@ void MotionDetector::start() {
 		image = input_image_queue.pop();
 
 		frame = image.get();
+		/*std::cout << "frame size " << frame.cols << " " << frame.rows << std::endl;
+
+		std::cout << " point start : " << this->pointStart.x << "," << this->pointStart.y << " "
+				<< " point end : " << this->pointEnd.x << "," << this->pointEnd.y << std::endl;*/
 		if(this->enable_area_of_interest)
 			cv::rectangle(frame ,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
 
@@ -97,10 +101,11 @@ void MotionDetector::start() {
 
 		//cv::rectangle(frame,cvPoint(this->pointStart.x, this->pointStart.y),cvPoint(this->pointEnd.x, this->pointEnd.y),cvScalar(255,0,0));
 		//cv::imshow("Original", frame);
-		this->width = frame.cols;
 		if(this->enable_area_of_interest){
-			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x, this->pointEnd.y));
+			frame = frame(cv::Rect(this->pointStart.x, this->pointStart.y, this->pointEnd.x - this->pointStart.x, this->pointEnd.y - this->pointStart.y));
 		}
+		this->width = frame.cols;
+		//std::cout << "width : " << this->width << std::endl;
 		//cv::imshow("Frame", frame);
 		//if(cv::waitKey(30)>=0) break;
 		cv::cvtColor(frame, gray, CV_BGR2GRAY);
