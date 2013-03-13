@@ -36,7 +36,7 @@ void ImageQueue::push(nokkhum::Image mat) {
 	image_queue.push(mat);
 	queue_mutex.unlock();
 
-	if (this->size() > 300 ){
+	if (this->size() > 400 ){
 		if(this->drop){
 			this->drop = false;
 			LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue drop";
@@ -60,7 +60,7 @@ void ImageQueue::push(nokkhum::Image mat) {
 		}
 	}
 
-	if (this->size() > 200 ){
+	if (this->size() > 400 ){
 		LOG(INFO) << "thread: " << std::this_thread::get_id() << " cv_mat_queue size: " << this->size();
 		std::chrono::milliseconds duration(100);
 		std::this_thread::sleep_for(duration);
