@@ -88,7 +88,7 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 	int width = 0;
 	int height = 0;
 	int fps = 0;
-	int id = 0;
+	std::string id = "";
 	std::string video_url;
 	std::string audio_url;
 	std::string image_url;
@@ -100,7 +100,7 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 	width = camera_obj["width"].asInt();
 	height = camera_obj["height"].asInt();
 	fps = camera_obj["fps"].asInt();
-	id = camera_obj["id"].asInt();
+	id = camera_obj["id"].asString();
 	video_url = camera_obj["video_url"].asString();
 	audio_url = camera_obj["audio_url"].asString();
 	image_url = camera_obj["image_url"].asString();

@@ -27,4 +27,7 @@ void ImageProcessor::push_to_output_image_queue(nokkhum::Image image){
 	}
 }
 
+void ImageProcessor::start() {
+}
+
 }

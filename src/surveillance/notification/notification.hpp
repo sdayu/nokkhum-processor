@@ -17,10 +17,10 @@ namespace nokkhum{
 
 class Notification : public ImageProcessor {
 private:
-	int camera_id;
+	std::string camera_id;
 	std::string description;
 public:
-	Notification(ImageQueue &input_image_queue, NotificationAttribute &nfp, int camera_id);
+	Notification(ImageQueue &input_image_queue, NotificationAttribute &nfp, std::string camera_id);
 	virtual ~Notification();
 	void start();
 	void warning();

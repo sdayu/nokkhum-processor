@@ -16,7 +16,7 @@
 
 namespace nokkhum {
 Notification::Notification(ImageQueue &input_image_queue,
-		NotificationAttribute &nfp, int camera_id) :
+		NotificationAttribute &nfp, std::string camera_id) :
 		ImageProcessor("Notification", input_image_queue), camera_id(camera_id) {
 	this->name = nfp.getName();
 }

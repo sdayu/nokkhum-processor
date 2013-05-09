@@ -12,7 +12,7 @@ namespace nokkhum {
 CameraAttribute::CameraAttribute(std::string name, std::string model,
 		std::string video_url, std::string audio_url, std::string image_url,
 		int width, int height, int fps, std::string username,
-		std::string password, int id) :
+		std::string password, std::string id) :
 		name(name), model(model),
 		video_url(video_url), audio_url(audio_url), image_url(image_url),
 		width(width), height(height), fps(fps), username(username), password(password), id(id) {
@@ -26,7 +26,7 @@ int CameraAttribute::getFps() const {
 	return fps;
 }
 
-int CameraAttribute::getId() const {
+std::string CameraAttribute::getId() const {
 	return id;
 }
 

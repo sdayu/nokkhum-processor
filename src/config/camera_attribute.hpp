@@ -18,13 +18,13 @@ class CameraAttribute : public Attribute {
 public:
 	CameraAttribute(std::string name, std::string model,
 			std::string video_url, std::string audio_url, std::string image_url,
-			int width, int hight, int fps, std::string username, std::string password, int id);
+			int width, int hight, int fps, std::string username, std::string password, std::string id);
 	virtual ~CameraAttribute();
 
     int getFps() const;
     int getHeight() const;
     int getWidth() const;
-    int getId() const;
+    std::string getId() const;
     std::string getModel() const;
     std::string getName() const;
     std::string getVideoUrl() const;
@@ -53,7 +53,7 @@ private:
 	int width;
 	int height;
 	int fps;
-	int id;
+	std::string id;
 	std::string username;
 	std::string password;
 };
