@@ -54,7 +54,7 @@ void MotionDetector::start() {
 
 //	std::cout<<"Motion detector start"<<std::endl;
 	//cv::namedWindow("Motion Detection", 1);
-	const int buffer_size = 10;
+	const int buffer_size = 20;
 	cv::Mat prevgray, gray, flow, cflow, frame;
 
 	boost::posix_time::ptime current_time, motion_time;
