@@ -68,15 +68,15 @@ std::shared_ptr<AttributeMap> JsonParser::parse(std::string json) {
 
 //	LOG(DEBUG) << "JSON :" << json;
 //	LOG(DEBUG) << "parse camera :" << Json::write(value);
-	property = parseCamera(obj["camera"]);
+	property = parseCamera(obj["cameras"]);
 //	LOG(DEBUG) << "end parse camera";
 	  // first insert function version (single parameter):
 	(*property_map)["camera"] = property;
 //	LOG(DEBUG) << "parse processor";
 	std::shared_ptr<ImageProcessorAttribute> ipp = std::make_shared<ImageProcessorAttribute>();
 
-	parseImageProcessor( obj["processors"], ipp);
-	(*property_map)["processors"] = ipp;
+	parseImageProcessor( obj["image_processors"], ipp);
+	(*property_map)["image_processors"] = ipp;
 
 //	std::cout << std::endl << "---------- end ----------" << std::endl;
 //	LOG(INFO) << "success";
@@ -89,30 +89,34 @@ std::shared_ptr<CameraAttribute> JsonParser::parseCamera(const Json::Value camer
 	int height = 0;
 	int fps = 0;
 	std::string id = "";
-	std::string video_url;
-	std::string audio_url;
-	std::string image_url;
+	std::string video_uri;
+	std::string audio_uri;
+	std::string image_uri;
 	std::string name;
 	std::string model;
 	std::string username;
 	std::string password;
 //	LOG(INFO) << "parse camera 0";
-	width = camera_obj["width"].asInt();
-	height = camera_obj["height"].asInt();
-	fps = camera_obj["fps"].asInt();
-	id = camera_obj["id"].asString();
-	video_url = camera_obj["video_url"].asString();
-	audio_url = camera_obj["audio_url"].asString();
-	image_url = camera_obj["image_url"].asString();
-	name = camera_obj["name"].asString();
-	model = camera_obj["model"].asString();
-	username = camera_obj["username"].asString();
-	password = camera_obj["password"].asString();
+
+	// for 1st camera
+	const Json::Value camera = camera_obj[0];
+
+	width = camera["width"].asInt();
+	height = camera["height"].asInt();
+	fps = camera["fps"].asInt();
+	id = camera["id"].asString();
+	video_uri = camera["video_uri"].asString();
+	audio_uri = camera["audio_uri"].asString();
+	image_uri = camera["image_uri"].asString();
+	name = camera["name"].asString();
+	model = camera["model"].asString();
+	username = camera["username"].asString();
+	password = camera["password"].asString();
 
 //	std::cout << "Camera Name: " << name << std::endl;
 
 	std::shared_ptr<CameraAttribute> cp = std::make_shared<CameraAttribute>(name, model,
-			video_url, audio_url, image_url,
+			video_uri, audio_uri, image_uri,
 			width, height, fps, username, password, id);
 	return cp;
 }

@@ -23,15 +23,15 @@ public:
 	virtual ~MultimediaRecorderAttribute();
 	int getFps() const;
 	void setFps(int fps);
-	const std::string& getAudioUrl() const;
-	void setAudioUrl(const std::string& audio_url);
-	const std::string& getVideoUrl() const;
-	void setVideoUrl(const std::string& video_url);
+	const std::string& getAudioUri() const;
+	void setAudioUri(const std::string& audio_uri);
+	const std::string& getVideoUri() const;
+	void setVideoUri(const std::string& video_uri);
 
 private:
 	int fps;
-	std::string video_url;
-	std::string audio_url;
+	std::string video_uri;
+	std::string audio_uri;
 };
 
 } /* namespace nokkhum */

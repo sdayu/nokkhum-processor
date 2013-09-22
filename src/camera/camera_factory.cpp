@@ -21,13 +21,13 @@ CameraFactory::~CameraFactory() {
 }
 
 std::shared_ptr<nokkhum::Camera> CameraFactory::getCamera(std::shared_ptr<nokkhum::CameraAttribute> cameraAttribute) {
-	LOG(INFO) << "Build camera name: " << cameraAttribute->getName() << " url: " << cameraAttribute->getVideoUrl();
+	LOG(INFO) << "Build camera name: " << cameraAttribute->getName() << " url: " << cameraAttribute->getVideoUri();
 
 	CameraStartTimer cst(100000); //100 s
 	cst.start();
 
 	std::shared_ptr<nokkhum::Camera> camera = std::make_shared<nokkhum::CvIpCamera> (cameraAttribute->getWidth(), cameraAttribute->getHeight(),
-			cameraAttribute->getFps(), cameraAttribute->getVideoUrl(), cameraAttribute->getUsername(),
+			cameraAttribute->getFps(), cameraAttribute->getVideoUri(), cameraAttribute->getUsername(),
 			cameraAttribute->getPassword());
 
 	cst.stop();

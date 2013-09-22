@@ -36,8 +36,8 @@ public:
 private:
 	std::string directory;
 	std::string dt;
-	std::string video_url;
-	std::string audio_url;
+	std::string video_uri;
+	std::string audio_uri;
 	std::string command;
 	std::string output_name;
 	unsigned int width;

@@ -30,11 +30,11 @@ std::string CommandParser::getCommand() {
 	return value["action"].asString();
 }
 
-std::string CommandParser::getCameraAttribute() {
+std::string CommandParser::getProcessorAttribute() {
 	Json::FastWriter writer;
 	return writer.write(value["attributes"]);
 }
-int CommandParser::getCameraId(){
-	return value["attributes"]["camera"]["id"].asInt();
+std::string CommandParser::getProcessorId(){
+	return value["processor_id"].asString();
 }
 } /* namespace nokkhum */

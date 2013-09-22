@@ -23,8 +23,8 @@ public:
 
 	bool paseCommand(std::string json);
 	std::string getCommand();
-	std::string getCameraAttribute();
-	int getCameraId();
+	std::string getProcessorAttribute();
+	std::string getProcessorId();
 
 private:
 	Json::Value value;

@@ -27,20 +27,20 @@ void MultimediaRecorderAttribute::setFps(int fps) {
 	this->fps = fps;
 }
 
-const std::string& MultimediaRecorderAttribute::getAudioUrl() const {
-	return audio_url;
+const std::string& MultimediaRecorderAttribute::getAudioUri() const {
+	return audio_uri;
 }
 
-void MultimediaRecorderAttribute::setAudioUrl(const std::string& audio_url) {
-	this->audio_url = audio_url;
+void MultimediaRecorderAttribute::setAudioUri(const std::string& audio_uri) {
+	this->audio_uri = audio_uri;
 }
 
-const std::string& MultimediaRecorderAttribute::getVideoUrl() const {
-	return video_url;
+const std::string& MultimediaRecorderAttribute::getVideoUri() const {
+	return video_uri;
 }
 
-void MultimediaRecorderAttribute::setVideoUrl(const std::string& video_url) {
-	this->video_url = video_url;
+void MultimediaRecorderAttribute::setVideoUri(const std::string& video_uri) {
+	this->video_uri = video_uri;
 }
 
 } /* namespace nokkhum */

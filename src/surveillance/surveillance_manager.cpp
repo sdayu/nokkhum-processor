@@ -69,7 +69,7 @@ void SurveillanceManager::processCommand() {
 		} else if (cp.getCommand() == "start") {
 
 			try {
-				this->startSurveillanceApplication(cp.getCameraAttribute());
+				this->startSurveillanceApplication(cp.getProcessorAttribute());
 			} catch (std::exception &e) {
 				LOG(ERROR) << e.what();
 				result_json["result"]=e.what();
@@ -101,10 +101,10 @@ void SurveillanceManager::startSurveillanceApplication(std::string config) {
 		return;
 	}
 
-	LOG(INFO) << "Start build configuration for camera id: " << this->name;
+	LOG(INFO) << "Start build configuration for processor id: " << this->name;
 	conf = nokkhum::Configuration(config);
 
-	LOG(INFO) << "Start construct VideoSurveillance for camera id: "
+	LOG(INFO) << "Start construct VideoSurveillance for processor id: "
 			<< this->name;
 	// need to check configuration is available
 	vs = nokkhum::VideoSurveillance(conf);

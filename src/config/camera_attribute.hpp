@@ -17,7 +17,7 @@ namespace nokkhum {
 class CameraAttribute : public Attribute {
 public:
 	CameraAttribute(std::string name, std::string model,
-			std::string video_url, std::string audio_url, std::string image_url,
+			std::string video_uri, std::string audio_uri, std::string image_uri,
 			int width, int hight, int fps, std::string username, std::string password, std::string id);
 	virtual ~CameraAttribute();
 
@@ -27,9 +27,9 @@ public:
     std::string getId() const;
     std::string getModel() const;
     std::string getName() const;
-    std::string getVideoUrl() const;
-    std::string getAudioUrl() const;
-    std::string getImageUrl() const;
+    std::string getVideoUri() const;
+    std::string getAudioUri() const;
+    std::string getImageUri() const;
     std::string getPassword() const;
     std::string getUsername() const;
 
@@ -37,19 +37,17 @@ public:
     void setHeight(int height);
     void setModel(std::string model);
     void setName(std::string name);
-    void setVideoUrl(std::string url);
-    void setAudioUrl(std::string url);
-    void setImageUrl(std::string url);
+    void setVideoUri(std::string uri);
+    void setAudioUri(std::string uri);
+    void setImageUri(std::string uri);
     void setWidth(int width);
-
-
 
 private:
     std::string name;
     std::string model;
-    std::string video_url;
-    std::string audio_url;
-    std::string image_url;
+    std::string video_uri;
+    std::string audio_uri;
+    std::string image_uri;
 	int width;
 	int height;
 	int fps;

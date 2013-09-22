@@ -10,11 +10,11 @@
 namespace nokkhum {
 
 CameraAttribute::CameraAttribute(std::string name, std::string model,
-		std::string video_url, std::string audio_url, std::string image_url,
+		std::string video_uri, std::string audio_uri, std::string image_uri,
 		int width, int height, int fps, std::string username,
 		std::string password, std::string id) :
 		name(name), model(model),
-		video_url(video_url), audio_url(audio_url), image_url(image_url),
+		video_uri(video_uri), audio_uri(audio_uri), image_uri(image_uri),
 		width(width), height(height), fps(fps), username(username), password(password), id(id) {
 
 }
@@ -42,16 +42,16 @@ std::string CameraAttribute::getName() const {
 	return name;
 }
 
-std::string CameraAttribute::getVideoUrl() const {
-	return video_url;
+std::string CameraAttribute::getVideoUri() const {
+	return video_uri;
 }
 
-std::string CameraAttribute::getAudioUrl() const {
-	return audio_url;
+std::string CameraAttribute::getAudioUri() const {
+	return audio_uri;
 }
 
-std::string CameraAttribute::getImageUrl() const {
-	return image_url;
+std::string CameraAttribute::getImageUri() const {
+	return image_uri;
 }
 
 
@@ -75,16 +75,16 @@ void CameraAttribute::setName(std::string name) {
 	this->name = name;
 }
 
-void CameraAttribute::setVideoUrl(std::string url) {
-	this->video_url = url;
+void CameraAttribute::setVideoUri(std::string uri) {
+	this->video_uri = uri;
 }
 
-void CameraAttribute::setAudioUrl(std::string url) {
-	this->audio_url = url;
+void CameraAttribute::setAudioUri(std::string uri) {
+	this->audio_uri = uri;
 }
 
-void CameraAttribute::setImageUrl(std::string url) {
-	this->image_url = url;
+void CameraAttribute::setImageUri(std::string uri) {
+	this->image_uri = uri;
 }
 
 void CameraAttribute::setWidth(int width) {

@@ -24,7 +24,7 @@ Configuration::Configuration(std::string json) {
 	std::shared_ptr<AttributeMap> property_map = jp.parse(json);
 //	LOG(INFO) << "end JSON Parser";
 	this->camera_attribute =  std::static_pointer_cast<CameraAttribute>( (*property_map)["camera"] );
-	this->image_processor_attribute = std::static_pointer_cast<ImageProcessorAttribute>( (*property_map)["processors"] );
+	this->image_processor_attribute = std::static_pointer_cast<ImageProcessorAttribute>( (*property_map)["image_processors"] );
 
 	//	std::cout<<"============== configuration =============="<<std::endl;
 	//	std::cout<<"camera name:"<< this->camera_attribute->getName() <<std::endl;

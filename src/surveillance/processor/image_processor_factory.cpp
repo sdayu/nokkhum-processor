@@ -72,8 +72,8 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		return ir;
 	} else if (ipp->getName() == "Multimedia Recorder") {
 		std::shared_ptr<MultimediaRecorderAttribute> mrp = std::static_pointer_cast<MultimediaRecorderAttribute>(ipp);
-		mrp->setVideoUrl(this->camera_attribute->getVideoUrl());
-		mrp->setAudioUrl(this->camera_attribute->getAudioUrl());
+		mrp->setVideoUri(this->camera_attribute->getVideoUri());
+		mrp->setAudioUri(this->camera_attribute->getAudioUri());
 		std::shared_ptr<MultimediaRecorder> mr = std::make_shared<MultimediaRecorder>(image_queue, *mrp);
 		return mr;
 	} else if(ipp->getName() == "Notification"){

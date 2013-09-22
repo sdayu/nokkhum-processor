@@ -28,8 +28,8 @@ MultimediaRecorder::MultimediaRecorder(ImageQueue &input_image_queue,
 	this->directory = mrp.getDirectory();
 	this->width = mrp.getWidth();
 	this->height = mrp.getHeight();
-	this->video_url = mrp.getVideoUrl();
-	this->audio_url = mrp.getAudioUrl();
+	this->video_uri = mrp.getVideoUri();
+	this->audio_uri = mrp.getAudioUri();
 	this->fps = mrp.getFps();
 	this->record_hour = 0;
 	this->record_minute = 0;
@@ -131,8 +131,8 @@ void MultimediaRecorder::getVideo() {
 	args.push_back(std::to_string(this->fps));
 	args.push_back("-i");
 	//args.push_back(this->url + "/video/mjpg.cgi?.mjpg");
-	//std::cout << this->video_url << std::endl;
-	args.push_back(this->video_url);
+	//std::cout << this->video_uri << std::endl;
+	args.push_back(this->video_uri);
 	args.push_back("-s");
 	args.push_back(std::to_string(this->width) + "x" + this->setString(this->height));
 	args.push_back("-t");
@@ -163,7 +163,7 @@ void MultimediaRecorder::getAudio() {
 	std::vector<std::string> args;
 	args.push_back("-i");
 	//args.push_back(this->url + "/audio.cgi");
-	args.push_back(this->audio_url);
+	args.push_back(this->audio_uri);
 	args.push_back("-t");
 	args.push_back(this->setString(this->record_hour) + ":"
 			+ this->setString(this->record_minute) + ":"
