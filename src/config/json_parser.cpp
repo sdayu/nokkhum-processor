@@ -191,8 +191,8 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 		vrp = std::make_shared<VideoRecorderAttribute>(name, directory, width, height, fps);
 	}
 
-	if (image_processor_obj.isMember("processors")){
-		parseImageProcessor( image_processor_obj["processors"], vrp );
+	if (image_processor_obj.isMember("image_processors")){
+		parseImageProcessor( image_processor_obj["image_processors"], vrp );
 	}
 
 	return vrp;
@@ -220,8 +220,8 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
 
 	mrp = std::make_shared<MultimediaRecorderAttribute>(name, directory, width, height, fps);
 
-	if (image_processor_obj.isMember("processors")){
-		parseImageProcessor( image_processor_obj["processors"], mrp );
+	if (image_processor_obj.isMember("image_processors")){
+		parseImageProcessor( image_processor_obj["image_processors"], mrp );
 	}
 
 	return mrp;
@@ -247,8 +247,8 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(
 	// std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<ImageProcessorAttribute> irp = std::make_shared<ImageRecorderAttribute>(name, directory, width, height, interval);
-	if (image_processor_obj.isMember("processors")){
-		parseImageProcessor( image_processor_obj["processors"], irp );
+	if (image_processor_obj.isMember("image_processors")){
+		parseImageProcessor( image_processor_obj["image_processors"], irp );
 	}
 
 	return irp;
@@ -292,8 +292,8 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMotionDetector(
 		mdp = std::make_shared<MotionDetectorAttribute>(name, motion_analysis, sensitive, interval, wait_motion_time);
 	}
 
-	if (image_processor_obj.isMember("processors")){
-		parseImageProcessor( image_processor_obj["processors"], mdp );
+	if (image_processor_obj.isMember("image_processors")){
+		parseImageProcessor( image_processor_obj["image_processors"], mdp );
 	}
 
 	return mdp;
@@ -311,8 +311,8 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceDetector(
 	// std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<ImageProcessorAttribute> fdp = std::make_shared<FaceDetectorAttribute>(name, interval);
-	if (image_processor_obj.isMember("processors")){
-		parseImageProcessor( image_processor_obj["processors"], fdp );
+	if (image_processor_obj.isMember("image_processors")){
+		parseImageProcessor( image_processor_obj["image_processors"], fdp );
 	}
 
 	return fdp;
