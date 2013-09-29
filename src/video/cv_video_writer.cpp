@@ -6,6 +6,7 @@
  */
 
 #include "cv_video_writer.hpp"
+#include <opencv2/opencv.hpp>
 
 namespace nokkhum {
 
@@ -58,6 +59,10 @@ bool CvVideoWriter::isOpened(){
 }
 
 void CvVideoWriter::writeFrame(Mat& frame) {
+
+	if(frame.size() != cv::Size(width, height)){
+		cv::resize(frame, frame, cv::Size(width, height));
+	}
 	record << frame;
 }
 

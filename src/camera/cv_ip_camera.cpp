@@ -24,7 +24,7 @@ namespace nokkhum
 		capture.set(CV_CAP_PROP_FPS, fps);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
-//        cout<< "url: "<<url<<endl;
+//        std::cout << "url: " << url << std::endl;
 
 		if (!capture.isOpened()) {
 				std::cerr << "Camera failed to open!\n";

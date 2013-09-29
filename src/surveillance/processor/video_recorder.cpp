@@ -176,7 +176,7 @@ void VideoRecorder::startRecord() {
 	this->startTimer();
 
 	cv::Mat frame;
-	//	cv::namedWindow("video", 1);
+//	cv::namedWindow("video", 1);
 
 	//	std::cout << "Start record tread/running status: " << runnin//	time_t rawtime;
 
@@ -200,13 +200,13 @@ void VideoRecorder::startRecord() {
 
 		frame = input_image_queue.pop().get();
 
-		//		cv::imshow("video", frame);
+//		cv::imshow("video", frame);
 		writer_mutex.lock();
 		*writer << frame;
 		writer_mutex.unlock();
 
-		//		if (cv::waitKey(30) >= 0)
-		//			break;
+//		if (cv::waitKey(30) >= 0)
+//			break;
 	}
 //	std::cout<<"record stop"<<std::endl;
 }
