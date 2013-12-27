@@ -10,7 +10,7 @@
 namespace nokkhum {
 
 Image::Image() {
-	// TODO Auto-generated constructor stub
+	this->date = std::chrono::system_clock::now();
 
 }
 
@@ -20,7 +20,6 @@ Image::Image(cv::Mat image):image(image) {
 
 Image::~Image() {
 	// TODO Auto-generated destructor stub
-	this->date = std::chrono::system_clock::now();
 }
 
 Image& Image::operator >> (cv::Mat& image) {
@@ -30,7 +29,7 @@ Image& Image::operator >> (cv::Mat& image) {
 
 Image& Image::operator << (cv::Mat& image){
 	this->image = image.clone();
-	this->date = std::chrono::system_clock::now();
+	//this->date = std::chrono::system_clock::now();
 	return *this;
 }
 
@@ -53,6 +52,14 @@ void Image::setMotionStatus(MotionStatus motion_status){
 
 MotionStatus Image::getMotionStatus(){
 	return this->motion_status;
+}
+
+Json::Value Image::getDescription(){
+	return this->description;
+}
+
+void Image::setDescription(Json::Value input){
+	this->description = input;
 }
 
 } /* namespace nokkhum */

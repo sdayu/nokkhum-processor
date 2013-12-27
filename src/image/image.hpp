@@ -12,6 +12,8 @@
 #include <ctime>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <opencv2/core/core.hpp>
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
 
 namespace nokkhum {
 
@@ -24,6 +26,7 @@ enum MotionStatus {
 class Image {
 private:
 	cv::Mat image;
+	Json::Value description;
 	std::chrono::time_point<std::chrono::system_clock> date;
 
 	MotionStatus motion_status = Undefine;
@@ -37,6 +40,9 @@ public:
 
 	cv::Mat get();
 	cv::Mat clone();
+
+	Json::Value getDescription();
+	void setDescription(Json::Value input);
 
 	std::chrono::time_point<std::chrono::system_clock> getDate();
 

@@ -82,10 +82,11 @@ void FaceDetector::start() {
 //		std::cout<< "detect face"<<std::endl;
 		bool result = detectAndDraw(frame, cascade, nestedCascade, scale);
 		if (result){
+			image << frame;
 			for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
 //				std::cout<<"push face detect"<<std::endl;
-				//output_image_queue.get(i)->push(image);
-				output_image_queue.get(i)->push(frame);
+				output_image_queue.get(i)->push(image);
+				//output_image_queue.get(i)->push(frame);
 			}
 		}
 
