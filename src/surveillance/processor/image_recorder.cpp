@@ -16,6 +16,9 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "../../util/directory_manager.hpp"
@@ -42,8 +45,11 @@ ImageRecorder::~ImageRecorder() {
 }
 
 void ImageRecorder::start() {
+
 	cv::Mat frame;
 	nokkhum::Image image;
+	std::string name;
+	Json::Value description;
 	std::chrono::time_point<std::chrono::system_clock> date;
 	char buffer[100];
 	struct tm * timeinfo;
@@ -60,6 +66,7 @@ void ImageRecorder::start() {
 		image = input_image_queue.pop();
 		frame = image.get();
 		date = image.getDate();
+		description = image.getDescription();
 
 
 		if(++counter < this->interval){
@@ -76,7 +83,14 @@ void ImageRecorder::start() {
 //		tm* time_struct = localtime(&rawtime);
 
 		//nokkhum::DirectoryManager dm (this->directory, "image", current_time);
-		nokkhum::DirectoryManager dm (this->directory, "image", date);
+		bool haveFace = 0;
+		std::string directory_type = "image";
+		if(description.isMember("face_name")){
+			haveFace = 1;
+			name = description["face_name"].asString();
+			directory_type = "face_image";
+		}
+		nokkhum::DirectoryManager dm (this->directory, directory_type , date);
 		if(! dm.checkAndCreate()){
 			continue;
 		}
@@ -96,10 +110,15 @@ void ImageRecorder::start() {
 				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
 				<< std::setw(6) << std::setfill('0') << current_time.time_of_day().total_microseconds()%1000000
 				<< ".png";*/
-
+		if(haveFace){
+		 oss << dm.getDirectoryName() << "/" << buffer << "-" << std::setw(6) << std::setfill('0')
+					    	<< std::chrono::duration_cast<std::chrono::nanoseconds>(date.time_since_epoch()).count()%1000000
+					    	<< "-" << name << ".png";
+		}else{
 		 oss << dm.getDirectoryName() << "/" << buffer << "-" << std::setw(6) << std::setfill('0')
 		    	<< std::chrono::duration_cast<std::chrono::nanoseconds>(date.time_since_epoch()).count()%1000000
 		    	<< ".png";
+		}
 		cv::imwrite(oss.str(), frame);
 //		std::cout<<"save file name: "<<oss.str()<<std::endl;
 	}

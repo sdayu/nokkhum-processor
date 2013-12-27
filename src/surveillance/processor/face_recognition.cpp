@@ -18,6 +18,9 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
+
 #include "../../util/directory_manager.hpp"
 
 namespace nokkhum {
@@ -90,7 +93,6 @@ void FaceRecognition::start() {
 	}
 
 	trainAndLearn();
-	//std::cout << " Train :D" << std::endl;
 
 	while (running) {
 
@@ -122,7 +124,7 @@ void FaceRecognition::start() {
 
 		// save image
 		if (result != -1) {
-			boost::posix_time::ptime current_time =
+			/*boost::posix_time::ptime current_time =
 					boost::posix_time::microsec_clock::local_time();
 
 			nokkhum::DirectoryManager dm(this->directory, "face_image",
@@ -147,8 +149,25 @@ void FaceRecognition::start() {
 						<< current_time.time_of_day().total_microseconds()
 								% 1000000 << "-face-" << result << ".png";
 
-				cv::imwrite(oss.str(), frame);
+				cv::imwrite(oss.str(), frame);*/
 				//std::cout << "write face :D " << std::endl;
+
+				Json::Value description;
+
+				std::string name;
+				if(result == 0) name = "tone";
+				else if(result == 1) name = "oat";
+				else if(result == 2) name = "ierk";
+				else if(result == 3) name = "lin";
+
+				description["face_name"] = "face-" + name;
+				//std::cout << "description " << description << std::endl;
+				//std::cout << "Have face : face-" << std::to_string(result) << std::endl;
+				image.setDescription(description);
+				image << frame;
+				for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
+					output_image_queue.get(i)->push(image);
+				}
 			}
 		}
 
@@ -157,7 +176,6 @@ void FaceRecognition::start() {
 //		if (cv::waitKey(30) > 0)
 //			break;
 
-	}
 }
 void FaceRecognition::trainAndLearn() {
 

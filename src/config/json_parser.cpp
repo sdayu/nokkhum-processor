@@ -341,6 +341,9 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceRecognition(
 	// std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<ImageProcessorAttribute> frp = std::make_shared<FaceRecognitionAttribute>(name, directory, face_database, interval);
+	if (image_processor_obj.isMember("image_processors")){
+			parseImageProcessor( image_processor_obj["image_processors"], frp );
+	}
 
 	return frp;
 }
