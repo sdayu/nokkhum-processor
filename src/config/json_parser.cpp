@@ -21,6 +21,7 @@
 #include "../camera/cv_ip_camera.hpp"
 
 #include "../surveillance/processor/face_detector.hpp"
+#include "../surveillance/processor/face_recognition.hpp"
 #include "../surveillance/processor/motion_detector.hpp"
 #include "../surveillance/processor/image_recorder.hpp"
 #include "../surveillance/processor/video_recorder.hpp"
@@ -30,6 +31,7 @@
 
 
 #include "camera_attribute.hpp"
+#include "face_recognition_attribute.hpp"
 #include "face_detector_attribute.hpp"
 #include "motion_detector_attribute.hpp"
 #include "recorder_attribute.hpp"
@@ -148,6 +150,8 @@ void JsonParser::parseImageProcessor(
 			tmp = parseMultimediaRecorder(obj);
 		} else if (processor_name == "Notification") {
 			tmp = parseNotification(obj);
+		} else if (processor_name == "Face Recognition"){
+			tmp = parseFaceRecognition(obj);
 		}
 
 		ipp->addImageProcessorAttribute(tmp);
@@ -318,16 +322,41 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceDetector(
 	return fdp;
 }
 
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceRecognition(
+		const Json::Value image_processor_obj) {
+
+	std::string name;
+	std::string directory;
+	std::string face_database;
+	int interval = 0;
+
+
+	name = image_processor_obj["name"].asString();
+	interval = image_processor_obj["interval"].asInt();
+	directory = image_processor_obj["directory"].asString();
+	face_database = image_processor_obj["face_database"].asString();
+
+//	LOG(INFO) << "ImagePro :" << name;
+
+	// std::cout << "Processor name : " << name << std::endl;
+
+	std::shared_ptr<ImageProcessorAttribute> frp = std::make_shared<FaceRecognitionAttribute>(name, directory, face_database, interval);
+
+	return frp;
+}
+
 std::shared_ptr<ImageProcessorAttribute> JsonParser::parseNotification(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
+	std::string type;
 
 	name = image_processor_obj["name"].asString();
+	type = image_processor_obj["type"].asString();
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	std::shared_ptr<NotificationAttribute> nfp = std::make_shared<NotificationAttribute>(name);
+	std::shared_ptr<NotificationAttribute> nfp = std::make_shared<NotificationAttribute>(name, type);
 
 	return nfp;
 }

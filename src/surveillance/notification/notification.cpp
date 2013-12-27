@@ -19,6 +19,7 @@ Notification::Notification(ImageQueue &input_image_queue,
 		NotificationAttribute &nfp, std::string camera_id) :
 		ImageProcessor("Notification", input_image_queue), camera_id(camera_id) {
 	this->name = nfp.getName();
+	this->type = nfp.getType();
 }
 
 Notification::~Notification() {
@@ -49,7 +50,10 @@ void Notification::start() {
 		}
 		frame = input_image_queue.pop().get();
 //		if(tm->tm_min % 5 == 0 && !check){
+		if(type == "warning")
 			this->warning();
+		else if(type == "face_detected")
+			this->face_detected();
 //			check = 1;
 //		} else if(tm->tm_min % 5 != 0){
 //			check = 0;
@@ -66,5 +70,17 @@ void Notification::warning() {
 	message["date"]			= boost::posix_time::to_iso_extended_string(current_time);
 	nokkhum::ProgramReporter().report(message);
 }
+
+void Notification::face_detected() {
+	Json::Value message;
+	message["method"] 		= "face_detected";
+	message["camera_id"] 	= this->camera_id;
+	message["description"] 	= this->description;
+
+	boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+	message["date"]			= boost::posix_time::to_iso_extended_string(current_time);
+	nokkhum::ProgramReporter().report(message);
+}
+
 } /* namespace nokkhum */
 

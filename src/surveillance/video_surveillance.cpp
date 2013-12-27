@@ -31,6 +31,7 @@ using std::string;
 
 #include "processor/motion_detector.hpp"
 #include "processor/face_detector.hpp"
+#include "processor/face_recognition.hpp"
 
 namespace nokkhum {
 VideoSurveillance::VideoSurveillance(){
@@ -51,18 +52,23 @@ VideoSurveillance::VideoSurveillance(Configuration &conf) :
 
 	// TODO: make easy check multimedia recorder is available, need complex processor check again
 	is_multimedia_recorder = false;
+
+	//LOG(INFO) << "hello for";
+
 	for(auto &it : tmp_ipa){
 		if(it->getName() == "Multimedia Recorder")
 			is_multimedia_recorder = true;
 	}
-
 	if(!is_multimedia_recorder){
 		//std::cout << "in constructure " << std::endl;
 		CameraFactory cf;
+
 		this->camera = cf.getCamera(camera_attribute);
 		this->image_acquisition = std::make_shared<ImageAcquisition>(*camera,
 				image_processor_attribute->getImageProcessorAttributeVector().size());
 	}
+
+
 
 	ImageProcessorFactory ipf(camera_attribute);
 

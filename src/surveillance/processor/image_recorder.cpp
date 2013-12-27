@@ -10,6 +10,7 @@
 #include <sstream>
 #include <string>
 #include <ctime>
+#include <chrono>
 #include <iomanip>
 
 #include <opencv2/core/core.hpp>
@@ -42,6 +43,10 @@ ImageRecorder::~ImageRecorder() {
 
 void ImageRecorder::start() {
 	cv::Mat frame;
+	nokkhum::Image image;
+	std::chrono::time_point<std::chrono::system_clock> date;
+	char buffer[100];
+	struct tm * timeinfo;
 
 	unsigned int counter = 0;
 	while (running) {
@@ -52,7 +57,9 @@ void ImageRecorder::start() {
 			//std::cout<<"sleep img"<<std::endl;
 			continue;
 		}
-		frame = input_image_queue.pop().get();
+		image = input_image_queue.pop();
+		frame = image.get();
+		date = image.getDate();
 
 
 		if(++counter < this->interval){
@@ -62,20 +69,25 @@ void ImageRecorder::start() {
 			counter = 0;
 		}
 
-		boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
+		//boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time();
 
 //		time_t rawtime;
 //		time(&rawtime);
 //		tm* time_struct = localtime(&rawtime);
 
-		nokkhum::DirectoryManager dm (this->directory, "image", current_time);
+		//nokkhum::DirectoryManager dm (this->directory, "image", current_time);
+		nokkhum::DirectoryManager dm (this->directory, "image", date);
 		if(! dm.checkAndCreate()){
 			continue;
 		}
 
 		std::string record_name;
 		std::ostringstream oss;
-		oss << dm.getDirectoryName() << "/"
+		std::time_t tt = std::chrono::system_clock::to_time_t(date);
+		timeinfo = localtime(&tt);
+		strftime (buffer,80,"%F-%H-%M-%S",timeinfo);
+
+		/*oss << dm.getDirectoryName() << "/"
 				<< current_time.date().year() << "-"
 				<< std::setw(2) << std::setfill('0') << (int)current_time.date().month() << "-"
 				<< std::setw(2) << std::setfill('0') << current_time.date().day() << "-"
@@ -83,8 +95,11 @@ void ImageRecorder::start() {
 				<< std::setw(2)	<< std::setfill('0') << current_time.time_of_day().minutes() << "-"
 				<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
 				<< std::setw(6) << std::setfill('0') << current_time.time_of_day().total_microseconds()%1000000
-				<< ".png";
+				<< ".png";*/
 
+		 oss << dm.getDirectoryName() << "/" << buffer << "-" << std::setw(6) << std::setfill('0')
+		    	<< std::chrono::duration_cast<std::chrono::nanoseconds>(date.time_since_epoch()).count()%1000000
+		    	<< ".png";
 		cv::imwrite(oss.str(), frame);
 //		std::cout<<"save file name: "<<oss.str()<<std::endl;
 	}

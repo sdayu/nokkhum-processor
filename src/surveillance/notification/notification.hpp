@@ -19,10 +19,12 @@ class Notification : public ImageProcessor {
 private:
 	std::string camera_id;
 	std::string description;
+	std::string type;
 public:
 	Notification(ImageQueue &input_image_queue, NotificationAttribute &nfp, std::string camera_id);
 	virtual ~Notification();
 	void start();
+	void face_detected();
 	void warning();
 };
 

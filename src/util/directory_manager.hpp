@@ -9,6 +9,8 @@
 #define NOKKHUM_DIRECTORY_MANAGER_HPP_
 
 #include <string>
+#include <ctime>
+#include <chrono>
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -18,6 +20,7 @@ class DirectoryManager {
 public:
 	DirectoryManager(std::string root_directory, std::string type);
 	DirectoryManager(std::string root_directory, std::string type, boost::posix_time::ptime the_time);
+	DirectoryManager(std::string root_directory, std::string type, std::chrono::time_point<std::chrono::system_clock> date);
 	virtual ~DirectoryManager();
 
 	bool checkAndCreate();

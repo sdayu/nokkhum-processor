@@ -15,8 +15,11 @@ namespace nokkhum {
 class NotificationAttribute : public nokkhum::ImageProcessorAttribute
 {
 public:
-    NotificationAttribute(std::string name);
+    NotificationAttribute(std::string name, std::string type);
     virtual ~NotificationAttribute();
+    std::string getType() const;
+private:
+    std::string type;
 };
 
 } /* namespace nokkhum */

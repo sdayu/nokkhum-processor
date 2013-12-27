@@ -42,6 +42,10 @@ cv::Mat Image::clone(){
 	return this->image.clone();
 }
 
+std::chrono::time_point<std::chrono::system_clock> Image::getDate(){
+	return this->date;
+}
+
 
 void Image::setMotionStatus(MotionStatus motion_status){
 	this->motion_status = motion_status;

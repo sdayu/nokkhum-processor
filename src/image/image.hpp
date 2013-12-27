@@ -9,6 +9,8 @@
 #define NOKKHUM_IMAGE_HPP_
 
 #include <chrono>
+#include <ctime>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <opencv2/core/core.hpp>
 
 namespace nokkhum {
@@ -36,8 +38,11 @@ public:
 	cv::Mat get();
 	cv::Mat clone();
 
+	std::chrono::time_point<std::chrono::system_clock> getDate();
+
 	void setMotionStatus(MotionStatus);
 	MotionStatus getMotionStatus();
+
 
 };
 
