@@ -24,7 +24,7 @@ public:
 	Notification(ImageQueue &input_image_queue, NotificationAttribute &nfp, std::string camera_id);
 	virtual ~Notification();
 	void start();
-	void face_detected();
+	void face_detected(std::string name, std::string filename);
 	void warning();
 };
 
