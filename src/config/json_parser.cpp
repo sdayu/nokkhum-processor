@@ -326,21 +326,19 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceRecognition(
 		const Json::Value image_processor_obj) {
 
 	std::string name;
-	std::string directory;
 	std::string face_database;
 	int interval = 0;
 
 
 	name = image_processor_obj["name"].asString();
 	interval = image_processor_obj["interval"].asInt();
-	directory = image_processor_obj["directory"].asString();
 	face_database = image_processor_obj["face_database"].asString();
 
 //	LOG(INFO) << "ImagePro :" << name;
 
 	// std::cout << "Processor name : " << name << std::endl;
 
-	std::shared_ptr<ImageProcessorAttribute> frp = std::make_shared<FaceRecognitionAttribute>(name, directory, face_database, interval);
+	std::shared_ptr<ImageProcessorAttribute> frp = std::make_shared<FaceRecognitionAttribute>(name, face_database, interval);
 	if (image_processor_obj.isMember("image_processors")){
 			parseImageProcessor( image_processor_obj["image_processors"], frp );
 	}

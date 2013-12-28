@@ -21,8 +21,6 @@
 #include <jsoncpp/json/reader.h>
 #include <jsoncpp/json/writer.h>
 
-#include "../../util/directory_manager.hpp"
-
 namespace nokkhum {
 
 FaceRecognition::FaceRecognition(ImageQueue &input_image_queue) :
@@ -36,7 +34,6 @@ FaceRecognition::FaceRecognition(ImageQueue & input_image_queue,
 		FaceRecognitionAttribute &frp) :
 		ImageProcessor("Face Recognition", input_image_queue) {
 	this->interval = frp.getInterval();
-	this->directory = frp.getDirectory();
 	this->face_database = frp.getFaceDatabase();
 
 }
@@ -111,47 +108,11 @@ void FaceRecognition::start() {
 			image_count = 0; //reset image count
 		}
 
-//		std::cout<< "detect face"<<std::endl;
 		int result = detectAndPredict(frame, faceCascade, eyeCascade1,
 				eyeCascade2);
-//		if (result != -1){
-//			for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
-////				std::cout<<"push face detect"<<std::endl;
-//				//output_image_queue.get(i)->push(image);
-//				output_image_queue.get(i)->push(frame);
-//			}
-//		}
 
 		// save image
 		if (result != -1) {
-			/*boost::posix_time::ptime current_time =
-					boost::posix_time::microsec_clock::local_time();
-
-			nokkhum::DirectoryManager dm(this->directory, "face_image",
-					current_time);
-			if (dm.checkAndCreate()) {
-
-				std::string record_name;
-				std::ostringstream oss;
-				oss << dm.getDirectoryName() << "/"
-						<< current_time.date().year() << "-" << std::setw(2)
-						<< std::setfill('0')
-						<< (int) current_time.date().month() << "-"
-						<< std::setw(2) << std::setfill('0')
-						<< current_time.date().day() << "-" << std::setw(2)
-						<< std::setfill('0')
-						<< current_time.time_of_day().hours() << "-"
-						<< std::setw(2) << std::setfill('0')
-						<< current_time.time_of_day().minutes() << "-"
-						<< std::setw(2) << std::setfill('0')
-						<< current_time.time_of_day().seconds() << "-"
-						<< std::setw(6) << std::setfill('0')
-						<< current_time.time_of_day().total_microseconds()
-								% 1000000 << "-face-" << result << ".png";
-
-				cv::imwrite(oss.str(), frame);*/
-				//std::cout << "write face :D " << std::endl;
-
 				Json::Value description;
 
 				std::string name;
@@ -161,8 +122,6 @@ void FaceRecognition::start() {
 				else if(result == 3) name = "lin";
 
 				description["face_name"] = "face-" + name;
-				//std::cout << "description " << description << std::endl;
-				//std::cout << "Have face : face-" << std::to_string(result) << std::endl;
 				image.setDescription(description);
 				image << frame;
 				for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
@@ -207,39 +166,6 @@ void FaceRecognition::trainAndLearn() {
 	}
 
 }
-void FaceRecognition::saveFace(cv::Mat& img, int id) {
-//	 std::string folder = this->directory;
-//	 boost::filesystem::path p(folder);
-//	 boost::filesystem::create_directories(p);
-//	 std::string address = folder + "/" + name + ".jpg";
-//	 cv::imwrite(address, img);
-
-	boost::posix_time::ptime current_time =
-			boost::posix_time::microsec_clock::local_time();
-
-	nokkhum::DirectoryManager dm(this->directory, "image", current_time);
-	if (!dm.checkAndCreate()) {
-		//	 continue;
-	}
-
-	std::string record_name;
-	std::ostringstream oss;
-	oss << dm.getDirectoryName() << "/" << current_time.date().year() << "-"
-			<< std::setw(2) << std::setfill('0')
-			<< (int) current_time.date().month() << "-" << std::setw(2)
-			<< std::setfill('0') << current_time.date().day() << "-"
-			<< std::setw(2) << std::setfill('0')
-			<< current_time.time_of_day().hours() << "-" << std::setw(2)
-			<< std::setfill('0') << current_time.time_of_day().minutes() << "-"
-			<< std::setw(2) << std::setfill('0')
-			<< current_time.time_of_day().seconds() << "-" << std::setw(6)
-			<< std::setfill('0')
-			<< current_time.time_of_day().total_microseconds() % 1000000
-			<< "face-" << id << ".png";
-
-	cv::imwrite(oss.str(), img);
-
-}
 
 int FaceRecognition::detectAndPredict(cv::Mat& img,
 		cv::CascadeClassifier &faceCascade, cv::CascadeClassifier &eyeCascade1,
@@ -276,10 +202,6 @@ int FaceRecognition::detectAndPredict(cv::Mat& img,
 		if (similarity < UNKNOWN_PERSON_THRESHOLD) {
 			int iden = model->predict(preprocessedFace);
 			return iden;
-			/*if(iden == 0) name = "tone";
-			 else if(iden == 1) name = "oat";
-			 else if(iden == 2) name = "ierk";
-			 else if(iden == 3) name = "lin";*/
 		}
 	}
 	return -1; // unknown people

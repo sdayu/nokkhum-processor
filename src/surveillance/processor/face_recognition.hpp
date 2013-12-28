@@ -33,11 +33,9 @@ private:
 	int detectAndPredict( cv::Mat& img,
 			cv::CascadeClassifier &faceCascade, cv::CascadeClassifier &eyeCascade1, cv::CascadeClassifier &eyeCascade2);
 	void trainAndLearn();
-	void saveFace(cv::Mat& img,int id);
 	template <typename T> std::string toString(T t);
 	bool findWord(std::string str, std::string word);
 	int interval;
-	std::string directory;
 	std::string face_database;
 	std::vector<cv::Mat> preprocessedFaces;
 	std::vector<int> faceLabels;

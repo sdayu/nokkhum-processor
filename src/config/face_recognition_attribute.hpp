@@ -17,17 +17,14 @@ namespace nokkhum {
 class FaceRecognitionAttribute : public nokkhum::ImageProcessorAttribute
 {
 public:
-    FaceRecognitionAttribute(std::string name, std::string directory, std::string face_database, int interval);
+    FaceRecognitionAttribute(std::string name, std::string face_database, int interval);
     virtual ~FaceRecognitionAttribute();
-    std::string getDirectory() const;
-    void setDirectory(std::string directory);
     std::string getFaceDatabase() const;
     void setFaceDatabase(std::string face_database);
     int getInterval() const;
     void setInterval(int interval);
 
 private:
-    std::string directory;
     std::string face_database;
     int interval;
 };

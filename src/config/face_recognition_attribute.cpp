@@ -9,8 +9,8 @@
 
 namespace nokkhum {
 
-FaceRecognitionAttribute::FaceRecognitionAttribute(std::string name, std::string directory, std::string face_database, int interval) :
-		ImageProcessorAttribute(name),directory(directory),face_database(face_database), interval(interval) {
+FaceRecognitionAttribute::FaceRecognitionAttribute(std::string name, std::string face_database, int interval) :
+		ImageProcessorAttribute(name),face_database(face_database), interval(interval) {
 
 }
 
@@ -24,16 +24,6 @@ int FaceRecognitionAttribute::getInterval() const {
 
 void FaceRecognitionAttribute::setInterval(int interval) {
 	this->interval = interval;
-}
-
-std::string FaceRecognitionAttribute::getDirectory() const
-{
-       return directory;
-}
-
-void FaceRecognitionAttribute::setDirectory(std::string directory)
-{
-        this->directory = directory;
 }
 
 std::string FaceRecognitionAttribute::getFaceDatabase() const
