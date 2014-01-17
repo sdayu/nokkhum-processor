@@ -13,9 +13,11 @@
 #include "../../config/image_recorder_attribute.hpp"
 #include "../../config/multimedia_recorder_attribute.hpp"
 #include "../../config/face_recognition_attribute.hpp"
+#include "../../config/face_preprocess_attribute.hpp"
 
 #include "face_detector.hpp"
 #include "face_recognition.hpp"
+#include "face_preprocess.hpp"
 #include "motion_detector.hpp"
 #include "image_processor.hpp"
 #include "video_recorder.hpp"
@@ -87,6 +89,10 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<FaceRecognitionAttribute> frp = std::static_pointer_cast<FaceRecognitionAttribute>(ipp);
 		std::shared_ptr<FaceRecognition>  fr = std::make_shared<FaceRecognition>(image_queue, *frp);
 		return fr;
+	} else if(ipp->getName() == "Face Preprocess"){
+		std::shared_ptr<FacePreprocessAttribute> fpp = std::static_pointer_cast<FacePreprocessAttribute>(ipp);
+		std::shared_ptr<FacePreprocess>  fp = std::make_shared<FacePreprocess>(image_queue, *fpp);
+		return fp;
 	}
 
 	return nullptr;

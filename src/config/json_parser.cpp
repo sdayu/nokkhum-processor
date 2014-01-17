@@ -22,6 +22,7 @@
 
 #include "../surveillance/processor/face_detector.hpp"
 #include "../surveillance/processor/face_recognition.hpp"
+#include "../surveillance/processor/face_preprocess.hpp"
 #include "../surveillance/processor/motion_detector.hpp"
 #include "../surveillance/processor/image_recorder.hpp"
 #include "../surveillance/processor/video_recorder.hpp"
@@ -32,6 +33,7 @@
 
 #include "camera_attribute.hpp"
 #include "face_recognition_attribute.hpp"
+#include "face_preprocess_attribute.hpp"
 #include "face_detector_attribute.hpp"
 #include "motion_detector_attribute.hpp"
 #include "recorder_attribute.hpp"
@@ -152,6 +154,8 @@ void JsonParser::parseImageProcessor(
 			tmp = parseNotification(obj);
 		} else if (processor_name == "Face Recognition"){
 			tmp = parseFaceRecognition(obj);
+		} else if (processor_name == "Face Preprocess"){
+			tmp = parseFacePreprocess(obj);
 		}
 
 		ipp->addImageProcessorAttribute(tmp);
@@ -344,6 +348,34 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFaceRecognition(
 	}
 
 	return frp;
+}
+
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseFacePreprocess(
+		const Json::Value image_processor_obj) {
+
+	std::string name;
+	std::string face_database;
+	int face_num;
+	int face_id;
+	int interval = 0;
+
+	name = image_processor_obj["name"].asString();
+	face_id = image_processor_obj["face_id"].asInt();
+	face_num = image_processor_obj["face_num"].asInt();
+	face_database = image_processor_obj["face_database"].asString();
+	if (image_processor_obj.isMember("interval")){
+			interval = image_processor_obj["interval"].asInt();
+		}
+	//std::cout << face_id << " " << face_num << " " << face_database << std::endl;
+//	LOG(INFO) << "ImagePro :" << name;
+
+	//std::cout << "Processor name : " << name << std::endl;
+
+	std::shared_ptr<ImageProcessorAttribute> fpp = std::make_shared<FacePreprocessAttribute>(name, face_database, face_id, face_num, interval);
+	if (image_processor_obj.isMember("image_processors")){
+			parseImageProcessor( image_processor_obj["image_processors"], fpp );
+	}
+	return fpp;
 }
 
 std::shared_ptr<ImageProcessorAttribute> JsonParser::parseNotification(

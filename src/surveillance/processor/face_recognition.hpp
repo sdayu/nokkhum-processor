@@ -1,5 +1,5 @@
 /*
- * face_recognition.h
+ * face_recognition.hpp
  *
  *  Created on: Nov 11, 2013
  *      Author: superizer

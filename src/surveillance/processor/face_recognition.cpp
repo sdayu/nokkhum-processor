@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdio>
 #include <vector>
 #include <unistd.h>
 #include <boost/filesystem.hpp>
@@ -112,10 +113,9 @@ void FaceRecognition::start() {
 				eyeCascade2);
 
 		// save image
+		std::string name;
 		if (result != -1) {
 				Json::Value description;
-
-				std::string name;
 				if(result == 0) name = "tone";
 				else if(result == 1) name = "oat";
 				else if(result == 2) name = "ierk";
@@ -128,12 +128,13 @@ void FaceRecognition::start() {
 					output_image_queue.get(i)->push(image);
 				}
 			}
-		}
-
-//		cv::imshow("Face Recognition", frame);
+		//putText(frame, "Hello " + name + " :D", cvPoint(30,30),
+		//   FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0,0,250), 1, CV_AA);
+		//cv::imshow("Face Recognition", frame);
 //
-//		if (cv::waitKey(30) > 0)
-//			break;
+		//if (cv::waitKey(30) > 0)
+		//	break;
+	}
 
 }
 void FaceRecognition::trainAndLearn() {
