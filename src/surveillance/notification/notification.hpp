@@ -25,6 +25,7 @@ public:
 	virtual ~Notification();
 	void start();
 	void face_detected(std::string name, std::string filename);
+	void motion_detected(std::string area);
 	void warning();
 };
 

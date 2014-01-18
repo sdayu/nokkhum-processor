@@ -10,6 +10,7 @@
 
 #include "image_processor_attribute.hpp"
 #include <string>
+#include <opencv2/core/core.hpp>
 
 namespace nokkhum {
 
@@ -22,6 +23,11 @@ public:
 			double sensitive, int interval,
 			int wait_motion_time,
 			bool enable_area_of_interest, point p1, point p2);
+	MotionDetectorAttribute(std::string name, std::string motion_analysis_method,
+				double sensitive, int interval,
+				int wait_motion_time,
+				bool enable_area_of_interest, std::vector< std::vector<cv::Point> > mul_point,
+				std::vector<std::string> area_name);
 	virtual ~MotionDetectorAttribute();
     int getInterval() const;
     int getSensitive() const;
@@ -33,10 +39,16 @@ public:
     bool getEnableAreaOfInterest() const;
     int getWaitMotionTime() const;
     void setWaitMotionTime(int seconds);
+    std::vector< std::vector<cv::Point> > getMulPoint() const;
+    void setMulPoint(std::vector< std::vector<cv::Point> > mul_point);
+    std::vector<std::string> getAreaName() const;
+    void setAreaName(std::vector<std::string> area_name);
 
 private:
+    std::vector< std::vector<cv::Point> > mul_point;
     double sensitive;
     int interval;
+    std::vector<std::string> area_name;
     std::string motion_analysis_method;
     point p1, p2;
     bool enable_area_of_interest;

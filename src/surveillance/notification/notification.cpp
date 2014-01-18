@@ -33,6 +33,7 @@ void Notification::start() {
 	cv::Mat frame;
 	nokkhum::Image image;
 	std::string name, type;
+	std::string area;
 	//bool check = 0;
 	while (running) {
 		//std::chrono::time_point < std::chrono::system_clock > now;
@@ -52,6 +53,9 @@ void Notification::start() {
 			//std::cout<<"sleep img"<<std::endl;
 			continue;
 		}
+		//if(input_image_queue.size() != 0)
+		//	std::cout << "input image queue not empty :P" << std::endl;
+
 		image = input_image_queue.pop();
 		frame = image.get();
 		Json::Value message = image.getDescription();
@@ -59,6 +63,10 @@ void Notification::start() {
 		if (message.isMember("face_name")) {
 			name = message["face_name"].asString();
 			type = "face_detected";
+		}else if(message.isMember("motion_area")){
+			std::cout << "Hello motion area !" << std::endl;
+			area = message["motion_area"].asString();
+			type = "motion_detected";
 		}
 
 //		if(tm->tm_min % 5 == 0 && !check){
@@ -82,6 +90,8 @@ void Notification::start() {
 							<< ".png";
 			filename = oss.str();
 			this->face_detected(name, filename);
+		}else if(type == "motion_detected"){
+			this->motion_detected(area);
 		}
 //			check = 1;
 //		} else if(tm->tm_min % 5 != 0){
@@ -113,6 +123,19 @@ void Notification::face_detected(std::string name, std::string filename) {
 			boost::posix_time::microsec_clock::local_time();
 	message["date"] = boost::posix_time::to_iso_extended_string(current_time);
 	nokkhum::ProgramReporter().report(message);
+}
+
+void Notification::motion_detected(std::string area){
+	Json::Value message;
+	message["method"] = "motion_detected";
+	message["camera_id"] = this->camera_id;
+	message["description"] = this->description;
+	message["area"] = area;
+
+	boost::posix_time::ptime current_time =
+				boost::posix_time::microsec_clock::local_time();
+		message["date"] = boost::posix_time::to_iso_extended_string(current_time);
+		nokkhum::ProgramReporter().report(message);
 }
 
 } /* namespace nokkhum */

@@ -28,9 +28,12 @@ private:
 	void drawOptFlowMap(const cv::Mat& flow, cv::Mat& cflowmap, int step,
 			                    double scale, const cv::Scalar& color);
 	virtual bool detectMotion(cv::Mat prevgray, cv::Mat gray);
+	bool BackgroundSubtraction(cv::Mat background, cv::Mat current);
 protected:
 	bool enable_area_of_interest;
+	std::vector< std::vector<cv::Point> > mul_point;
     int interval;
+    std::vector<std::string> area_name;
     int width;
     double sensitive;
     int wait_motion_time;
