@@ -8,8 +8,10 @@
 #include "face_recognition.hpp"
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cstdio>
+#include <algorithm>
 #include <vector>
 #include <unistd.h>
 #include <boost/filesystem.hpp>
@@ -115,25 +117,26 @@ void FaceRecognition::start() {
 		// save image
 		std::string name;
 		if (result != -1) {
-				Json::Value description;
-				if(result == 0) name = "tone";
-				else if(result == 1) name = "oat";
-				else if(result == 2) name = "ierk";
-				else if(result == 3) name = "lin";
+			Json::Value description;
+			/*if(result == 0) name = "tone";
+			 else if(result == 1) name = "oat";
+			 else if(result == 2) name = "ierk";
+			 else if(result == 3) name = "lin";*/
 
-				description["face_name"] = "face-" + name;
-				image.setDescription(description);
-				image << frame;
-				for(unsigned int i = 0; i < output_image_queue.getSize(); ++i){
-					output_image_queue.get(i)->push(image);
-				}
+			description["face_name"] = "face-" + toString(result);
+			image.setDescription(description);
+			image << frame;
+			for (unsigned int i = 0; i < output_image_queue.getSize(); ++i) {
+				output_image_queue.get(i)->push(image);
 			}
-		//putText(frame, "Hello " + name + " :D", cvPoint(30,30),
-		//   FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0,0,250), 1, CV_AA);
-		//cv::imshow("Face Recognition", frame);
+		}
+		/*putText(frame, "Hello face-" + toString(result) + " :D",
+				cvPoint(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8,
+				cvScalar(0, 0, 250), 1, CV_AA);
+		cv::imshow("Face Recognition", frame);
 //
-		//if (cv::waitKey(30) > 0)
-		//	break;
+		if (cv::waitKey(30) > 0)
+			break;*/
 	}
 
 }
@@ -148,14 +151,27 @@ void FaceRecognition::trainAndLearn() {
 			//cout << dir << endl;
 			this->preprocessedFaces.push_back(
 					cv::imread(dir, CV_LOAD_IMAGE_GRAYSCALE));
-			if (FaceRecognition::findWord(dir, "face-0"))
-				this->faceLabels.push_back(0); // tone
-			else if (FaceRecognition::findWord(dir, "face-1"))
-				this->faceLabels.push_back(1); // oat
-			else if (FaceRecognition::findWord(dir, "face-2"))
-				this->faceLabels.push_back(2); // ierk
-			else if (FaceRecognition::findWord(dir, "face-3"))
-				this->faceLabels.push_back(3); // lin
+			/*if (FaceRecognition::findWord(dir, "face-0"))
+			 this->faceLabels.push_back(0); // tone
+			 else if (FaceRecognition::findWord(dir, "face-1"))
+			 this->faceLabels.push_back(1); // oat
+			 else if (FaceRecognition::findWord(dir, "face-2"))
+			 this->faceLabels.push_back(2); // ierk
+			 else if (FaceRecognition::findWord(dir, "face-3"))
+			 this->faceLabels.push_back(3); // lin*/
+			if(FaceRecognition::findWord(dir, "face-")){
+				int id;
+				istringstream iss;
+				std::replace( dir.begin(), dir.end(), '-', ' ' );
+				iss.str(dir);
+
+				std::string tmp;
+				iss >> tmp >> id;
+
+				//int check = sscanf(dir.c_str(), "face-%d", &id);
+				//if (check != -1)
+				this->faceLabels.push_back(id);
+			}
 		}
 		++itr;
 	}

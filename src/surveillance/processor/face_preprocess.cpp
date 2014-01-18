@@ -129,7 +129,7 @@ void FacePreprocess::start() {
 			i++;
 			cv::imwrite(address, preprocessedFace);
 
-			if (faceRect.width > 0) {
+			/*if (faceRect.width > 0) {
 				cv::rectangle(frame, faceRect, CV_RGB(255, 255, 0), 2, CV_AA);
 				cv::Scalar eyeColor = CV_RGB(0, 255, 255);
 				if (leftEye.x >= 0)
@@ -142,13 +142,13 @@ void FacePreprocess::start() {
 							cv::Point(faceRect.x + rightEye.x,
 									faceRect.y + rightEye.y), 6, eyeColor, 1,
 							CV_AA);
-			}
+			}*/
 
 		}
-		std::string output;
+		/*std::string output;
 
 		if (address != "")
-			output = "saving face image";
+			output = "saving face image " + toString(i-1);
 		else
 			output = "can't detect";
 
@@ -158,10 +158,12 @@ void FacePreprocess::start() {
 		cv::imshow("Face Preprocess", frame);
 
 		if (cv::waitKey(30) >= 0)
-			break;
+			break;*/
 
-		if (i == face_num + 1)
+		if (i == face_num + 1){
 			running = false;
+			std::exit(0);
+		}
 	}
 
 }
