@@ -34,6 +34,7 @@ void Notification::start() {
 	nokkhum::Image image;
 	std::string name, type;
 	std::string area;
+	int counter = 0;
 	//bool check = 0;
 	while (running) {
 		//std::chrono::time_point < std::chrono::system_clock > now;
@@ -57,6 +58,13 @@ void Notification::start() {
 		//	std::cout << "input image queue not empty :P" << std::endl;
 
 		image = input_image_queue.pop();
+		if(counter < 5){
+			counter++;
+			continue;
+		}else{
+			counter = 0;
+		}
+
 		frame = image.get();
 		Json::Value message = image.getDescription();
 
@@ -64,7 +72,7 @@ void Notification::start() {
 			name = message["face_name"].asString();
 			type = "face_detected";
 		}else if(message.isMember("motion_area")){
-			std::cout << "Hello motion area !" << std::endl;
+			//std::cout << "Hello motion area !" << std::endl;
 			area = message["motion_area"].asString();
 			type = "motion_detected";
 		}

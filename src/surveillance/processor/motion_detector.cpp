@@ -119,6 +119,9 @@ void MotionDetector::start() {
 		image = input_image_queue.pop();
 
 		frame = image.get();
+
+		is_motion = false;
+
 		/*std::cout << "frame size " << frame.cols << " " << frame.rows << std::endl;
 		 *
 
@@ -189,6 +192,13 @@ void MotionDetector::start() {
 
 			std::string s = "";
 			for (int i = 0; i < (int) this->mul_point.size(); ++i) {
+
+				//this->width = backgroundImageVec[i].cols;
+				//cv::Mat old,neww;
+				//cv::cvtColor(backgroundImageVec[i], old, CV_BGR2GRAY);
+				//cv::cvtColor(currentImageVec[i], neww, CV_BGR2GRAY);
+
+				//bool check = detectMotion(old,neww);
 				bool check = BackgroundSubtraction(backgroundImageVec[i],
 						currentImageVec[i]);
 
@@ -222,20 +232,27 @@ void MotionDetector::start() {
 		}
 
 		if (is_motion) {
+			//std::cerr << "check notify 1: "<<check<<std::endl;
 			//				cv::circle(cflow, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 			//				std::cerr << "motion count: " << is_motion <<" sq: "<<motion_sequence << std::endl;
 			cv::circle(frame, cv::Point(20, 20), 10, CV_RGB(255, 0, 0), -1);
 			//				LOG(INFO) << "Have motion: " << std::dec << buffer_image.size() ;
 			//				std::cout<<"temporary queue size: "<< std::dec << buffer_image.size()<<std::endl;
 
+			Json::Value description;
+			description["motion_area"] = check;
+			//image.setDescription(description);
+			// std::cerr << "start motion: " << motion_sequence << std::endl;
+			//std::cerr << "check notify: "<<check<<std::endl;
+			//LOG(INFO) << "check notify: "<<check;
+
+			buffer_image.back().setDescription(description);
+
+
 			if (!motion_sequence) {
 				buffer_image.front().setMotionStatus(
 						nokkhum::MotionStatus::BeginMotion);
 				motion_sequence = true;
-				Json::Value description;
-				description["motion_area"] = check;
-				buffer_image.front().setDescription(description);
-				// std::cerr << "start motion: " << motion_sequence << std::endl;
 			}
 
 			// std::cerr << "image in buffer: " << buffer_image.size() << std::endl;
