@@ -113,7 +113,11 @@ void VideoSurveillance::stop() {
 
 	if (this->image_acquisition){
 		this->image_acquisition->stop();
-		acquisiting->join();
+		try{
+            acquisiting->join();
+        }catch(std::exception &e){
+            std::cerr << e.what() << std::endl; 
+        }
 	}
 
 	for (unsigned long i = 0; i < image_processor_pool.size(); ++i) {

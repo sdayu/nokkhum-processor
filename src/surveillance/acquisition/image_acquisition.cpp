@@ -51,7 +51,7 @@ void ImageAcquisition::start() {
 					else{
 						break;
 					}
-					if (count > 30){
+					if (count > 30 && multiple_queue.get(0)->empty()){
 						LOG(INFO) << "Image Empty more than 30";
 						throw std::runtime_error("Image Empty more than 30");
 					}
