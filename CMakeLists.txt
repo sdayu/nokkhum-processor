@@ -23,6 +23,7 @@ set (BOOST_LIBRARIES "-lboost_filesystem -lboost_system -lboost_date_time -lboos
 set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d -lopencv_contrib")
 set (JSONCPP_LIBRARIES "-ljsoncpp")
 set (POKO_LIBRARIES "-lPocoFoundation")
+set (PTHREAD_LIBRARIES "-lpthread")
 #set (EMAMI_LIBRARIES "-lemami_facereg")
  set (EXTRA_LIBS "${PROJECT_SOURCE_DIR}/emami_facereg/libemami_facereg.so")
 
@@ -31,8 +32,9 @@ link_libraries(
 	${OPENCV_LIBRARIES}
 	${BOOST_LIBRARIES}
 	${LIBGLOG_LIBRARIES}
-	${JSONCPP_LIBRARIES}
-    ${POKO_LIBRARIES}
+        ${JSONCPP_LIBRARIES}
+        ${POKO_LIBRARIES}
+        ${PTHREAD_LIBRARIES}
    	#${EMAMI_LIBRARIES}
 )
  
