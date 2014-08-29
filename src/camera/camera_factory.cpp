@@ -8,6 +8,7 @@
 #include "camera_factory.hpp"
 #include <glog/logging.h>
 #include <stdexcept>
+#include <memory>
 
 namespace nokkhum {
 
