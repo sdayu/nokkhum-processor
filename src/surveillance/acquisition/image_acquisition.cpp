@@ -11,6 +11,10 @@
 #include <thread>
 #include <glog/logging.h>
 
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
 namespace nokkhum {
 
 ImageAcquisition::ImageAcquisition(nokkhum::Camera& camera,
@@ -37,6 +41,10 @@ void ImageAcquisition::start() {
 	ImageAcquisitionMonitor iam(running, counter);
 	std::thread monitor = std::thread(std::ref(iam));
 
+	camera >> image;
+	std::srand(std::time(0));
+
+	cv::imwrite("/tmp/"+std::to_string(std::rand())+".png", image);
 	while (running) {
 		camera >> image;
 		if(image.empty()){

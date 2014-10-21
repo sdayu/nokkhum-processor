@@ -29,6 +29,7 @@
 #include "../surveillance/processor/multimedia_recorder.hpp"
 #include "../surveillance/processor/motion_detector_background_sub.hpp"
 #include "../surveillance/notification/notification.hpp"
+#include "../surveillance/processor/none_processor.hpp"
 
 #include "camera_attribute.hpp"
 #include "face_recognition_attribute.hpp"
@@ -42,6 +43,7 @@
 #include "image_recorder_attribute.hpp"
 #include "multimedia_recorder_attribute.hpp"
 #include "notification_attribute.hpp"
+#include "none_processor_attribute.hpp"
 
 namespace nokkhum {
 
@@ -150,6 +152,8 @@ void JsonParser::parseImageProcessor(const Json::Value image_processor_array,
 		} else if (processor_name == "Multimedia Recorder") {
 			tmp = parseMultimediaRecorder(obj);
 		} else if (processor_name == "Notification") {
+			tmp = parseNotification(obj);
+		} else if (processor_name == "None Processor") {
 			tmp = parseNotification(obj);
 		} else if (processor_name == "Face Recognition") {
 			tmp = parseFaceRecognition(obj);
@@ -418,6 +422,21 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseNotification(
 			< NotificationAttribute > (name, type);
 
 	return nfp;
+}
+
+std::shared_ptr<ImageProcessorAttribute> JsonParser::parseNoneProcessor(
+		const Json::Value image_processor_obj) {
+
+	std::string name;
+
+	name = image_processor_obj["name"].asString();
+
+	// std::cout << "Processor name : " << name << std::endl;
+
+	std::shared_ptr<NoneProcessorAttribute> npa = std::make_shared
+			< NoneProcessorAttribute > (name);
+
+	return npa;
 }
 
 /*const Json::Value& JsonParser::

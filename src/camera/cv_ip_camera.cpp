@@ -10,8 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
 
 
 /* IP_CAMERA_HPP_ */
@@ -22,6 +21,8 @@ namespace nokkhum
     {
 		capture = cv::VideoCapture(url);
 		capture.set(CV_CAP_PROP_FPS, fps);
+		capture.set(CV_CAP_PROP_FRAME_WIDTH, width);
+		capture.set(CV_CAP_PROP_FRAME_HEIGHT, height);
         // capture = new VideoCapture(0);
         // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
 //        std::cout << "url: " << url << std::endl;
@@ -39,7 +40,14 @@ namespace nokkhum
 
     void CvIpCamera::getImage(Mat& image)
     {
-    	this->capture >> image;
+    	cv::Mat aq_image;
+    	this->capture >> aq_image;
+    	if (aq_image.size() != cv::Size(this->getWidth(), this->getHeight())){
+    		cv::resize(aq_image, image, cv::Size(this->getWidth(), this->getHeight()));
+    	}
+    	else {
+    		image = aq_image;
+    	}
     }
 
 

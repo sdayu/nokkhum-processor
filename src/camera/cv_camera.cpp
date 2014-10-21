@@ -10,6 +10,8 @@
 #include <iostream>
 #include <exception>
 
+#include <opencv2/opencv.hpp>
+
 namespace nokkhum {
 
 CvCamera::CvCamera(int width, int height, int fps, int device) :
@@ -30,7 +32,14 @@ CvCamera::~CvCamera() {
 }
 
 void CvCamera::getImage(Mat& image) {
-	*(this->capture) >> image;
+	cv::Mat aq_image;
+	*(this->capture) >> aq_image;
+	if (aq_image.size() != cv::Size(this->getWidth(), this->getHeight())){
+		cv::resize(aq_image, image, cv::Size(this->getWidth(), this->getHeight()));
+	}
+	else {
+		image = aq_image;
+	}
 }
 
 bool CvCamera::isOpen(){

@@ -12,6 +12,7 @@
 #include <sstream>
 #include <ctime>
 #include <chrono>
+#include <thread>
 #include <exception>
 
 #include <opencv2/highgui/highgui.hpp>
@@ -193,7 +194,7 @@ void VideoRecorder::startRecord() {
 
 		if (input_image_queue.empty()) {
 			//			std::cout << "sleep .zZ" << std::endl;
-			usleep(1000);
+			std::this_thread::sleep_for(std::chrono::microseconds(1000));
 			continue;
 		}
 //		std::cout << "write to file " << this->filename << std::endl;

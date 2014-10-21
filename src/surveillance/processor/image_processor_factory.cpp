@@ -14,6 +14,7 @@
 #include "../../config/multimedia_recorder_attribute.hpp"
 #include "../../config/face_recognition_attribute.hpp"
 #include "../../config/face_preprocess_attribute.hpp"
+#include "../../config/none_processor_attribute.hpp"
 
 #include "face_detector.hpp"
 #include "face_recognition.hpp"
@@ -24,6 +25,7 @@
 #include "image_recorder.hpp"
 #include "video_motion_recorder.hpp"
 #include "multimedia_recorder.hpp"
+#include "none_processor.hpp"
 #include "motion_detector_background_sub.hpp"
 #include "../notification/notification.hpp"
 
@@ -85,6 +87,10 @@ std::shared_ptr<ImageProcessor> ImageProcessorFactory::getImageProcessor(
 		std::shared_ptr<NotificationAttribute> nfp = std::static_pointer_cast<NotificationAttribute>(ipp);
 		std::shared_ptr<Notification> nf = std::make_shared<Notification>(image_queue, *nfp, camera_attribute->getId());
 		return nf;
+	} else if(ipp->getName() == "None Processor"){
+		std::shared_ptr<NoneProcessorAttribute> npp = std::static_pointer_cast<NoneProcessorAttribute>(ipp);
+		std::shared_ptr<NoneProcessor> np = std::make_shared<NoneProcessor>(image_queue, *npp);
+		return np;
 	} else if(ipp->getName() == "Face Recognition"){
 		std::shared_ptr<FaceRecognitionAttribute> frp = std::static_pointer_cast<FaceRecognitionAttribute>(ipp);
 		std::shared_ptr<FaceRecognition>  fr = std::make_shared<FaceRecognition>(image_queue, *frp);
