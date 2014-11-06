@@ -41,10 +41,10 @@ void ImageAcquisition::start() {
 	ImageAcquisitionMonitor iam(running, counter);
 	std::thread monitor = std::thread(std::ref(iam));
 
-	camera >> image;
-	std::srand(std::time(0));
-
-	cv::imwrite("/tmp/"+std::to_string(std::rand())+".png", image);
+//	camera >> image;
+//	std::srand(std::time(0));
+//
+//	cv::imwrite("/tmp/"+std::to_string(std::rand())+".png", image);
 	while (running) {
 		camera >> image;
 		if(image.empty()){
