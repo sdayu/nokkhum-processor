@@ -94,9 +94,11 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().hours() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
-			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds()
+			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
+			<< std::to_string(this->width) << "x" << std::to_string(this->height)
 			// << ".avi";
-			<< ".ogv";
+			// << ".ogv";
+			<< ".webm";
 
 //	std::string old_name = this->filename.substr (0, this->filename.rfind("-"));
 //	std::string new_name = oss.str().substr (0, oss.str().rfind("-"));
@@ -199,7 +201,9 @@ void VideoRecorder::startRecord() {
 		}
 //		std::cout << "write to file " << this->filename << std::endl;
 
+//		std::cout << "queue size: " << input_image_queue.size() << std::endl;
 		frame = input_image_queue.pop().get();
+
 
 //		cv::imshow("video", frame);
 		writer_mutex.lock();

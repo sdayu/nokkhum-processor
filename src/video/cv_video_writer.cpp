@@ -40,8 +40,9 @@ bool CvVideoWriter::open(string filename, string directory, int width,
 
 	record = cv::VideoWriter(getRecordName().c_str(),
 			// CV_FOURCC('D', 'I', 'V', 'X'), frame_rate, cv::Size(width, height),
-			CV_FOURCC('T', 'H', 'E', 'O'), fps, cv::Size(width, height),
+			// CV_FOURCC('T', 'H', 'E', 'O'), fps, cv::Size(width, height),
 			// CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
+			CV_FOURCC('V', 'P', '8', '0'), fps, cv::Size(width, height),
 			true);
 
 	return record.isOpened();
