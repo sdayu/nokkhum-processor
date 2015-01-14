@@ -10,14 +10,17 @@
 
 #include "image_processor.hpp"
 
+#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/objdetect/objdetect.hpp>
 
+#include <string>
+
 #include "../../config/face_preprocess_attribute.hpp"
-#include "detectObject.h"
-#include "preprocessFace.h"
-#include "recognition.h"
-#include "ImageUtils.h"
+//#include "detectObject.h"
+//#include "preprocessFace.h"
+//#include "recognition.h"
+//#include "ImageUtils.h"
 
 namespace nokkhum {
 
@@ -33,7 +36,7 @@ private:
 	int face_id;
 	int i;
 	int face_num;
-	string face_database;
+	std::string face_database;
 	int interval;
 	cv::Rect faceRect;
 	cv::Rect searchedLeftEye, searchedRightEye;

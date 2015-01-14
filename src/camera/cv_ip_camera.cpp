@@ -16,7 +16,7 @@
 /* IP_CAMERA_HPP_ */
 namespace nokkhum
 {
-    CvIpCamera::CvIpCamera(int width, int height, int fps, string url, string username, string password)
+    CvIpCamera::CvIpCamera(int width, int height, int fps, std::string url, std::string username, std::string password)
     :IpCamera(width, height, fps, url, username, password)
     {
 		capture = cv::VideoCapture(url);

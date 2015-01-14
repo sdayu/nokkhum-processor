@@ -20,21 +20,22 @@ pkg_check_modules(LIBGLOG REQUIRED "libglog >= 0.3")
 pkg_check_modules(LIBJSONCPP REQUIRED "jsoncpp")
 
 set (BOOST_LIBRARIES "-lboost_filesystem -lboost_system -lboost_date_time -lboost_program_options")
-set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d -lopencv_contrib")
+set (OPENCV_LIBRARIES "-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lopencv_features2d -lopencv_videoio -lopencv_imgcodecs")
 set (JSONCPP_LIBRARIES "-ljsoncpp")
 set (POKO_LIBRARIES "-lPocoFoundation")
 set (PTHREAD_LIBRARIES "-lpthread")
 #set (EMAMI_LIBRARIES "-lemami_facereg")
- set (EXTRA_LIBS "${PROJECT_SOURCE_DIR}/emami_facereg/libemami_facereg.so")
+# set (EXTRA_LIBS "${PROJECT_SOURCE_DIR}/emami_facereg/libemami_facereg.so")
+set (EXTRA_LIBS "")
 
 
 link_libraries(
 	${OPENCV_LIBRARIES}
 	${BOOST_LIBRARIES}
 	${LIBGLOG_LIBRARIES}
-        ${JSONCPP_LIBRARIES}
-        ${POKO_LIBRARIES}
-        ${PTHREAD_LIBRARIES}
+    ${JSONCPP_LIBRARIES}
+ #       ${POKO_LIBRARIES}
+    ${PTHREAD_LIBRARIES}
    	#${EMAMI_LIBRARIES}
 )
  
@@ -50,7 +51,8 @@ set (CMAKE_CXX_FLAGS "-Wall")
 
 # add the binary tree to the search path for include files
 # so that we will find nokkhum_processor_config.h
-include_directories ("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/emami_facereg/include")
+#include_directories ("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/emami_facereg/include")
+include_directories ("${PROJECT_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/src")
 #LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/emami_facereg)
 
 # add the executable

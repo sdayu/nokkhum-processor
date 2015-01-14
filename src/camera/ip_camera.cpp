@@ -9,8 +9,8 @@
 
 namespace nokkhum {
 
-IpCamera::IpCamera(int width, int height, int fps, string url, string username,
-		string password) :
+IpCamera::IpCamera(int width, int height, int fps, std::string url, std::string username,
+		std::string password) :
 		Camera(width, height, fps), url(url), username(username), password(
 				password) {
 }

@@ -12,13 +12,16 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+
+#include <string>
+
 using namespace cv;
 
 namespace nokkhum {
 
 class CvIpCamera: public nokkhum::IpCamera {
 public:
-	CvIpCamera(int width, int height, int fps, string url, string username = "", string password = "");
+	CvIpCamera(int width, int height, int fps, std::string url, std::string username = "", std::string password = "");
 	virtual ~CvIpCamera();
 
 	void getImage(Mat& image);

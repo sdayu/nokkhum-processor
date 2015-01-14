@@ -161,7 +161,7 @@ void FaceRecognition::trainAndLearn() {
 			 this->faceLabels.push_back(3); // lin*/
 			if(FaceRecognition::findWord(dir, "face-")){
 				int id;
-				istringstream iss;
+				std::istringstream iss;
 				std::replace( dir.begin(), dir.end(), '-', ' ' );
 				iss.str(dir);
 
@@ -178,8 +178,8 @@ void FaceRecognition::trainAndLearn() {
 
 	if ((this->preprocessedFaces.size() > 0)
 			&& (this->preprocessedFaces.size() == this->faceLabels.size())) {
-		this->model = learnCollectedFaces(this->preprocessedFaces,
-				this->faceLabels, "FaceRecognizer.Fisherfaces");
+//		this->model = learnCollectedFaces(this->preprocessedFaces,
+//				this->faceLabels, "FaceRecognizer.Fisherfaces");
 	}
 
 }
@@ -191,15 +191,16 @@ int FaceRecognition::detectAndPredict(cv::Mat& img,
 	cv::Rect faceRect;
 	cv::Rect searchedLeftEye, searchedRightEye;
 	cv::Point leftEye, rightEye;
-	const bool preprocessLeftAndRightSeparately = true;
+//	const bool preprocessLeftAndRightSeparately = true;
 
-	const int faceWidth = 70;
+//	const int faceWidth = 70;
 //	const int faceHeight = faceWidth;
 
-	cv::Mat preprocessedFace = getPreprocessedFace(img, faceWidth, faceCascade,
-			eyeCascade1, eyeCascade2, preprocessLeftAndRightSeparately,
-			&faceRect, &leftEye, &rightEye, &searchedLeftEye,
-			&searchedRightEye);
+//	cv::Mat preprocessedFace = getPreprocessedFace(img, faceWidth, faceCascade,
+//			eyeCascade1, eyeCascade2, preprocessLeftAndRightSeparately,
+//			&faceRect, &leftEye, &rightEye, &searchedLeftEye,
+//			&searchedRightEye);
+	cv::Mat preprocessedFace;
 
 	bool gotFaceAndEyes = false;
 
@@ -209,16 +210,17 @@ int FaceRecognition::detectAndPredict(cv::Mat& img,
 	if (gotFaceAndEyes && (this->preprocessedFaces.size() > 0)
 			&& (this->preprocessedFaces.size() == this->faceLabels.size())) {
 		cv::Mat reconstructedFace;
-		reconstructedFace = reconstructFace(this->model, preprocessedFace);
+		//reconstructedFace = reconstructFace(this->model, preprocessedFace);
 
-		double similarity = getSimilarity(preprocessedFace, reconstructedFace);
+		//double similarity = getSimilarity(preprocessedFace, reconstructedFace);
+		double similarity;
 
 		std::string name = "Unknown";
 		float UNKNOWN_PERSON_THRESHOLD = 0.7f;
 
 		if (similarity < UNKNOWN_PERSON_THRESHOLD) {
-			int iden = model->predict(preprocessedFace);
-			return iden;
+			//int iden = model->predict(preprocessedFace);
+			//return iden;
 		}
 	}
 	return -1; // unknown people

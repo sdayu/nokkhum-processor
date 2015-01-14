@@ -173,10 +173,12 @@ cv::Mat FacePreprocess::getPreprocessFace(cv::Mat& img,
 	bool preprocessLeftAndRightSeparately = true;
 	int faceWidth = 70;
 
-	cv::Mat preprocessedFace = getPreprocessedFace(img, faceWidth, faceCascade,
-			eyeCascade1, eyeCascade2, preprocessLeftAndRightSeparately,
-			&faceRect, &leftEye, &rightEye, &searchedLeftEye,
-			&searchedRightEye);
+//	cv::Mat preprocessedFace = getPreprocessedFace(img, faceWidth, faceCascade,
+//			eyeCascade1, eyeCascade2, preprocessLeftAndRightSeparately,
+//			&faceRect, &leftEye, &rightEye, &searchedLeftEye,
+//			&searchedRightEye);
+	//remove syntax
+	cv::Mat preprocessedFace;
 
 	return preprocessedFace;
 }

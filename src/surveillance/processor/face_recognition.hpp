@@ -14,10 +14,10 @@
 #include <opencv2/objdetect/objdetect.hpp>
 
 #include "../../config/face_recognition_attribute.hpp"
-#include "detectObject.h"
-#include "preprocessFace.h"
-#include "recognition.h"
-#include "ImageUtils.h"
+//#include "detectObject.h"
+//#include "preprocessFace.h"
+//#include "recognition.h"
+//#include "ImageUtils.h"
 
 namespace nokkhum {
 
@@ -39,7 +39,7 @@ private:
 	std::string face_database;
 	std::vector<cv::Mat> preprocessedFaces;
 	std::vector<int> faceLabels;
-	cv::Ptr<FaceRecognizer> model;
+	// cv::Ptr<FaceRecognizer> model;
 };
 
 }

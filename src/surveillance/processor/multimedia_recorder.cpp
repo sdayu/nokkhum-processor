@@ -10,15 +10,15 @@
 #include <thread>
 #include <vector>
 #include <set>
-#include <Poco/Process.h>
-#include <Poco/PipeStream.h>
-#include <Poco/StreamCopier.h>
+//#include <Poco/Process.h>
+//#include <Poco/PipeStream.h>
+//#include <Poco/StreamCopier.h>
 #include <fstream>
 
 
 #include "multimedia_recorder.hpp"
-using Poco::Process;
-using Poco::ProcessHandle;
+//using Poco::Process;
+//using Poco::ProcessHandle;
 
 namespace nokkhum {
 MultimediaRecorder::MultimediaRecorder(ImageQueue &input_image_queue,
@@ -143,13 +143,13 @@ void MultimediaRecorder::getVideo() {
 	args.push_back(this->setString(this->fps));
 	args.push_back(this->dt + "/__"
 			+ this->output_name + "-video.webm");
-	Poco::Pipe outPipe;
-	Poco::Pipe errPipe;
-	ProcessHandle ph = Process::launch(cmd, args, 0, &outPipe, &errPipe);
-	//std::cout << "process id: "<< ph.id() << std::endl;
-	this->process.insert(ph.id());
-	ph.wait();
-	this->process.erase(ph.id());
+//	Poco::Pipe outPipe;
+//	Poco::Pipe errPipe;
+//	ProcessHandle ph = Process::launch(cmd, args, 0, &outPipe, &errPipe);
+//	//std::cout << "process id: "<< ph.id() << std::endl;
+//	this->process.insert(ph.id());
+//	ph.wait();
+//	this->process.erase(ph.id());
 
 }
 void MultimediaRecorder::getAudio() {
@@ -170,13 +170,13 @@ void MultimediaRecorder::getAudio() {
 			+ this->setString(this->record_sec));
 	args.push_back(this->dt + "/__"
 			+ this->output_name + "-audio.webm");
-	Poco::Pipe outPipe;
-	Poco::Pipe errPipe;
-	ProcessHandle ph = Process::launch(cmd, args, 0, &outPipe, &errPipe);
-	//std::cout << "process id: "<< ph.id() << std::endl;
-	this->process.insert(ph.id());
-	ph.wait();
-	this->process.erase(ph.id());
+	// Poco::Pipe outPipe;
+	// Poco::Pipe errPipe;
+	// ProcessHandle ph = Process::launch(cmd, args, 0, &outPipe, &errPipe);
+	// std::cout << "process id: "<< ph.id() << std::endl;
+	// this->process.insert(ph.id());
+	// ph.wait();
+	// this->process.erase(ph.id());
 
 }
 void MultimediaRecorder::getOutput(std::string output) {
