@@ -42,7 +42,7 @@ namespace nokkhum
     {
     	cv::Mat aq_image;
     	this->capture >> aq_image;
-    	if (aq_image.size() != cv::Size(this->getWidth(), this->getHeight())){
+    	if (!aq_image.empty() && aq_image.size() != cv::Size(this->getWidth(), this->getHeight())){
     		cv::resize(aq_image, image, cv::Size(this->getWidth(), this->getHeight()));
     	}
     	else {

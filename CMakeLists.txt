@@ -46,8 +46,8 @@ set (CMAKE_CXX_COMPILER g++)
 add_definitions(-std=c++1y)
 set (CMAKE_VERBOSE_MAKEFILE TRUE)
 
-set (CMAKE_CXX_FLAGS_DEBUG, "-g -Wall")
-set (CMAKE_CXX_FLAGS "-Wall")
+set (CMAKE_CXX_FLAGS_DEBUG, "-g -Wall -O0")
+set (CMAKE_CXX_FLAGS "-Wall -O2")
 
 # add the binary tree to the search path for include files
 # so that we will find nokkhum_processor_config.h
