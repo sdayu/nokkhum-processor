@@ -20,12 +20,11 @@ namespace nokkhum
     :IpCamera(width, height, fps, url, username, password)
     {
 		capture = cv::VideoCapture(url);
-		capture.set(CV_CAP_PROP_FPS, fps);
-		capture.set(CV_CAP_PROP_FRAME_WIDTH, width);
-		capture.set(CV_CAP_PROP_FRAME_HEIGHT, height);
-        // capture = new VideoCapture(0);
-        // this->capture->set(CV_CAP_PROP_FPS, this->get_frame_rate());
-//        std::cout << "url: " << url << std::endl;
+//		capture.set(CV_CAP_PROP_FPS, fps);
+//		capture.set(CV_CAP_PROP_FRAME_WIDTH, width);
+//		capture.set(CV_CAP_PROP_FRAME_HEIGHT, height);
+
+//      std::cout << "url: " << url << std::endl;
 
 		if (!capture.isOpened()) {
 				std::cerr << "Camera failed to open!\n";

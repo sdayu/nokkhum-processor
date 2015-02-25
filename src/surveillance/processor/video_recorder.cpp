@@ -97,8 +97,8 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
 			<< std::to_string(this->width) << "x" << std::to_string(this->height)
 			// << ".avi";
-			// << ".ogv";
-			<< ".webm";
+			<< ".ogv";
+			// << ".webm";
 
 //	std::string old_name = this->filename.substr (0, this->filename.rfind("-"));
 //	std::string new_name = oss.str().substr (0, oss.str().rfind("-"));

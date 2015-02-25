@@ -44,7 +44,7 @@ private:
 
 class ImageAcquisitionMonitor {
 public:
-	ImageAcquisitionMonitor(bool &running, unsigned int &counter, unsigned int time_to_sleep=3000):running(running), counter(counter), time_to_sleep(time_to_sleep){}
+	ImageAcquisitionMonitor(bool &running, unsigned int &counter, unsigned int time_to_sleep=100000):running(running), counter(counter), time_to_sleep(time_to_sleep){}
 	void operator() (){
 		while(running){
 			std::this_thread::yield();
