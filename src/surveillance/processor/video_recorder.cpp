@@ -95,7 +95,8 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().minutes() << "-"
 			<< std::setw(2) << std::setfill('0') << current_time.time_of_day().seconds() << "-"
 			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
-			<< std::to_string(this->width) << "x" << std::to_string(this->height)
+			<< std::to_string(this->width) << "x" << std::to_string(this->height) << "-"
+			<< this->fps << "fps"
 			// << ".avi";
 			<< ".ogv";
 			// << ".webm";
