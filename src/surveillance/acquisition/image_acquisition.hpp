@@ -14,6 +14,7 @@
 #include <thread>
 #include <stdexcept>
 #include <memory>
+#include <iostream>
 
 #include <opencv2/core/core.hpp>
 
@@ -48,6 +49,7 @@ public:
 	void operator() (){
 		while(running){
 			std::this_thread::yield();
+//			std::cout<<"time_to_sleep: "<<time_to_sleep<<std::endl;
 			std::this_thread::sleep_for(std::chrono::milliseconds(time_to_sleep));
 			if( counter > 0 ){
 				counter = 0;

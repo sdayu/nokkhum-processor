@@ -54,10 +54,11 @@ void ImageAcquisition::start() {
 
 //	camera >> image;
 //	std::srand(std::time(0));
-//
+//	std::cout<<"get image"<<std::endl;
 //	cv::imwrite("/tmp/"+std::to_string(std::rand())+".png", image);
 
 	while (running) {
+//		std::cout<<"before get image:" <<counter<<std::endl;
 		camera >> image;
 		if(image.empty()){
 			LOG(INFO) << "Image Empty ";
@@ -91,6 +92,7 @@ void ImageAcquisition::start() {
 
 		std::chrono::high_resolution_clock::time_point current_time = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> elapsed =  current_time - first_frame_time;
+
 		if(elapsed.count() > 1 ){
 
 			// unsigned int duration = ((time_duration(elapsed).count() - period_time) / camera.getFps());
@@ -103,13 +105,20 @@ void ImageAcquisition::start() {
 //							<< " current: " << wait_time << std::endl;
 
 			if(frame_counter < camera.getFps()){
-				wait_time -= duration;
-				if(wait_time < 0)
-					wait_time = 0;
+				if(wait_time > duration) {
+					wait_time -= duration;
+				}
+				else {
+					wait_time -= 100;
+				}
 
+				if(wait_time > 1000000 or wait_time < 0)
+					wait_time = 0;
 			}
 			else if(frame_counter > camera.getFps()){
 				wait_time += duration;
+				if(wait_time > 1000000)
+					wait_time = 1000000;
 			}
 
 			first_frame_time = current_time;
@@ -120,7 +129,7 @@ void ImageAcquisition::start() {
 			frame_counter = 0;
 		}
 
-
+//		std::cout<<"sleep:" <<wait_time<<std::endl;
 		std::this_thread::sleep_for(std::chrono::microseconds(wait_time));
 
 	}

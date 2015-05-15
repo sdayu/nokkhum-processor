@@ -43,11 +43,16 @@ file(GLOB_RECURSE nokkhum_processor_CXX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_
  
 # complier
 set (CMAKE_CXX_COMPILER g++)
-add_definitions(-std=c++1y)
+add_definitions(-std=c++1z)
 set (CMAKE_VERBOSE_MAKEFILE TRUE)
+
+macro(remove_cxx_flag flag)
+  string(REPLACE "${flag}" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+endmacro()
 
 set (CMAKE_CXX_FLAGS_DEBUG, "-g -Wall -O0")
 set (CMAKE_CXX_FLAGS "-Wall -O2")
+remove_cxx_flag("-O3")
 
 # add the binary tree to the search path for include files
 # so that we will find nokkhum_processor_config.h
