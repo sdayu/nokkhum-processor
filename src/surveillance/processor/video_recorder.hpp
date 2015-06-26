@@ -62,6 +62,7 @@ protected:
 	nokkhum::VideoWriter *writer;
 	std::string filename;
 	std::string directory;
+	std::string extension;
 	unsigned int width;
 	unsigned int height;
 	unsigned int fps;

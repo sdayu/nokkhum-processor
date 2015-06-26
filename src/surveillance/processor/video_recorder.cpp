@@ -28,11 +28,11 @@
 
 namespace nokkhum {
 
-VideoRecorder::VideoRecorder(ImageQueue& input_image_queue) :
+VideoRecorder::VideoRecorder(ImageQueue& input_image_queue):
 		ImageProcessor("VDO Recorder", input_image_queue) {
 	this->running = false;
 	this->writer = nullptr;
-
+	this->extension = "ogv";
 	this->period = 10;
 
 	// std::cout << "Construct video recorder without property" << std::endl;
@@ -48,6 +48,7 @@ VideoRecorder::VideoRecorder(ImageQueue & input_image_queue,
 	this->fps = vrp.getFps();
 	this->period = 10;
 	this->writer = nullptr;
+	this->extension = vrp.getExtension();
 
 }
 
@@ -97,9 +98,8 @@ void VideoRecorder::getNewVideoWriter() {
 			<< std::setw(6) << std::setfill('0') << current_time.time_of_day().fractional_seconds() << "-"
 			<< std::to_string(this->width) << "x" << std::to_string(this->height) << "-"
 			<< this->fps << "fps"
-			// << ".avi";
-			<< ".ogv";
-			// << ".webm";
+			<< "." << this->extension;
+
 
 //	std::string old_name = this->filename.substr (0, this->filename.rfind("-"));
 //	std::string new_name = oss.str().substr (0, oss.str().rfind("-"));
@@ -157,7 +157,7 @@ void VideoRecorder::getNewVideoWriter() {
 	writer_mutex.lock();
 	while (this->writer == nullptr) {
 		this->writer = new CvVideoWriter(oss.str(), dm.getDirectoryName(),
-				this->width, this->height, this->fps);
+				this->width, this->height, this->fps, this->extension);
 		if (!this->writer->isOpened()) {
 			delete this->writer;
 			this->writer = nullptr;

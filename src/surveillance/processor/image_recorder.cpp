@@ -26,7 +26,8 @@
 namespace nokkhum {
 
 ImageRecorder::ImageRecorder(ImageQueue &input_image_queue) :
-		ImageProcessor("Image Recorder", input_image_queue), width(320), height(240), directory("/tmp") {
+		ImageProcessor("Image Recorder", input_image_queue), width(320), height(240),
+		directory("/tmp"), extension("png") {
 	this->interval = 1;
 
 }
@@ -38,6 +39,7 @@ ImageRecorder::ImageRecorder(ImageQueue & input_image_queue,
 	this->height = irp.getHeight();
 	this->directory = irp.getDirectory();
 	this->interval = irp.getInterval();
+	this->extension = irp.getExtension();
 }
 
 ImageRecorder::~ImageRecorder() {
@@ -113,11 +115,11 @@ void ImageRecorder::start() {
 		if(haveFace){
 		 oss << dm.getDirectoryName() << "/" << buffer << "-" << std::setw(6) << std::setfill('0')
 					    	<< std::chrono::duration_cast<std::chrono::nanoseconds>(date.time_since_epoch()).count()%1000000
-					    	<< "-" << name << ".png";
+					    	<< "-" << name << "." << this->extension;
 		}else{
 		 oss << dm.getDirectoryName() << "/" << buffer << "-" << std::setw(6) << std::setfill('0')
 		    	<< std::chrono::duration_cast<std::chrono::nanoseconds>(date.time_since_epoch()).count()%1000000
-		    	<< ".png";
+		    	<< "." << this->extension;
 		}
 		cv::imwrite(oss.str(), frame);
 //		std::cout<<"save file name: "<<oss.str()<<std::endl;

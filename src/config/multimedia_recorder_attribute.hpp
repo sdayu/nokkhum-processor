@@ -19,7 +19,7 @@ namespace nokkhum {
 class MultimediaRecorderAttribute: public RecorderAttribute {
 public:
 //	MultimediaRecorderAttribute();
-	MultimediaRecorderAttribute(std::string name, std::string directory, int width, int height, int fps);
+	MultimediaRecorderAttribute(std::string name, std::string directory, int width, int height, int fps, std::string extension);
 	virtual ~MultimediaRecorderAttribute();
 	int getFps() const;
 	void setFps(int fps);

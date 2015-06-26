@@ -16,7 +16,8 @@ namespace nokkhum {
 
 class ImageRecorderAttribute : public RecorderAttribute {
 public:
-	ImageRecorderAttribute(std::string name, std::string directory, int width, int height, unsigned int interval);
+	ImageRecorderAttribute(std::string name, std::string directory, int width, int height,
+						   std::string extension, unsigned int interval);
 	virtual ~ImageRecorderAttribute();
 
 	unsigned int getInterval();

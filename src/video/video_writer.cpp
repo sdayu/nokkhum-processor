@@ -9,8 +9,8 @@
 #include <iostream>
 namespace nokkhum {
 
-VideoWriter::VideoWriter(string filename, string directory, int width, int height, int fps) :
-	filename(filename), directory(directory), width(width), height(height), fps(fps) {
+VideoWriter::VideoWriter(std::string filename, std::string directory, int width, int height, int fps, std::string extension="ogv") :
+	filename(filename), directory(directory), width(width), height(height), fps(fps), extension(extension) {
 	this->recordname = directory ;
 
 		if (recordname.at(recordname.length()-1) == '/')
@@ -25,11 +25,11 @@ VideoWriter::~VideoWriter() {
 	// TODO Auto-generated destructor stub
 }
 
-string VideoWriter::getRecordName() {
+std::string VideoWriter::getRecordName() {
 	return this->recordname;
 }
 
-VideoWriter& VideoWriter::operator <<(Mat& frame) {
+VideoWriter& VideoWriter::operator <<(cv::Mat& frame) {
 	writeFrame(frame);
 	return *this;
 }

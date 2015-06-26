@@ -15,12 +15,16 @@ namespace nokkhum {
 
 class RecorderAttribute : public ImageProcessorAttribute {
 public:
-	RecorderAttribute(std::string name, std::string directory, int width, int height);
+	RecorderAttribute(std::string name, std::string directory,
+					  int width, int height, std::string extension);
 	virtual ~RecorderAttribute();
     std::string getDirectory() const;
+    std::string getExtension() const;
     int getHeight() const;
     int getWidth() const;
+
     void setDirectory(std::string directory);
+    void setExtension(std::string extension);
     void setHeight(int height);
     void setWidth(int width);
 
@@ -28,6 +32,7 @@ private:
 	std::string directory;
 	int width;
 	int height;
+	std::string extension;
 
 };
 

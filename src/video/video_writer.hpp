@@ -9,32 +9,31 @@
 #define NOKKHUM_VIDEO_WRITER_HPP_
 
 #include <string>
-using std::string;
 
-#include <opencv2/highgui/highgui.hpp>
-using cv::Mat;
+#include <opencv2/opencv.hpp>
 
 namespace nokkhum {
 
 class VideoWriter {
 public:
 	VideoWriter();
-	VideoWriter(string filename, string directory, int width, int height, int fps);
+	VideoWriter(std::string filename, std::string directory, int width, int height, int fps, std::string extension);
 	virtual ~VideoWriter();
 
-	string getRecordName();
+	std::string getRecordName();
 
-	virtual bool open(string filename, string directory, int width, int height, int frame_rate) = 0;
+	virtual bool open(std::string filename, std::string directory, int width, int height, int fps, std::string extension) = 0;
 	virtual void release() = 0;
-	virtual void writeFrame(Mat &frame) = 0;
+	virtual void writeFrame(cv::Mat &frame) = 0;
 	virtual bool isOpened();
 
-	virtual VideoWriter& operator <<(Mat& frame);
+	virtual VideoWriter& operator << (cv::Mat& frame);
 
 protected:
-	string filename;
-	string directory;
-	string recordname;
+	std::string filename;
+	std::string directory;
+	std::string recordname;
+	std::string extension;
 	int width;
 	int height;
 	int fps;

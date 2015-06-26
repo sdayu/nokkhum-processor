@@ -17,9 +17,9 @@ namespace nokkhum {
 class VideoRecorderAttribute: public RecorderAttribute {
 public:
 	VideoRecorderAttribute(std::string name, std::string directory, int width,
-			int height, int fps);
+			int height, int fps, std::string extension);
 	VideoRecorderAttribute(std::string name, std::string directory, int width,
-			int height, int fps, bool record_motion);
+			int height, int fps, std::string extension, bool record_motion);
 	virtual ~VideoRecorderAttribute();
 	int getFps() const;
 	void setFps(int fps);

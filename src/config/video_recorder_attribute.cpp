@@ -10,17 +10,17 @@
 namespace nokkhum {
 
 VideoRecorderAttribute::VideoRecorderAttribute(std::string name,
-		std::string directory, int width, int height, int fps) :
-		RecorderAttribute(name, directory, width, height), fps(fps) {
+		std::string directory, int width, int height, int fps, std::string extension) :
+		RecorderAttribute(name, directory, width, height, extension), fps(fps) {
 	// TODO Auto-generated constructor stub
 	this->record_motion = false;
 
 }
 
 VideoRecorderAttribute::VideoRecorderAttribute(std::string name,
-		std::string directory, int width, int height, int fps,
+		std::string directory, int width, int height, int fps, std::string extension,
 		bool record_motion) :
-		RecorderAttribute(name, directory, width, height), fps(fps),
+		RecorderAttribute(name, directory, width, height, extension), fps(fps),
 		record_motion(record_motion)
 		{
 

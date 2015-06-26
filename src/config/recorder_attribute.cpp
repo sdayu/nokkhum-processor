@@ -9,8 +9,8 @@
 
 namespace nokkhum {
 
-RecorderAttribute::RecorderAttribute(std::string name, std::string directory, int width, int height)
-: ImageProcessorAttribute(name), directory(directory), width(width), height(height){
+RecorderAttribute::RecorderAttribute(std::string name, std::string directory, int width, int height, std::string extension)
+: ImageProcessorAttribute(name), directory(directory), width(width), height(height), extension(extension){
 	// TODO Auto-generated constructor stub
 
 }
@@ -22,6 +22,11 @@ RecorderAttribute::~RecorderAttribute() {
     std::string RecorderAttribute::getDirectory() const
     {
         return directory;
+    }
+
+    std::string RecorderAttribute::getExtension() const
+    {
+        return extension;
     }
 
     int RecorderAttribute::getHeight() const
@@ -37,6 +42,11 @@ RecorderAttribute::~RecorderAttribute() {
     void RecorderAttribute::setDirectory(std::string directory)
     {
         this->directory = directory;
+    }
+
+    void RecorderAttribute::setExtension(std::string extension)
+    {
+        this->extension = extension;
     }
 
     void RecorderAttribute::setHeight(int height)

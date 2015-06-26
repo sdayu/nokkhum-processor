@@ -11,27 +11,25 @@
 #include "video_writer.hpp"
 
 #include <string>
-using std::string;
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-using cv::Mat;
 
 namespace nokkhum {
 
 class CvVideoWriter: public nokkhum::VideoWriter {
 public:
 	CvVideoWriter();
-	CvVideoWriter(string filename, string directory, int width, int height, int frame_rate);
+	CvVideoWriter(std::string filename, std::string directory, int width, int height, int frame_rate, std::string extension);
 	virtual ~CvVideoWriter();
 
-	bool open(string filename, string directory, int width, int height, int frame_rate);
+	bool open(std::string filename, std::string directory, int width, int height, int frame_rate, std::string extension);
 	void release();
 	bool isOpened();
 
-	void writeFrame(Mat &frame);
+	void writeFrame(cv::Mat &frame);
 
-	CvVideoWriter& operator <<(Mat& frame);
+	CvVideoWriter& operator << (cv::Mat& frame);
 private:
 	cv::VideoWriter record;
 };

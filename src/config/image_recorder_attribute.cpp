@@ -9,8 +9,9 @@
 
 namespace nokkhum {
 
-ImageRecorderAttribute::ImageRecorderAttribute(std::string name, std::string directory, int width, int height, unsigned int interval)
-: RecorderAttribute (name, directory, width, height), interval(interval) {
+ImageRecorderAttribute::ImageRecorderAttribute(std::string name, std::string directory, int width, int height,
+											   std::string extension, unsigned int interval)
+: RecorderAttribute (name, directory, width, height, extension), interval(interval) {
 	// TODO Auto-generated constructor stub
 
 }

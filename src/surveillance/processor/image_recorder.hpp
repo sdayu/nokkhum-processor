@@ -28,6 +28,7 @@ private:
 	unsigned int height;
 	std::string directory;
 	unsigned int interval;
+	std::string extension;
 };
 
 } /* namespace nokkhum */

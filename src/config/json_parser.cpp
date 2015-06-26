@@ -173,6 +173,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 
 	std::string name;
 	std::string directory;
+	std::string extension = "ogv";
 	int fps;
 	int width;
 	int height;
@@ -183,9 +184,14 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 	width = image_processor_obj["width"].asInt();
 	height = image_processor_obj["height"].asInt();
 
+
 	//std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<VideoRecorderAttribute> vrp = nullptr;
+
+	if (image_processor_obj.isMember("extension")) {
+		extension = image_processor_obj["extension"].asString();
+	}
 
 	if (image_processor_obj.isMember("record_motion")) {
 		bool record_motion = image_processor_obj.isMember("record_motion");
@@ -193,14 +199,14 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseVideoRecorder(
 
 		if (record_motion) {
 			vrp = std::make_shared < VideoRecorderAttribute
-					> (name, directory, width, height, fps, record_motion);
+					> (name, directory, width, height, fps, extension, record_motion);
 		} else {
 			vrp = std::make_shared < VideoRecorderAttribute
-					> (name, directory, width, height, fps);
+					> (name, directory, width, height, fps, extension);
 		}
 	} else {
 		vrp = std::make_shared < VideoRecorderAttribute
-				> (name, directory, width, height, fps);
+				> (name, directory, width, height, fps, extension);
 	}
 
 	if (image_processor_obj.isMember("image_processors")) {
@@ -215,6 +221,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
 
 	std::string name;
 	std::string directory;
+	std::string extension = "ogv";
 	int fps;
 	int width;
 	int height;
@@ -226,12 +233,16 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseMultimediaRecorder(
 	width = image_processor_obj["width"].asInt();
 	height = image_processor_obj["height"].asInt();
 
+	if (image_processor_obj.isMember("extension")) {
+		extension = image_processor_obj["extension"].asString();
+	}
+
 	// std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<MultimediaRecorderAttribute> mrp = nullptr;
 
 	mrp = std::make_shared < MultimediaRecorderAttribute
-			> (name, directory, width, height, fps);
+			> (name, directory, width, height, fps, extension);
 
 	if (image_processor_obj.isMember("image_processors")) {
 		parseImageProcessor(image_processor_obj["image_processors"], mrp);
@@ -245,6 +256,7 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(
 
 	std::string name;
 	std::string directory;
+	std::string extension = "png";
 	int width;
 	int height;
 	unsigned int interval = 1;
@@ -257,11 +269,15 @@ std::shared_ptr<ImageProcessorAttribute> JsonParser::parseImageRecorder(
 		interval = image_processor_obj["interval"].asInt();
 	}
 
+	if (image_processor_obj.isMember("extension")) {
+		extension = image_processor_obj["extension"].asString();
+	}
+
 	// std::cout << "Processor name : " << name << std::endl;
 
 	std::shared_ptr<ImageProcessorAttribute> irp = std::make_shared
 			< ImageRecorderAttribute
-			> (name, directory, width, height, interval);
+			> (name, directory, width, height, extension, interval);
 	if (image_processor_obj.isMember("image_processors")) {
 		parseImageProcessor(image_processor_obj["image_processors"], irp);
 	}
