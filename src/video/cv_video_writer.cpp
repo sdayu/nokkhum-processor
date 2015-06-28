@@ -41,9 +41,9 @@ bool CvVideoWriter::open(std::string filename, std::string directory, int width,
 
 	if(extension == "mp4"){
 		this->record = cv::VideoWriter(getRecordName().c_str(),
-			//CV_FOURCC('X', '2', '6', '4'), fps, cv::Size(width, height),
+			CV_FOURCC('X', '2', '6', '4'), fps, cv::Size(width, height),
 			//CV_FOURCC('D', 'I', 'V', 'X'), fps, cv::Size(width, height),
-			CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(width, height),
+			//CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(width, height),
 			true);
 
 	}

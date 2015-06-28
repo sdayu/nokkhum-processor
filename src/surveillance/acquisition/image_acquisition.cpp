@@ -46,7 +46,7 @@ void ImageAcquisition::start() {
 	unsigned int period_time = time_duration(std::chrono::seconds(1)).count();
 	unsigned int wait_time = period_time / camera.getFps(); // sleep in micro secound
 
-	ImageAcquisitionMonitor iam(running, counter);
+	ImageAcquisitionMonitor iam(running, counter, time_duration(std::chrono::seconds(2)).count());
 	std::thread monitor = std::thread(std::ref(iam));
 
 	camera >> image;
@@ -133,7 +133,6 @@ void ImageAcquisition::start() {
 		std::this_thread::sleep_for(std::chrono::microseconds(wait_time));
 
 	}
-
 	monitor.join();
 }
 

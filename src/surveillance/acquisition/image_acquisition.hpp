@@ -45,12 +45,14 @@ private:
 
 class ImageAcquisitionMonitor {
 public:
-	ImageAcquisitionMonitor(bool &running, unsigned int &counter, unsigned int time_to_sleep=100000):running(running), counter(counter), time_to_sleep(time_to_sleep){}
+	ImageAcquisitionMonitor(bool &running, unsigned int &counter, unsigned int time_to_sleep=1000000)
+		:running(running), counter(counter), time_to_sleep(time_to_sleep){}
 	void operator() (){
 		while(running){
 			std::this_thread::yield();
-//			std::cout<<"time_to_sleep: "<<time_to_sleep<<std::endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(time_to_sleep));
+			// std::cout<<"time_to_sleep: "<<time_to_sleep<<std::endl;
+			std::this_thread::sleep_for(std::chrono::microseconds(time_to_sleep));
+
 			if( counter > 0 ){
 				counter = 0;
 			}
